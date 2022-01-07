@@ -37,7 +37,12 @@ class UserApiControllerTest {
         String requestUri = "/users" ;
         ResultActions actions = mockMvc
                 .perform(post(requestUri)
-                        .flashAttr("user", user))
+                        .param("email", user.getEmail())
+                        .param("password", user.getPassword())
+                        .param("nickname", user.getNickname())
+                        .param("phone", user.getPhone())
+                        .param("username", user.getUsername())
+                )
                 ;
         // then
         actions
