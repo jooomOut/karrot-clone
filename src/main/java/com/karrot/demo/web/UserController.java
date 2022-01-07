@@ -10,8 +10,20 @@ public class UserController {
 
     /*로그인 페이지로 이동*/
     @GetMapping("/main")
+    public String main(){
+        log.info("in main Page");
+        return "user/main";
+    }
+
+    @GetMapping("/login")
     public String login(){
-        log.info("in Login Page");
-        return "user/login/main";
+        log.info("move to login");
+        return "user/login";
+    }
+
+    @GetMapping("/user/register")
+    public String register(){
+        log.info("move to register");
+        return "user/register";
     }
 }

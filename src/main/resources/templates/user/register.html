@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .text{
+            text-align: center;
+        }
+        .main_text{
+            font-size: 70px;
+        }
+        .sub_text{
+            font-size: 50px;
+        }
+        .button_box {
+            font-size: 70px;
+
+            width: 90%;
+            height: 100px;
+            display: block;
+            margin: 0px auto;
+            text-align: center;
+            vertical-align: middle;
+
+            background: orange;
+            color: white;
+        }
+        .bottom_container{
+            margin-top: 500px;
+        }
+        .form{
+            padding: 100px;
+        }
+        div, input{
+            font-size: 50px;
+        }
+        input{
+            margin-top: 30px;
+            height: 80px;
+            width: 100%;
+        }
+        .box{
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div style="padding: 100px 0px 0px 100px">회원 가입</div>
+    <form th:action="@{/users}" method="post" class="form">
+        <div class="box">
+            <div>이메일(ID)</div>
+            <input type="text" name="email" />
+        </div>
+        <div class="box">
+            <div>비밀번호(PW)</div>
+            <input type="password" name="password" />
+        </div>
+        <div class="box">
+            <div>이름</div>
+            <input type="text" name="username" />
+        </div>
+        <div class="box">
+            <div>핸드폰 번호</div>
+            <input type="number" name="phone" />
+        </div>
+        <div class="box">
+            <div>닉네임</div>
+            <input type="text" name="nickname" />
+        </div>
+
+        <button class="button_box" type="submit">가입하기</button>
+    </form>
+</div>
+
+</body>
