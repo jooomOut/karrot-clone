@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .text{
+            text-align: center;
+        }
+        .main_text{
+            font-size: 70px;
+        }
+        .sub_text{
+            font-size: 50px;
+        }
+        .button_box {
+            font-size: 70px;
+
+            width: 90%;
+            height: 100px;
+            display: block;
+            margin: 0px auto;
+            text-align: center;
+            vertical-align: middle;
+
+            background: orange;
+            color: white;
+        }
+        .bottom_container{
+            margin-top: 500px;
+        }
+        .container{
+            padding: 100px;
+        }
+        div, input{
+            font-size: 50px;
+        }
+        input{
+            margin-top: 30px;
+            height: 80px;
+            width: 100%;
+        }
+        .box{
+            margin-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div style="padding: 100px 0px 0px 100px">회원 가입</div>
+    <!--<form th:action="@{/users}" method="post" class="container">-->
+    <div class="container">
+        <div class="box">
+            <div>이메일(ID)</div>
+            <input type="text" name="email" />
+        </div>
+        <div class="box">
+            <div>비밀번호(PW)</div>
+            <input type="password" name="password" />
+        </div>
+        <div class="box">
+            <div>이름</div>
+            <input type="text" name="username" />
+        </div>
+        <div class="box">
+            <div>핸드폰 번호</div>
+            <input type="number" name="phone" />
+        </div>
+        <div class="box">
+            <div>닉네임</div>
+            <input type="text" name="nickname" />
+        </div>
+    </div>
+    <button class="button_box" onclick="registerUser();">가입하기</button>
+</div>
+</body>
+<script>
+    function getValueByName(name){
+        return document.getElementsByName(name)[0].value
+    }
+
+    function registerUser(){
+        var xhr = new XMLHttpRequest();
+        var formData = new FormData();
+
+        formData.append('email', getValueByName('email'));
+        formData.append('password', getValueByName('password'));
+        formData.append('username', getValueByName('username'));
+        formData.append('phone', getValueByName('phone'));
+        formData.append('nickname', getValueByName('nickname'));
+
+        xhr.onload = function() {
+            if (xhr.status === 200 || xhr.status === 201) {
+                console.log(xhr.responseText);
+                alert("회원가입이 완료되었습니다. 새롭게 로그인해주세요.")
+                location.href = "/login";
+            } else {
+                console.error(xhr.responseText);
+                alert("이미 가입된 이메일 혹은 전화번호입니다.")
+            }
+        };
+        xhr.open('POST', '/users');
+        xhr.send(formData); // 폼 데이터 객체 전송
+    }
+
+</script>
