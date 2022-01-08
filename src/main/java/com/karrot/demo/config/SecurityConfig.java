@@ -1,11 +1,15 @@
 package com.karrot.demo.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -27,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .and()
               .formLogin()
               .loginPage("/main") // 기본 로그인 페이지 변경
-              .loginProcessingUrl("/login")
+              .loginProcessingUrl("/users/login")
               .defaultSuccessUrl("/")
               .permitAll()
           .and()
@@ -35,6 +39,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
               .logoutSuccessUrl("/")
           .and().csrf().disable()
           ;
-}
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
 }
