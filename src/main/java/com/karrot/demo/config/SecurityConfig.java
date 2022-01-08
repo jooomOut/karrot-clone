@@ -26,13 +26,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .authorizeRequests()
               .antMatchers("/login", "/user/register").permitAll()
               .antMatchers(HttpMethod.POST, "/users").permitAll() /*회원가입 요청 허용*/
-
+              .antMatchers(HttpMethod.POST, "/users/login").permitAll() /*회원가입 요청 허용*/
               .anyRequest().authenticated()
           .and()
               .formLogin()
               .loginPage("/main") // 기본 로그인 페이지 변경
-              .loginProcessingUrl("/users/login")
-              .defaultSuccessUrl("/")
+              //.loginProcessingUrl("/users/login")
+              //.defaultSuccessUrl("/items")
               .permitAll()
           .and()
               .logout()
