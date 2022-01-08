@@ -1,8 +1,12 @@
 package com.karrot.demo.web.api;
 
+import com.karrot.demo.exception.DuplicateUserException;
+import com.karrot.demo.service.UserService;
 import com.karrot.demo.web.dto.user.RegisterUserDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,15 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users")
 public class UserApiController {
-
+    @Autowired
+    private UserService userService;
     /**
      * 회원 가입
      * @Param : RegisterUserDto
      * @Response : 200(성공) or 400
      * */
     @PostMapping
-    public ResponseEntity registerUser(@ModelAttribute RegisterUserDto user){
+    public ResponseEntity registerUser(@ModelAttribute RegisterUserDto userDto){
         log.info("someone try register");
+        try{
+            userService.registerUser(userDto);
+        } catch(DuplicateUserException e){
+            return ResponseEntity.badRequest().build();
+        }
 
         return ResponseEntity.ok().build();
     }

@@ -6,6 +6,7 @@ import com.karrot.demo.exception.DuplicateUserException;
 import com.karrot.demo.web.dto.user.RegisterUserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,12 @@ public class UserService {
     private UserRepository userRepository;
 
     public void registerUser(RegisterUserDto userDto){
+        if (userRepository.findByPhone(userDto.getPhone()).isPresent()){
+            throw new DuplicateUserException();
+        }
         try {
             userRepository.save(toEntity(userDto));
-        } catch(DuplicateKeyException e){
+        } catch(DataIntegrityViolationException e){ // 무결성 조건 (중복)
             throw new DuplicateUserException();
         }
     }
