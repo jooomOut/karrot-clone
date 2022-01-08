@@ -43,31 +43,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
       http
           .authorizeRequests()
-              .antMatchers("/login", "/user/register").permitAll()
+              .antMatchers("/login", "/signup").permitAll()
               .antMatchers(HttpMethod.POST, "/users").permitAll() /*회원가입 요청 허용*/
-              .antMatchers(HttpMethod.POST, "/users/login").permitAll() /*회원가입 요청 허용*/
-              .anyRequest().authenticated()
-          .and()
-              .formLogin()
+              .anyRequest().authenticated();
+      http
+          .formLogin()
               .loginPage("/main") // 기본 로그인 페이지 변경
               .usernameParameter("email")
               .passwordParameter("password")
               .loginProcessingUrl("/users/login")
               .defaultSuccessUrl("/items")
-              .successHandler(new AuthenticationSuccessHandler() {
-                  @Override
-                  public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                      System.out.println(">>>>>> success handler");
-                      response.sendRedirect("/");
-                  }
-              })
-              .failureHandler(new AuthenticationFailureHandler() {
-                  @Override
-                  public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-                      System.out.println(">>>>>> fail handler");
-                      response.sendRedirect("/");
-                  }
-              })
               .permitAll()
           .and()
               .logout()
