@@ -29,7 +29,9 @@ public class UserService {
             throw new DuplicateUserException();
         }
         try {
-            userRepository.save(toEntity(userDto));
+            User user = toEntity(userDto);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
         } catch(DataIntegrityViolationException e){ // 무결성 조건 (중복) - 이메일
             throw new DuplicateUserException();
         }
