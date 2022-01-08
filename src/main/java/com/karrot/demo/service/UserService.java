@@ -1,6 +1,6 @@
 package com.karrot.demo.service;
 
-import com.karrot.demo.domain.user.User;
+import com.karrot.demo.domain.user.Account;
 import com.karrot.demo.domain.user.UserRepository;
 import com.karrot.demo.exception.DuplicateUserException;
 import com.karrot.demo.web.dto.user.RegisterUserDto;
@@ -29,7 +29,7 @@ public class UserService {
             throw new DuplicateUserException();
         }
         try {
-            User user = toEntity(userDto);
+            Account user = toEntity(userDto);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
         } catch(DataIntegrityViolationException e){ // 무결성 조건 (중복) - 이메일
@@ -38,14 +38,14 @@ public class UserService {
     }
 
     public UserSessionDto login(String email, String password){
-        User userEntity = userRepository.findByEmail(email)
+        Account userEntity = userRepository.findByEmail(email)
                 .filter(user -> passwordEncoder.matches(password, user.getPassword()))
                 .orElse(null);
         return userEntity == null ? null : toUserSessionDto(userEntity);
     }
 
-    public User toEntity(RegisterUserDto userDto){
-        return User.builder().
+    public Account toEntity(RegisterUserDto userDto){
+        return Account.builder().
                 email(userDto.getEmail())
                 .password(userDto.getPassword())
                 .username(userDto.getUsername())
@@ -53,7 +53,7 @@ public class UserService {
                 .nickname(userDto.getNickname())
                 .build();
     }
-    public UserSessionDto toUserSessionDto(User user){
+    public UserSessionDto toUserSessionDto(Account user){
         return UserSessionDto.builder()
                 .email(user.getEmail())
                 .username(user.getUsername())

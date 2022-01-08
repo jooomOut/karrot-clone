@@ -3,20 +3,14 @@ package com.karrot.demo.domain.user;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 @Entity
-/*@Table(
-        name="user",
-        uniqueConstraints={
-                @UniqueConstraint(
-                        columnNames={"email","phone"}
-                )
-        }
-)*/
-public class User {
+@Table(name="user")
+public class Account {
     @Id @GeneratedValue
     @Column(name = "id", nullable = false)
     private Long id;
@@ -29,5 +23,7 @@ public class User {
 
     private String phone;
     private String nickname;
+
+    private String role;
 
 }

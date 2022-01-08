@@ -1,6 +1,5 @@
 package com.karrot.demo.service;
 
-import com.karrot.demo.domain.user.User;
 import com.karrot.demo.domain.user.UserRepository;
 import com.karrot.demo.exception.DuplicateUserException;
 import com.karrot.demo.web.dto.user.RegisterUserDto;
