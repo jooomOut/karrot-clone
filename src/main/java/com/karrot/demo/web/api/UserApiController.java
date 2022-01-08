@@ -5,8 +5,8 @@ import com.karrot.demo.service.UserService;
 import com.karrot.demo.web.dto.user.RegisterUserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +34,17 @@ public class UserApiController {
 
         return ResponseEntity.ok().build();
     }
+    @PostMapping("/login")
+    public ResponseEntity login(@Param("email") String email,
+                                @Param("password") String password){
 
+        try{
+            //로그인 시도
+        } catch(IllegalArgumentException e){
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
 
 }

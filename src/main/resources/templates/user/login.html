@@ -5,15 +5,6 @@
     <link th:href="@{/css/bootstrap.min.css}"
           href="../css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .text{
-            text-align: center;
-        }
-        .main_text{
-            font-size: 70px;
-        }
-        .sub_text{
-            font-size: 50px;
-        }
         .button_box {
             font-size: 70px;
 
@@ -21,6 +12,7 @@
             height: 100px;
             display: block;
             margin: 0px auto;
+            margin-top: 400px;
             text-align: center;
             vertical-align: middle;
 
@@ -48,7 +40,7 @@
 </head>
 <body>
 <div>
-    <div style="padding: 100px 0px 0px 100px">회원 가입</div>
+    <div style="padding: 100px 0px 0px 100px">로그인</div>
     <!--<form th:action="@{/users}" method="post" class="container">-->
     <div class="container">
         <div class="box">
@@ -59,20 +51,9 @@
             <div>비밀번호(PW)</div>
             <input type="password" name="password" />
         </div>
-        <div class="box">
-            <div>이름</div>
-            <input type="text" name="username" />
-        </div>
-        <div class="box">
-            <div>핸드폰 번호</div>
-            <input type="number" name="phone" />
-        </div>
-        <div class="box">
-            <div>닉네임</div>
-            <input type="text" name="nickname" />
-        </div>
+
     </div>
-    <button class="button_box" onclick="registerUser();">가입하기</button>
+    <button class="button_box" onclick="login();">로그인</button>
 </div>
 </body>
 <script>
@@ -80,27 +61,23 @@
         return document.getElementsByName(name)[0].value
     }
 
-    function registerUser(){
+    function login(){
         var xhr = new XMLHttpRequest();
         var formData = new FormData();
 
         formData.append('email', getValueByName('email'));
         formData.append('password', getValueByName('password'));
-        formData.append('username', getValueByName('username'));
-        formData.append('phone', getValueByName('phone'));
-        formData.append('nickname', getValueByName('nickname'));
 
         xhr.onload = function() {
             if (xhr.status === 200 || xhr.status === 201) {
                 console.log(xhr.responseText);
-                alert("회원가입이 완료되었습니다. 새롭게 로그인해주세요.")
-                location.href = "/login";
+                location.href = "/items";
             } else {
                 console.error(xhr.responseText);
-                alert("이미 가입된 이메일 혹은 전화번호입니다.")
+                alert("로그인에 실패했습니다.")
             }
         };
-        xhr.open('POST', '/users');
+        xhr.open('POST', '/users/login');
         xhr.send(formData); // 폼 데이터 객체 전송
     }
 

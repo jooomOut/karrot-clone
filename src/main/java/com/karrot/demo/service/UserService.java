@@ -18,12 +18,12 @@ public class UserService {
     private UserRepository userRepository;
 
     public void registerUser(RegisterUserDto userDto){
-        if (userRepository.findByPhone(userDto.getPhone()).isPresent()){
+        if (userRepository.findByPhone(userDto.getPhone()).isPresent()){ // 전화번호 중복 검출
             throw new DuplicateUserException();
         }
         try {
             userRepository.save(toEntity(userDto));
-        } catch(DataIntegrityViolationException e){ // 무결성 조건 (중복)
+        } catch(DataIntegrityViolationException e){ // 무결성 조건 (중복) - 이메일
             throw new DuplicateUserException();
         }
     }
