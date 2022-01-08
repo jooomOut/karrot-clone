@@ -37,12 +37,12 @@ public class UserService {
         }
     }
 
-    public UserSessionDto login(String email, String password){
+    /*public UserSessionDto login(String email, String password){
         Account userEntity = userRepository.findByEmail(email)
                 .filter(user -> passwordEncoder.matches(password, user.getPassword()))
                 .orElse(null);
         return userEntity == null ? null : toUserSessionDto(userEntity);
-    }
+    }*/
 
     public Account toEntity(RegisterUserDto userDto){
         return Account.builder().
@@ -53,13 +53,4 @@ public class UserService {
                 .nickname(userDto.getNickname())
                 .build();
     }
-    public UserSessionDto toUserSessionDto(Account user){
-        return UserSessionDto.builder()
-                .email(user.getEmail())
-                .username(user.getUsername())
-                .phone(user.getPhone())
-                .nickname(user.getNickname())
-                .build();
-    }
-
 }

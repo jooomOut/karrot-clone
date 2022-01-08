@@ -41,7 +41,7 @@ public class UserApiController {
 
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public ResponseEntity login(@Param("email") String email,
                                 @Param("password") String password,
                                 HttpServletRequest request){
@@ -55,6 +55,6 @@ public class UserApiController {
         session.setAttribute(SESSION_KEY, result);
 
         return ResponseEntity.ok().build();
-    }
+    }*/
 
 }
