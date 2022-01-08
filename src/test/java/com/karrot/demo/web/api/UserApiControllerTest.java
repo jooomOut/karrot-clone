@@ -22,17 +22,18 @@ class UserApiControllerTest {
     @Autowired
     protected MockMvc mockMvc;
 
+    RegisterUserDto user = RegisterUserDto.builder().
+            email("tester@gmail.com")
+            .password("TTTT")
+            .nickname("Tester")
+            .phone("0108888999")
+            .username("김")
+            .build();
+
     @Test
     @WithMockUser
     @DisplayName("정상 회원 가입")
     void registerUser_200() throws Exception {
-        RegisterUserDto user = RegisterUserDto.builder().
-                email("tester@gmail.com")
-                .password("TTTT")
-                .nickname("Tester")
-                .phone("0108888999")
-                .username("김")
-                .build();
         // when
         String requestUri = "/users" ;
         ResultActions actions = mockMvc
