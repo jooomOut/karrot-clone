@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .text{
+            text-align: center;
+        }
+        .main_text{
+            font-size: 70px;
+        }
+        .sub_text{
+            font-size: 50px;
+        }
+        .button_box {
+            font-size: 70px;
+
+            width: 90%;
+            height: 100px;
+            display: block;
+            margin: 0px auto;
+            text-align: center;
+            vertical-align: middle;
+
+            background: orange;
+            color: white;
+        }
+        .bottom_container{
+            margin-top: 500px;
+        }
+    </style>
+</head>
+<body>
+<div>
+
+    <div style="text-align: center; margin-top: 400px;">
+        <img src="img/karrot.png" style="margin-bottom: 100px;"/>
+        <div class="main_text text">
+            당신 근처의 Karrot 마켓
+        </div>
+        <div class="sub_text text">
+            Item List 입니다
+        </div>
+    </div>
+
+    <div class="bottom_container">
+        <button class="button_box" onclick="location.href='/user/register'">시작하기</button>
+        <div class="text sub_text">이미 계정이 있나요?
+            <a href="/login">로그인</a>
+        </div>
+    </div>
+</div>
+
+</body>
