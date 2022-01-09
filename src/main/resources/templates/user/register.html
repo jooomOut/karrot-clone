@@ -94,7 +94,7 @@
             if (xhr.status === 200 || xhr.status === 201) {
                 console.log(xhr.responseText);
                 alert("회원가입이 완료되었습니다. 새롭게 로그인해주세요.")
-                location.href = "/login";
+                location.href = "/main";
             } else {
                 console.error(xhr.responseText);
                 alert("이미 가입된 이메일 혹은 전화번호입니다.")
