@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class UserSessionDto {
+    Long id;
     String email;
     String username;
     String phone;
