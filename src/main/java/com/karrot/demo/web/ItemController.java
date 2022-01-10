@@ -13,11 +13,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Security;
+import java.util.List;
 
 @Slf4j
-@RestController
+@Controller
 @RequestMapping("/items")
 public class ItemController {
 
@@ -32,7 +34,7 @@ public class ItemController {
 
         model.addAttribute("items", itemService.getItems());
 
-        return "items/list";
+        return "/items/list";
     }
 
     @GetMapping("/upload")
@@ -40,17 +42,5 @@ public class ItemController {
         return "items/upload";
     }
 
-    @PostMapping
-    public ResponseEntity uploadItem(@ModelAttribute @Validated ItemDto itemDto,
-                                     BindingResult errors){
-        if (errors.hasErrors()){
-            return ResponseEntity.badRequest().build();
-        }
-
-        itemDto.setUploaderId(SecurityUtils.getLoginUserId());
-        itemService.uploadItem(itemDto);
-
-        return ResponseEntity.ok().build();
-    }
 
 }
