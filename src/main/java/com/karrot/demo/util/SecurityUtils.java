@@ -1,5 +1,7 @@
 package com.karrot.demo.util;
 
+import com.karrot.demo.domain.user.Account;
+import com.karrot.demo.security.service.AccountAdapter;
 import com.karrot.demo.web.dto.user.UserSessionDto;
 import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +13,7 @@ public class SecurityUtils {
         if ("anonymousUser".equals(principal)) {
             return null;
         }
-        return (UserSessionDto) principal;
+        return toDto(principal);
     }
 
     public static Long getLoginUserId() {
@@ -26,5 +28,16 @@ public class SecurityUtils {
         if (!userId.equals(getLoginUserId())) {
             throw new AuthorizationServiceException(userId +" 는 해당 영역에 접근할 수 없습니다.");
         }
+    }
+    private static UserSessionDto toDto(Object principal){
+        AccountAdapter adapter = (AccountAdapter) principal;
+        Account account = adapter.getAccount();
+        return UserSessionDto.builder()
+                .id(account.getId())
+                .email(account.getEmail())
+                .username(account.getUsername())
+                .phone(account.getPhone())
+                .nickname(account.getNickname())
+                .build();
     }
 }
