@@ -17,9 +17,14 @@ public class Item {
 
     @NotNull private String title;
     @NotNull private String mainText;
+
     @NotNull private Long price;
     @NotNull private String place;
     @NotNull private Long uploaderId;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull private ItemCategory category;
+    @Enumerated(EnumType.STRING)
     @NotNull private ItemStatus status = ItemStatus.SALE;
     @NotNull private LocalDateTime whenUploaded;
 
