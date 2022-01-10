@@ -1,5 +1,6 @@
 package com.karrot.demo.web;
 
+import com.karrot.demo.domain.item.ItemCategory;
 import com.karrot.demo.service.ItemService;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
@@ -38,7 +39,9 @@ public class ItemController {
     }
 
     @GetMapping("/upload")
-    public String uploadItemPage(){
+    public String uploadItemPage(Model model){
+        model.addAttribute("categories", ItemCategory.values());
+
         return "items/upload";
     }
 
