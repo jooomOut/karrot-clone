@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,8 +35,13 @@ public class ItemService {
     public List<Item> getItems(String place){
         return itemRepository.findAllByPlace(place);
     }
-    public void uploadItem(ItemDto itemDto){
-        itemRepository.save(toEntity(itemDto));
+    public void uploadItem(List<MultipartFile> files, ItemDto itemDto){
+
+        Item item = itemRepository.save(toEntity(itemDto));
+
+
+
+
     }
 
     private Item toEntity(ItemDto itemDto){

@@ -2,8 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
     <style>
         .container{
             height: 97vh;
@@ -83,6 +81,10 @@
             border: none;
             outline: none;
         }
+        .category-control {
+            border: none;
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -91,12 +93,12 @@
         <div class="top-nav">
             <span class="top-container">
                 <button>
-                    <img src="img/back.png"/>
+                    <img src="/img/back.png"/>
                 </button>
                 <span class="place">중고거래 업로드</span>
             </span>
             <button>
-                <span class="submit">완료</span>
+                <span id="submit" onclick="uploadArticle();">완료</span>
             </button>
         </div>
 
@@ -104,9 +106,10 @@
             <div class="row">
                 <div class="item_img" id="image_container">
                     <label for="images" class="img_upload_button">
-                        <img src="img/karrot.png"/>
                         <input type="file" name="images" id="images" style="display: none" multiple/>
+                        <img src="img/karrot.png"/>
                     </label>
+
                 </div>
 
             </div>
@@ -114,7 +117,15 @@
                 <input name="title" placeholder="제목"/>
             </div>
             <div class="row">
-                <input name="카테고리" placeholder="카테고리"/>
+                <select class="category-control" th:field="*{categories}">
+                    <option th:each="category : ${categories}"
+                            th:value="${category}"
+                            th:text="${category}"
+                            name="category">
+
+                    </option>
+                </select>
+                <input name="category" placeholder="카테고리" style="display: none"/>
             </div>
             <div class="row">
                 <input type="number" name="price" placeholder="가격(원)"/>
@@ -163,4 +174,31 @@
     images.addEventListener("change", e => {
         readMultipleImage(e.target)
     })
+
+    function getValueByName(name){
+        return document.getElementsByName(name)[0].value
+    }
+
+    function uploadArticle(){
+        var xhr = new XMLHttpRequest();
+        var formData = new FormData();
+
+        formData.append('images', document.getElementsByName('images')[0].files);
+        formData.append('title', getValueByName('title'));
+        formData.append('mainText', getValueByName('mainText'));
+        formData.append('category', getValueByName('category'));
+        formData.append('price', getValueByName('price'));
+
+
+        xhr.onload = function() {
+            if (xhr.status === 200 || xhr.status === 201) {
+                console.log(xhr.responseText);
+                location.href = "/items";
+            } else {
+                console.error(xhr.responseText);
+            }
+        };
+        xhr.open('POST', '/api/items');
+        xhr.send(formData); // 폼 데이터 객체 전송
+    }
 </script>

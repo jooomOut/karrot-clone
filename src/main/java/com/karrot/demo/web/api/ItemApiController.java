@@ -30,10 +30,11 @@ public class ItemApiController {
      * @Response : 200(성공) or 400
      * */
     @PostMapping
-    public ResponseEntity uploadItem(@RequestPart List<MultipartFile> images,
+    public ResponseEntity uploadItem(@RequestPart(required = false) List<MultipartFile> images,
                                      @ModelAttribute @Validated ItemDto itemDto,
                                      BindingResult errors){
         if (errors.hasErrors()){
+            log.debug(">>> 중고거래 업로드 에러 : " + errors.toString());
             return ResponseEntity.badRequest().build();
         }
 
