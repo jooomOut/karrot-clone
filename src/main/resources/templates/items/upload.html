@@ -180,10 +180,13 @@
     }
 
     function uploadArticle(){
-        var xhr = new XMLHttpRequest();
-        var formData = new FormData();
+        let xhr = new XMLHttpRequest();
+        let formData = new FormData();
 
-        formData.append('images', document.getElementsByName('images')[0].files);
+        const files = document.getElementsByName('images')[0].files;
+        for (let i = 0 ; i < files.length ; i++){
+            formData.append("images", files[i]);
+        }
         formData.append('title', getValueByName('title'));
         formData.append('mainText', getValueByName('mainText'));
         formData.append('category', getValueByName('category'));
