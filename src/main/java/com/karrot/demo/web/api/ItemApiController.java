@@ -38,8 +38,13 @@ public class ItemApiController {
             return ResponseEntity.badRequest().build();
         }
 
-        itemDto.setUploaderId(SecurityUtils.getLoginUserId());
-        itemService.uploadItem(images, itemDto);
+        try {
+            itemDto.setUploaderId(SecurityUtils.getLoginUserId());
+            itemService.uploadItem(images, itemDto);
+        } catch (IllegalArgumentException e){
+            log.debug("USER ID를 찾을 수 없음 : " + itemDto.getUploaderId());
+            return ResponseEntity.badRequest().build();
+        }
 
         return ResponseEntity.ok().build();
     }
