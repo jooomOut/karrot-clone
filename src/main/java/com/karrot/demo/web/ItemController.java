@@ -1,5 +1,6 @@
 package com.karrot.demo.web;
 
+import com.karrot.demo.domain.item.Item;
 import com.karrot.demo.domain.item.ItemCategory;
 import com.karrot.demo.service.ItemService;
 import com.karrot.demo.util.SecurityUtils;
@@ -37,7 +38,15 @@ public class ItemController {
 
         return "/items/list";
     }
+    @GetMapping("/{itemId}")
+    public String getItemPage(Model model,
+                              @PathVariable Long itemId){
+        log.info("get single item page - %d", itemId);
+        Item item = itemService.getItemBy(itemId);
+        model.addAttribute("item", item);
 
+        return "/items/item-view";
+    }
     @GetMapping("/upload")
     public String uploadItemPage(Model model){
         model.addAttribute("categories", ItemCategory.values());

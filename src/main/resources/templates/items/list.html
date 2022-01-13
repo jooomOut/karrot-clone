@@ -112,7 +112,7 @@
             </span>
         </div>
         <div>
-            <div th:each="item : ${items}" class="item">
+            <div th:each="item : ${items}" class="item" th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''">
                 <span class="item_img">
                     <img src="img/karrot.png"/>
                 </span>

@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <style>
+        .container{
+            min-height: 97vh;
+            display: flex;
+            flex-direction: column;
+            /*justify-content: space-between;*/
+        }
+        div span {
+            font-size: 50px;
+        }
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .item * {
+            font-size: 45px;
+        }
+        .item_img * {
+            width: 300px;
+            height: 300px;
+        }
+
+        .img {
+            /*width: 100vh;
+            height: 100%;*/
+        }
+        button {
+            background-color: transparent;
+            background-repeat: no-repeat;
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            outline: none;
+        }
+        .buttons {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+        }
+        .uploader {
+            display: flex;
+            border-top: solid lightgrey;
+            border-bottom: solid lightgrey;
+            height: 300px;
+            align-items: center;
+            font-size: 75px;
+        }
+        .profile-image {
+            margin: 0px 50px 0px 50px;
+            width: 200px;
+            height: 200px;
+        }
+        .row {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 0px 0px 30px;
+        }
+        .img_container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            overflow: scroll;
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+        .img_container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera*/
+        }
+        .thumbnail {
+            position: relative;
+            padding-top: 100%; /* 1:1 ratio */
+            overflow: hidden;
+        }
+        .img {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .uploader-items {
+            display: flex;
+            border-top: solid lightgrey;
+            width: 100vw;
+            align-items: center;
+            font-size: 75px;
+        }
+        .related-item-container{
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="img_container">
+        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
+        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
+        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
+        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
+        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
+
+    </div>
+        <div class="top-nav">
+            <span class="buttons">
+                <span>백</span>
+                <span>홈</span>
+            </span>
+        </div>
+        <div class="uploader">
+            <img class="profile-image" src="/img/karrot.png"/>
+            <span th:text="${item.uploader.nickname}"></span>
+        </div>
+
+        <div class="row">
+            <span style="width:100%" th:text="${item.title}"></span>
+            <span style="width:100%" th:text="${item.price}"></span>
+        </div>
+        <div class="row">
+            <span style="width:100%" th:text="${item.category}"></span>
+            <span style="width:100%" th:text="${item.whenUploaded}"></span>
+        </div>
+        <div class="row">
+            <span style="width:100%" th:text="${item.mainText}"></span>
+        </div>
+        <div class="row">
+            <span style="width:100%">관심 </span>
+        </div>
+        <div class="uploader-items">
+            <div class="row">
+                <span style="width:100vw"> [[${item.uploader.nickname}]]님의 판매상품</span>
+                <span style="width: 50%">모두보기 </span>
+            </div>
+            <div class="related-item-container">
+                <img class="profile-image" src="/img/karrot.png"/>
+                <!--TODO: 이미지 추가하기-->
+
+            </div>
+        </div>
+
+
+</div>
+</body>
+<script>
+    function reload(){
+        window.location.reload();
+    }
+</script>

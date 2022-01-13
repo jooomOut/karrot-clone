@@ -28,6 +28,10 @@ public class ItemService {
         this.userRepository = userRepository;
         this.fileService = fileService;
     }
+    public Item getItemBy(Long itemId){
+        return itemRepository.findById(itemId)
+                .orElseThrow(IllegalArgumentException::new);
+    }
 
     public List<Item> getItems(){
         return itemRepository.findAll();
