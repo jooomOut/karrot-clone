@@ -1,10 +1,13 @@
 package com.karrot.demo.domain.item;
 
+import com.karrot.demo.domain.image.Image;
 import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor @NoArgsConstructor
@@ -27,5 +30,8 @@ public class Item {
     @Enumerated(EnumType.STRING)
     @NotNull private ItemStatus status = ItemStatus.SALE;
     @NotNull private LocalDateTime whenUploaded;
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<Image> images = new ArrayList<>();
 
 }
