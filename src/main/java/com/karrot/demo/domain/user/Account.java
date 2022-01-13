@@ -1,8 +1,10 @@
 package com.karrot.demo.domain.user;
 
+import com.karrot.demo.domain.item.Item;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -25,5 +27,8 @@ public class Account {
     private String nickname;
 
     private String role;
+
+    @OneToMany(mappedBy = "uploader", cascade = CascadeType.ALL)
+    private List<Item> items = new ArrayList<>();
 
 }

@@ -2,55 +2,149 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .text{
-            text-align: center;
+        .container{
+            height: 97vh;
+            padding-top: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        .main_text{
+        div span {
             font-size: 70px;
         }
-        .sub_text{
-            font-size: 50px;
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .button_box {
-            font-size: 70px;
+        .item * {
+            font-size: 45px;
+        }
+        .item {
+            display: flex;
+            border-top: solid grey;
+            padding: 40px;
+        }
+        .place {
+            padding: 30px;
+        }
+        .item_img * {
+            width: 300px;
+            height: 300px;
+        }
+        .img_container {
+            display: flex;
+            align-items: center;
+        }
+        .img_container > button {
+            padding: 20px;
+        }
+        .img_container > button > img {
+            width: 70px;
+            height: 70px;
+        }
+        button {
+            background-color: transparent;
+            background-repeat: no-repeat;
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            outline: none;
+        }
+        .item_explain {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-left: 30px;
+        }
+        .item_preference {
+            display: flex;
+            flex-direction: row-reverse;;
+        }
+        .bottom-nav{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: solid grey;
+            height: 200px;
+        }
+        .bottom-nav > button {
+            width: 100%;
+            height: 100%;
+        }
+        .bottom-nav > button > img{
+            width: 150px;
+            height: 150px;
+        }
+        .upload_button{
+            position: absolute;
+            bottom: 300px;
+            right: 100px;
+            background-color: orange;
+            width:150px;
+            height:150px;
+            border-radius:75px;
+            text-align:center;
+            margin:0 auto;
+            vertical-align:middle;
+            line-height:170px;
+            cursor: pointer;
 
-            width: 90%;
-            height: 100px;
-            display: block;
-            margin: 0px auto;
-            text-align: center;
-            vertical-align: middle;
-
-            background: orange;
+            font-size: 200px;
             color: white;
-        }
-        .bottom_container{
-            margin-top: 500px;
         }
     </style>
 </head>
 <body>
-<div>
-
-    <div style="text-align: center; margin-top: 400px;">
-        <img src="img/karrot.png" style="margin-bottom: 100px;"/>
-        <div class="main_text text">
-            당신 근처의 Karrot 마켓
+<div class="container">
+    <div>
+        <div class="top-nav">
+            <span class="place">개발자 동네</span>
+            <span class="img_container">
+                <button>
+                    <img src="img/search.png"/>
+                </button>
+                <button>
+                    <img src="img/menu.png" />
+                </button>
+            </span>
         </div>
-        <div class="sub_text text">
-            Item List 입니다
+        <div>
+            <div th:each="item : ${items}" class="item">
+                <span class="item_img">
+                    <img src="img/karrot.png"/>
+                </span>
+                <div class="item_explain">
+                    <div class="item_text">
+                        <div th:text="${item.title}"></div>
+                        <div th:text="${item.place}"></div>
+                        <div th:text="${item.price}"></div>
+                    </div>
+                    <div class="item_preference">
+                        <span>조아용</span>
+                        <span>댓글</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="bottom_container">
-        <button class="button_box" onclick="location.href='/user/register'">시작하기</button>
-        <div class="text sub_text">이미 계정이 있나요?
-            <a href="/login">로그인</a>
-        </div>
+    <div class="bottom-nav">
+        <button onclick="reload();">
+            <img src="img/home_filled.png" />
+        </button>
+        <button onclick="location.href = '/mypage'">
+            <img src="img/person.png" />
+        </button>
     </div>
+
+    <span class="upload_button" onclick="location.href = '/items/upload'">+</span>
+
 </div>
-
 </body>
+<script>
+    function reload(){
+        window.location.reload();
+    }
+</script>
