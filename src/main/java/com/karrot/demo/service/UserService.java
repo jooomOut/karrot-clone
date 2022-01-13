@@ -16,12 +16,11 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private UserRepository userRepository;
-    @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void registerUser(RegisterUserDto userDto){
@@ -36,13 +35,6 @@ public class UserService {
             throw new DuplicateUserException();
         }
     }
-
-    /*public UserSessionDto login(String email, String password){
-        Account userEntity = userRepository.findByEmail(email)
-                .filter(user -> passwordEncoder.matches(password, user.getPassword()))
-                .orElse(null);
-        return userEntity == null ? null : toUserSessionDto(userEntity);
-    }*/
 
     public Account toEntity(RegisterUserDto userDto){
         return Account.builder().
