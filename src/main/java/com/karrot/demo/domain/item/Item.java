@@ -1,6 +1,7 @@
 package com.karrot.demo.domain.item;
 
 import com.karrot.demo.domain.image.Image;
+import com.karrot.demo.domain.user.Account;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -23,7 +24,9 @@ public class Item {
 
     @NotNull private Long price;
     @NotNull private String place;
-    @NotNull private Long uploaderId;
+
+    @ManyToOne
+    @NotNull private Account uploader;
 
     @Enumerated(EnumType.STRING)
     @NotNull private ItemCategory category;

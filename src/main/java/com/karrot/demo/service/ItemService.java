@@ -3,6 +3,8 @@ package com.karrot.demo.service;
 import com.karrot.demo.domain.item.Item;
 import com.karrot.demo.domain.item.ItemRepository;
 import com.karrot.demo.domain.item.ItemStatus;
+import com.karrot.demo.domain.user.Account;
+import com.karrot.demo.domain.user.UserRepository;
 import com.karrot.demo.web.dto.item.ItemDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,12 @@ import java.util.List;
 public class ItemService {
 
     private ItemRepository itemRepository;
+    private UserRepository userRepository;
     private ImageService fileService;
-
     @Autowired
-    public ItemService(ItemRepository itemRepository, ImageService fileService) {
+    public ItemService(ItemRepository itemRepository, UserRepository userRepository, ImageService fileService) {
         this.itemRepository = itemRepository;
+        this.userRepository = userRepository;
         this.fileService = fileService;
     }
 
@@ -35,20 +38,20 @@ public class ItemService {
 
     @Transactional
     public void uploadItem(List<MultipartFile> files, ItemDto itemDto){
+        Account uploader = userRepository.findById(itemDto.getUploaderId())
+                .orElseThrow(IllegalArgumentException::new);
 
-        Item item = itemRepository.save(toEntity(itemDto));
-
-        //TODO 이미지 업로드
+        Item item = itemRepository.save(toEntity(itemDto, uploader));
         fileService.upload(item, files);
 
     }
 
-    private Item toEntity(ItemDto itemDto){
+    private Item toEntity(ItemDto itemDto, Account account){
         return Item.builder()
                 .title(itemDto.getTitle())
                 .mainText(itemDto.getMainText())
                 .price(itemDto.getPrice())
-                .uploaderId(itemDto.getUploaderId())
+                .uploader(account)
                 .status(ItemStatus.SALE)
                 .whenUploaded(LocalDateTime.now())
                 .build();
