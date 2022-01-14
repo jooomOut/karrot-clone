@@ -59,7 +59,11 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 30px 0px 0px 30px;
+        }
+        .row > span {
+            width: 100%;
         }
         .img_container {
             width: 100%;
@@ -67,7 +71,6 @@
             align-items: center;
             overflow: scroll;
             -ms-overflow-style: none; /* IE and Edge */
-            scrollbar-width: none; /* Firefox */
         }
         .img_container::-webkit-scrollbar {
             display: none; /* Chrome, Safari, Opera*/
@@ -116,30 +119,47 @@
         }
         .local-nav {
             position: fixed;
-            bottom: 0px;
+            bottom: 0;
             left: 0;
             height: 200px;
             width: 100%;
-            background-color: blueviolet;
+            border-top: 0.1px solid lightgrey;
+            background-color: white;
         }
         .local-nav-links {
             display: flex;
             align-items: center;
             justify-content: space-around;
             height: 100%;
+            padding-left: 50px;
+            padding-right: 50px;
         }
 
-        .local-nav-items {
-            font-size: 10px;
+        .local-nav-items *{
+            font-size: 70px;
+
+        }
+        .local-nav-items > button {
+            width: 100px;
+            height: 100px;
+        }
+        .local-nav-items > button > img {
+            width: 90px;
+            height: 90px;
+        }
+        .local-nav-items > .image-button {
+            font-size: 50px;
+            background-color: orange;
+            width: 270px;
+            height: 120px;
+            color: white;
+            border-radius: 10px
         }
         .local-nav-sticky .local-nav {
             position: fixed;
-            bottom: 0px;
+            bottom: 0;
             border-bottom: 0.001px solid #e5e8eb;
-            background-color: blueviolet;
         }
-
-
 
     </style>
     <meta charset="utf-8">
@@ -166,23 +186,23 @@
     </div>
 
     <div class="row">
-        <span style="width:100%" th:text="${item.title}"></span>
-        <span style="width:100%" th:text="${item.price}"></span>
+        <span th:text="${item.title}"></span>
+        <span th:text="${item.price}"></span>
     </div>
     <div class="row">
-        <span style="width:100%" th:text="${item.category}"></span>
-        <span style="width:100%" th:text="${item.whenUploaded}"></span>
+        <span th:text="${item.category}"></span>
+        <span th:text="${item.whenUploaded}"></span>
     </div>
     <div class="row">
-        <span style="width:100%" th:text="${item.mainText}"></span>
+        <span th:text="${item.mainText}"></span>
     </div>
     <div class="row">
-        <span style="width:100%">관심 </span>
+        <span >관심 </span>
     </div>
     <div class="uploader-items">
         <div class="row">
-            <span style="width:100vw"> [[${item.uploader.nickname}]]님의 판매상품</span>
-            <span style="width: 50%">모두보기 </span>
+            <span style="width:100vw; font-size: 70px "> [[${item.uploader.nickname}]]님의 판매상품</span>
+            <span style="width: 50%; color: darkgrey">모두보기 </span>
         </div>
         <div class="related-item-container">
             <div class="related-item">
@@ -210,10 +230,27 @@
 
     <nav class="local-nav">
         <div class="local-nav-links">
-            <div class="local-nav-items">local item1</div>
-            <div class="local-nav-items">local item2</div>
-            <div class="local-nav-items">local item3</div>
-            <div class="local-nav-items">local item4</div>
+            <div class="local-nav-items">
+                <button>
+                    <img src="/img/heart.png"/>
+                </button>
+            </div>
+            <div class="local-nav-items" style="font-size: 70px; font-weight: lighter;">|</div>
+            <div class="local-nav-items">
+                <button >
+                    <img src="/img/chat.png"/>
+                </button>
+            </div>
+            <div class="local-nav-items">
+                <button class="image-button">
+                    댓글 보기
+                </button>
+            </div>
+            <div class="local-nav-items">
+                <button class="image-button">
+                    댓글 남기기
+                </button>
+            </div>
         </div>
     </nav>
 
