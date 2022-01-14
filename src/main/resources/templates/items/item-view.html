@@ -51,7 +51,7 @@
             font-size: 75px;
         }
         .profile-image {
-            margin: 0px 50px 0px 50px;
+            margin: 0 50px 0 50px;
             width: 200px;
             height: 200px;
         }
@@ -205,25 +205,10 @@
             <span style="width: 50%; color: darkgrey">모두보기 </span>
         </div>
         <div class="related-item-container">
-            <div class="related-item">
+            <div th:each="item : ${item.uploader.items}" class="related-item" th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''">
                 <img src="/img/karrot.png"/>
-                <span>제목</span>
-                <span>가격</span>
-            </div>
-            <div class="related-item">
-                <img src="/img/karrot.png"/>
-                <span>제목</span>
-                <span>가격</span>
-            </div>
-            <div class="related-item">
-                <img src="/img/karrot.png"/>
-                <span>제목</span>
-                <span>가격</span>
-            </div>
-            <div class="related-item">
-                <img src="/img/karrot.png"/>
-                <span>제목</span>
-                <span>가격</span>
+                <span th:text="${item.title}"></span>
+                <span th:text="${item.price}"></span>
             </div>
         </div>
     </div>
@@ -267,11 +252,9 @@
     const load = () => {
         window.addEventListener("load", () => {
             window.addEventListener("scroll", () => {
-                var yOffset = window.pageYOffset;
+                let yOffset = window.pageYOffset;
                 navGlobalFixed(yOffset);
             });
         });
     };
-
-    init();
 </script>

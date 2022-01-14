@@ -31,9 +31,15 @@ public class ItemService {
         this.fileService = fileService;
     }
     public ItemDto getItemDtoBy(Long itemId){
+        int defaultUploaderItemSize = 4;
+        return getItemDtoBy(itemId, defaultUploaderItemSize);
+    }
+    public ItemDto getItemDtoBy(Long itemId, int uploaderItemSize){
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(IllegalArgumentException::new);
-
+        item.getUploader().setItems(
+                item.getUploader().getItems().stream().limit(uploaderItemSize).collect(Collectors.toList())
+        );
         return toItemDto(item);
     }
 
