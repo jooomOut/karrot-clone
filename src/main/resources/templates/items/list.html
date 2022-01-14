@@ -3,21 +3,83 @@
 <head>
     <meta charset="utf-8">
     <style>
-        .local-nav-items *{
+        .container{
+            height: 97vh;
+            padding-top: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        div span {
             font-size: 70px;
         }
-        .local-nav-items > button,  .buttons> button{
-            width: 100px;
-            height: 100px;
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .local-nav-items > button > img , .buttons> button > img{
-            width: 90px;
-            height: 90px;
+        .item * {
+            font-size: 45px;
         }
-        .local-nav-sticky .local-nav {
-            position: fixed;
-            bottom: 0;
-            border-bottom: 0.001px solid #e5e8eb;
+        .item {
+            display: flex;
+            border-top: solid grey;
+            padding: 40px;
+        }
+        .place {
+            padding: 30px;
+        }
+        .item_img * {
+            width: 300px;
+            height: 300px;
+        }
+        .img_container {
+            display: flex;
+            align-items: center;
+        }
+        .img_container > button {
+            padding: 20px;
+        }
+        .img_container > button > img {
+            width: 70px;
+            height: 70px;
+        }
+        button {
+            background-color: transparent;
+            background-repeat: no-repeat;
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            outline: none;
+        }
+        .item_explain {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-left: 30px;
+        }
+        .item_preference {
+            display: flex;
+            flex-direction: row-reverse;;
+        }
+
+        .upload_button{
+            position: absolute;
+            bottom: 300px;
+            right: 100px;
+            background-color: orange;
+            width:150px;
+            height:150px;
+            border-radius:75px;
+            text-align:center;
+            margin:0 auto;
+            vertical-align:middle;
+            line-height:170px;
+            cursor: pointer;
+
+            font-size: 200px;
+            color: white;
         }
         .local-nav {
             position: fixed;
@@ -36,10 +98,8 @@
             padding-left: 50px;
             padding-right: 50px;
         }
-
         .local-nav-items *{
             font-size: 70px;
-
         }
         .local-nav-items > button,  .buttons> button{
             width: 100px;
@@ -48,14 +108,6 @@
         .local-nav-items > button > img , .buttons> button > img{
             width: 90px;
             height: 90px;
-        }
-        .local-nav-items > .image-button {
-            font-size: 50px;
-            background-color: orange;
-            width: 270px;
-            height: 120px;
-            color: white;
-            border-radius: 10px
         }
         .local-nav-sticky .local-nav {
             position: fixed;
