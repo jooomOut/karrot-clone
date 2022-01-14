@@ -187,7 +187,7 @@
 
     <div class="row">
         <span th:text="${item.title}"></span>
-        <span th:text="${item.price}"></span>
+        <span>[[${item.price}]]원</span>
     </div>
     <div class="row">
         <span th:text="${item.category}"></span>
@@ -257,28 +257,21 @@
 </div>
 </body>
 <script>
-    function reload(){
-        window.location.reload();
-    }
-    let yOffset = window;
-
-    const navGlobalFixed = () => {
+    const navGlobalFixed = (yOffset) => {
         if (yOffset > 0) {
             document.body.classList.add("local-nav-sticky");
         } else {
             document.body.classList.remove("local-nav-sticky");
         }
     };
-
     const load = () => {
         window.addEventListener("load", () => {
             window.addEventListener("scroll", () => {
-                yOffset = window.pageYOffset;
-                console.log("y: " + yOffset);
-                navGlobalFixed();
+                var yOffset = window.pageYOffset;
+                navGlobalFixed(yOffset);
             });
         });
     };
 
-    load();
+    init();
 </script>
