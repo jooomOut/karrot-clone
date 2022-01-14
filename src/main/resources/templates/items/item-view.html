@@ -139,11 +139,11 @@
             font-size: 70px;
 
         }
-        .local-nav-items > button {
+        .local-nav-items > button,  .buttons> button{
             width: 100px;
             height: 100px;
         }
-        .local-nav-items > button > img {
+        .local-nav-items > button > img , .buttons> button > img{
             width: 90px;
             height: 90px;
         }
@@ -176,8 +176,12 @@
     </div>
     <div class="top-nav">
         <span class="buttons">
-            <span>백</span>
-            <span>홈</span>
+            <button>
+                <img src="/img/back.png" onclick="window.history.back();"/>
+            </button>
+            <button >
+                <img src="/img/home.png" onclick="location.href='/items'"/>
+            </button>
         </span>
     </div>
     <div class="uploader">
