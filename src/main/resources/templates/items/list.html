@@ -95,6 +95,49 @@
             font-size: 200px;
             color: white;
         }
+        .local-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 200px;
+            width: 100%;
+            border-top: 0.1px solid lightgrey;
+            background-color: white;
+        }
+        .local-nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            height: 100%;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+
+        .local-nav-items *{
+            font-size: 70px;
+
+        }
+        .local-nav-items > button,  .buttons> button{
+            width: 100px;
+            height: 100px;
+        }
+        .local-nav-items > button > img , .buttons> button > img{
+            width: 90px;
+            height: 90px;
+        }
+        .local-nav-items > .image-button {
+            font-size: 50px;
+            background-color: orange;
+            width: 270px;
+            height: 120px;
+            color: white;
+            border-radius: 10px
+        }
+        .local-nav-sticky .local-nav {
+            position: fixed;
+            bottom: 0;
+            border-bottom: 0.001px solid #e5e8eb;
+        }
     </style>
 </head>
 <body>
@@ -130,15 +173,20 @@
             </div>
         </div>
     </div>
-    <div class="bottom-nav">
-        <button onclick="reload();">
-            <img src="img/home_filled.png" />
-        </button>
-        <button onclick="location.href = '/mypage'">
-            <img src="img/person.png" />
-        </button>
-    </div>
-
+    <nav class="local-nav">
+        <div class="local-nav-links">
+            <div class="local-nav-items">
+                <button>
+                    <img src="img/home_filled.png" />
+                </button>
+            </div>
+            <div class="local-nav-items">
+                <button >
+                    <img src="img/person.png" />
+                </button>
+            </div>
+        </div>
+    </nav>
     <span class="upload_button" onclick="location.href = '/items/upload'">+</span>
 
 </div>
