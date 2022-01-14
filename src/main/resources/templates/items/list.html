@@ -3,97 +3,21 @@
 <head>
     <meta charset="utf-8">
     <style>
-        .container{
-            height: 97vh;
-            padding-top: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        div span {
+        .local-nav-items *{
             font-size: 70px;
         }
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .local-nav-items > button,  .buttons> button{
+            width: 100px;
+            height: 100px;
         }
-        .item * {
-            font-size: 45px;
+        .local-nav-items > button > img , .buttons> button > img{
+            width: 90px;
+            height: 90px;
         }
-        .item {
-            display: flex;
-            border-top: solid grey;
-            padding: 40px;
-        }
-        .place {
-            padding: 30px;
-        }
-        .item_img * {
-            width: 300px;
-            height: 300px;
-        }
-        .img_container {
-            display: flex;
-            align-items: center;
-        }
-        .img_container > button {
-            padding: 20px;
-        }
-        .img_container > button > img {
-            width: 70px;
-            height: 70px;
-        }
-        button {
-            background-color: transparent;
-            background-repeat: no-repeat;
-            border: none;
-            cursor: pointer;
-            overflow: hidden;
-            outline: none;
-        }
-        .item_explain {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding-left: 30px;
-        }
-        .item_preference {
-            display: flex;
-            flex-direction: row-reverse;;
-        }
-        .bottom-nav{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: solid grey;
-            height: 200px;
-        }
-        .bottom-nav > button {
-            width: 100%;
-            height: 100%;
-        }
-        .bottom-nav > button > img{
-            width: 150px;
-            height: 150px;
-        }
-        .upload_button{
-            position: absolute;
-            bottom: 300px;
-            right: 100px;
-            background-color: orange;
-            width:150px;
-            height:150px;
-            border-radius:75px;
-            text-align:center;
-            margin:0 auto;
-            vertical-align:middle;
-            line-height:170px;
-            cursor: pointer;
-
-            font-size: 200px;
-            color: white;
+        .local-nav-sticky .local-nav {
+            position: fixed;
+            bottom: 0;
+            border-bottom: 0.001px solid #e5e8eb;
         }
     </style>
 </head>
@@ -130,15 +54,20 @@
             </div>
         </div>
     </div>
-    <div class="bottom-nav">
-        <button onclick="reload();">
-            <img src="img/home_filled.png" />
-        </button>
-        <button onclick="location.href = '/mypage'">
-            <img src="img/person.png" />
-        </button>
-    </div>
-
+    <nav class="local-nav">
+        <div class="local-nav-links">
+            <div class="local-nav-items">
+                <button>
+                    <img src="img/home_filled.png" />
+                </button>
+            </div>
+            <div class="local-nav-items">
+                <button >
+                    <img src="img/person.png" />
+                </button>
+            </div>
+        </div>
+    </nav>
     <span class="upload_button" onclick="location.href = '/items/upload'">+</span>
 
 </div>
