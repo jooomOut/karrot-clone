@@ -32,7 +32,6 @@ public class ItemController {
     @GetMapping("/{itemId}")
     public String getItemPage(Model model,
                               @PathVariable Long itemId){
-        log.info("get single item page - %d", itemId);
         model.addAttribute("item", itemService.getItemDtoBy(itemId));
 
         return "/items/item-view";
@@ -41,7 +40,7 @@ public class ItemController {
     @GetMapping("/user/{userId}")
     public String getItemsOfUser(Model model,
                                  @PathVariable Long userId){
-
+        model.addAttribute("items", itemService.getItemsByUserId(userId));
         return "/items/user-items";
     }
 

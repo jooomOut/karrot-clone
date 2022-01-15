@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllByPlace(String place);
+    List<Item> findAllByUploaderId(Long uploaderId);
 }
