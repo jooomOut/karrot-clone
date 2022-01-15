@@ -158,10 +158,9 @@
         </div>
 
         <div class="item-status">
-            <span id="all" class="active">전체</span>
-            <span id="sale">판매중</span>
-            <span id="sold">거래완료</span>
-
+            <span id="all" class="status active">전체</span>
+            <span id="sale" class="status non-active">판매중</span>
+            <span id="sold" class="status non-active">거래완료</span>
         </div>
         <div>
             <div th:each="item : ${items}" class="item" th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''">
@@ -207,7 +206,25 @@
 </div>
 </body>
 <script>
-    function reload(){
-        window.location.reload();
+    function changeEvent(id) {
+        if (document.getElementById(id).classList.contains("active")){ // 누른게 active인 경우
+            window.scrollTo(0,0);
+        } else { // 누른게 non active 이므로 이것을 active로, active를 non active로 변경
+            document.getElementsByClassName("active")[0].classList.add("non-active")
+            document.getElementsByClassName("active")[0].classList.remove("active");
+
+            document.getElementById(id).classList.remove("non-active");
+            document.getElementById(id).classList.add("active");
+        }
     }
+
+    const addEventToStatus = () => {
+        let size = document.getElementsByClassName('status').length;
+        for (let i = 0 ; i < size ; i++){
+            document.getElementsByClassName('status')[i].addEventListener("click", () => {
+                changeEvent(document.getElementsByClassName('status')[i].id);
+            })
+        }
+    };
+    addEventToStatus();
 </script>
