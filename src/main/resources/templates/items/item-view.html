@@ -1,0 +1,264 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        .container{
+            min-height: 97vh;
+            display: flex;
+            flex-direction: column;
+            /*justify-content: space-between;*/
+            margin-bottom: 200px;
+        }
+        div span {
+            font-size: 50px;
+        }
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .item * {
+            font-size: 45px;
+        }
+        .item_img * {
+            width: 300px;
+            height: 300px;
+        }
+
+        .img {
+            /*width: 100vh;
+            height: 100%;*/
+        }
+        button {
+            background-color: transparent;
+            background-repeat: no-repeat;
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            outline: none;
+        }
+        .buttons {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+        }
+        .uploader {
+            display: flex;
+            border-top: solid lightgrey;
+            border-bottom: solid lightgrey;
+            height: 300px;
+            align-items: center;
+            font-size: 75px;
+        }
+        .profile-image {
+            margin: 0 50px 0 50px;
+            width: 200px;
+            height: 200px;
+        }
+        .row {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 0px 0px 30px;
+        }
+        .row > span {
+            width: 100%;
+        }
+        .img_container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            overflow: scroll;
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+        .img_container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera*/
+        }
+        .thumbnail {
+            position: relative;
+            padding-top: 100%; /* 1:1 ratio */
+            overflow: hidden;
+        }
+        .thumbnail > img {
+            position: absolute;
+            /*top: 0; left: 0; right: 0; bottom: 0;*/
+            max-width: 100%;
+            height: auto;
+        }
+
+        .uploader-items {
+            /*display: flex;*/
+            border-top: solid lightgrey;
+            width: 100vw;
+            align-items: center;
+            font-size: 75px;
+        }
+        .related-item-container{
+            width: 100%;
+            display: flex;;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .related-item {
+            width: 40%;
+            padding: 5%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .related-item > img {
+            width: 100%;
+            height: 100%;
+            border: 1px solid grey;
+        }
+        .related-item > span {
+            padding-left: 50px;
+            padding-top: 10px;
+            width: 100%;
+        }
+        .local-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 200px;
+            width: 100%;
+            border-top: 0.1px solid lightgrey;
+            background-color: white;
+        }
+        .local-nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            height: 100%;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+
+        .local-nav-items *{
+            font-size: 70px;
+
+        }
+        .local-nav-items > button,  .buttons> button{
+            width: 100px;
+            height: 100px;
+        }
+        .local-nav-items > button > img , .buttons> button > img{
+            width: 90px;
+            height: 90px;
+        }
+        .local-nav-items > .image-button {
+            font-size: 50px;
+            background-color: orange;
+            width: 270px;
+            height: 120px;
+            color: white;
+            border-radius: 10px
+        }
+        .local-nav-sticky .local-nav {
+            position: fixed;
+            bottom: 0;
+            border-bottom: 0.001px solid #e5e8eb;
+        }
+
+    </style>
+    <meta charset="utf-8">
+</head>
+<body>
+<div class="container">
+    <div class="img_container">
+        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
+        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
+        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
+        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
+        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
+
+    </div>
+    <div class="top-nav">
+        <span class="buttons">
+            <button>
+                <img src="/img/back.png" onclick="window.history.back();"/>
+            </button>
+            <button >
+                <img src="/img/home.png" onclick="location.href='/items'"/>
+            </button>
+        </span>
+    </div>
+    <div class="uploader">
+        <img class="profile-image" src="/img/karrot.png"/>
+        <span th:text="${item.uploader.nickname}"></span>
+    </div>
+
+    <div class="row">
+        <span th:text="${item.title}"></span>
+        <span>[[${item.price}]]원</span>
+    </div>
+    <div class="row">
+        <span th:text="${item.category}"></span>
+        <span th:text="${item.whenUploaded}"></span>
+    </div>
+    <div class="row">
+        <span th:text="${item.mainText}"></span>
+    </div>
+    <div class="row">
+        <span >관심 </span>
+    </div>
+    <div class="uploader-items">
+        <div class="row">
+            <span style="width:100vw; font-size: 70px "> [[${item.uploader.nickname}]]님의 판매상품</span>
+            <span style="width: 50%; color: darkgrey">모두보기 </span>
+        </div>
+        <div class="related-item-container">
+            <div th:each="item : ${item.uploader.items}" class="related-item" th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''">
+                <img src="/img/karrot.png"/>
+                <span th:text="${item.title}"></span>
+                <span th:text="${item.price}"></span>
+            </div>
+        </div>
+    </div>
+
+    <nav class="local-nav">
+        <div class="local-nav-links">
+            <div class="local-nav-items">
+                <button>
+                    <img src="/img/heart.png"/>
+                </button>
+            </div>
+            <div class="local-nav-items" style="font-size: 70px; font-weight: lighter;">|</div>
+            <div class="local-nav-items">
+                <button >
+                    <img src="/img/chat.png"/>
+                </button>
+            </div>
+            <div class="local-nav-items">
+                <button class="image-button">
+                    댓글 보기
+                </button>
+            </div>
+            <div class="local-nav-items">
+                <button class="image-button">
+                    댓글 남기기
+                </button>
+            </div>
+        </div>
+    </nav>
+
+</div>
+</body>
+<script>
+    const navGlobalFixed = (yOffset) => {
+        if (yOffset > 0) {
+            document.body.classList.add("local-nav-sticky");
+        } else {
+            document.body.classList.remove("local-nav-sticky");
+        }
+    };
+    const load = () => {
+        window.addEventListener("load", () => {
+            window.addEventListener("scroll", () => {
+                let yOffset = window.pageYOffset;
+                navGlobalFixed(yOffset);
+            });
+        });
+    };
+</script>
