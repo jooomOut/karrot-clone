@@ -64,6 +64,15 @@
             display: flex;
             flex-direction: row-reverse;;
         }
+        .item_preference > span {
+            display: flex;
+            align-items: center;
+        }
+        .item_preference > span > img {
+            width: 50px;
+            height: 50px;
+            margin: 0 20px 0 20px;
+        }
 
         .upload_button{
             position: absolute;
@@ -139,12 +148,18 @@
                 <div class="item_explain">
                     <div class="item_text">
                         <div th:text="${item.title}"></div>
-                        <div th:text="${item.place}"></div>
-                        <div th:text="${item.price}"></div>
+                        <div th:text="${item.place}">Place</div>
+                        <div>[[${item.price}]]원</div>
                     </div>
                     <div class="item_preference">
-                        <span>조아용</span>
-                        <span>댓글</span>
+                        <span>
+                            <img src="/img/chat.png" />
+                            n
+                        </span>
+                        <span>
+                            <img src="/img/heart.png" />
+                            n
+                        </span>
                     </div>
                 </div>
             </div>
