@@ -83,6 +83,7 @@ public class ItemService {
                 .category(item.getCategory().name())
                 .uploader(item.getUploader())
                 .place(item.getPlace())
+                .status(item.getStatus().name())
                 .images(item.getImages())
                 .build();
         dto.setWhenUploaded(item.getWhenUploaded());
