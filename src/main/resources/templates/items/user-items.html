@@ -1,0 +1,297 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <style>
+        .container{
+            min-height: 97vh;
+            padding-top: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 200px;
+        }
+        div span {
+            font-size: 50px;
+        }
+        .top-nav {
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            padding-left: 30px;
+            margin-bottom: 50px;
+        }
+        .item * {
+            font-size: 45px;
+        }
+        .item {
+            display: flex;
+            border-bottom: solid grey;
+            padding: 40px;
+        }
+        .title {
+            font-size: 70px;
+            padding: 30px;
+        }
+        .item_img * {
+            width: 300px;
+            height: 300px;
+        }
+        .img_container {
+            display: flex;
+            align-items: center;
+        }
+        .img_container > button {
+            padding: 20px;
+        }
+        .img_container > button > img {
+            width: 70px;
+            height: 70px;
+        }
+        button {
+            background-color: transparent;
+            background-repeat: no-repeat;
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            outline: none;
+        }
+        .item_explain {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-left: 30px;
+        }
+        .item_preference {
+            display: flex;
+            flex-direction: row-reverse;;
+        }
+        .item_preference > span {
+            display: flex;
+            align-items: center;
+        }
+        .item_preference > span > img {
+            width: 50px;
+            height: 50px;
+            margin: 0 20px 0 20px;
+        }
+
+        .upload_button{
+            position: absolute;
+            bottom: 300px;
+            right: 100px;
+            background-color: orange;
+            width:150px;
+            height:150px;
+            border-radius:75px;
+            text-align:center;
+            margin:0 auto;
+            vertical-align:middle;
+            line-height:170px;
+            cursor: pointer;
+
+            font-size: 200px;
+            color: white;
+        }
+        .local-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 200px;
+            width: 100%;
+            border-top: 0.1px solid lightgrey;
+            background-color: white;
+        }
+        .local-nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            height: 100%;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+        .local-nav-items *{
+            font-size: 70px;
+        }
+        .local-nav-items > button,  .buttons> button{
+            width: 100px;
+            height: 100px;
+        }
+        .local-nav-items > button > img , .buttons> button > img{
+            width: 90px;
+            height: 90px;
+        }
+        .local-nav-sticky .local-nav {
+            position: fixed;
+            bottom: 0;
+            border-bottom: 0.001px solid #e5e8eb;
+        }
+
+        .small-button, .small-button > img  {
+            width: 100px;
+            height: 100px;
+            margin-right: 30px;
+        }
+        .item-status {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: solid grey;
+            padding-bottom: 30px;
+        }
+        .item-status >  span {
+            width: 33%;
+            text-align: center;
+            color: lightgrey;
+        }
+        .active {
+            color: black !important;
+        }
+        .invisible {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div>
+        <div class="top-nav">
+            <button class="small-button">
+                <img src="/img/back.png" onclick="window.history.back();"/>
+            </button>
+            <span class="title">판매상품 목록</span>
+        </div>
+
+        <div class="item-status">
+            <span id="all" class="status active">전체</span>
+            <span id="sale" class="status non-active">판매중</span>
+            <span id="sold" class="status non-active">거래완료</span>
+        </div>
+        <div class="all-list list visible">
+            <div th:each="item : ${items}" class="item"
+                 th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''"
+            >
+                <span class="item_img">
+                    <img src="/img/karrot.png"/>
+                </span>
+                <div class="item_explain">
+                    <div class="item_text">
+                        <div th:text="${item.title}"></div>
+                        <div th:text="${item.place}">Place</div>
+                        <div>[[${item.price}]]원</div>
+                    </div>
+                    <div class="item_preference">
+                        <span>
+                            <img src="/img/chat.png" />
+                            n
+                        </span>
+                        <span>
+                            <img src="/img/heart.png" />
+                            n
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sale-list list invisible">
+            <div th:each="item : ${items}" class="item"
+                 th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''"
+                 th:if="${item.status.equals('SALE')}"
+            >
+                <span class="item_img">
+                    <img src="/img/karrot.png"/>
+                </span>
+                <div class="item_explain">
+                    <div class="item_text">
+                        <div th:text="${item.title}"></div>
+                        <div th:text="${item.place}">Place</div>
+                        <div>[[${item.price}]]원</div>
+                    </div>
+                    <div class="item_preference">
+                        <span>
+                            <img src="/img/chat.png" />
+                            n
+                        </span>
+                        <span>
+                            <img src="/img/heart.png" />
+                            n
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sold-list list invisible">
+            <div th:each="item : ${items}" class="item"
+                 th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''"
+                 th:if="${item.status.equals('SOLD')}"
+            >
+                <span class="item_img">
+                    <img src="/img/karrot.png"/>
+                </span>
+                <div class="item_explain">
+                    <div class="item_text">
+                        <div th:text="${item.title}"></div>
+                        <div th:text="${item.place}">Place</div>
+                        <div>[[${item.price}]]원</div>
+                    </div>
+                    <div class="item_preference">
+                        <span>
+                            <img src="/img/chat.png" />
+                            n
+                        </span>
+                        <span>
+                            <img src="/img/heart.png" />
+                            n
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="local-nav">
+        <div class="local-nav-links">
+            <div class="local-nav-items">
+                <button onclick="location.href='/items'">
+                    <img src="/img/home_filled.png" />
+                </button>
+            </div>
+            <div class="local-nav-items">
+                <button onclick="location.href='/my-page'">
+                    <img src="/img/person.png" />
+                </button>
+            </div>
+        </div>
+    </nav>
+</div>
+</body>
+<script>
+    function changeEvent(id) {
+        if (document.getElementById(id).classList.contains("active")){ // 누른게 active인 경우
+            window.scrollTo(0,0);
+        } else { // 누른게 non active 이므로 이것을 active로, active를 non active로 변경
+            document.getElementsByClassName("active")[0].classList.add("non-active")
+            document.getElementsByClassName("active")[0].classList.remove("active");
+
+            document.getElementById(id).classList.remove("non-active");
+            document.getElementById(id).classList.add("active");
+            // 리스트 display 변경
+            /*보이던 것 안보이게*/
+            document.getElementsByClassName("visible")[0].classList.add("invisible");
+            document.getElementsByClassName("visible")[0].classList.remove("visible");
+            /*선택한 것 보이게*/
+            document.getElementsByClassName(id + "-list")[0].classList.add("visible");
+            document.getElementsByClassName(id + "-list")[0].classList.remove("invisible");
+        }
+    }
+
+    const addEventToStatus = () => {
+        let size = document.getElementsByClassName('status').length;
+        for (let i = 0 ; i < size ; i++){
+            document.getElementsByClassName('status')[i].addEventListener("click", () => {
+                changeEvent(document.getElementsByClassName('status')[i].id);
+            })
+        }
+    };
+    addEventToStatus();
+</script>

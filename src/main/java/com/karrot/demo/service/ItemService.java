@@ -48,7 +48,11 @@ public class ItemService {
                 .map(this::toItemDto)
                 .collect(Collectors.toList());
     }
-
+    public List<ItemDto> getItemsByUserId(Long userId){
+        return itemRepository.findAllByUploaderId(userId).stream()
+                .map(this::toItemDto)
+                .collect(Collectors.toList());
+    }
     @Transactional
     public void uploadItem(List<MultipartFile> files, ItemDto itemDto){
         Account uploader = userRepository.findById(itemDto.getUploaderId())
@@ -79,6 +83,7 @@ public class ItemService {
                 .category(item.getCategory().name())
                 .uploader(item.getUploader())
                 .place(item.getPlace())
+                .status(item.getStatus().name())
                 .images(item.getImages())
                 .build();
         dto.setWhenUploaded(item.getWhenUploaded());
