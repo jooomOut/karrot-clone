@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -64,7 +65,7 @@ public class ImageService {
     }
 
     private File storeImageFile(MultipartFile image, String postfixPath) throws IOException {
-        String fileName = image.getOriginalFilename();
+        String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
         String path = new ClassPathResource("/static/img").getFile().getAbsolutePath() + postfixPath;
 
         File targetFile = new File(path, fileName);
