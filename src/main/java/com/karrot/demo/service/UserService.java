@@ -29,6 +29,12 @@ public class UserService {
         this.imageService = imageService;
     }
 
+    public UserSessionDto findUserBy(Long userId){
+        Account user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("user not found with id" + userId));
+        return toDto(user);
+    }
+
     public void registerUser(RegisterUserDto userDto){
         if (userRepository.findByPhone(userDto.getPhone()).isPresent()){ // 전화번호 중복 검출
             throw new DuplicateUserException();
@@ -61,6 +67,16 @@ public class UserService {
                 .username(userDto.getUsername())
                 .phone(userDto.getPhone())
                 .nickname(userDto.getNickname())
+                .build();
+    }
+
+    private UserSessionDto toDto(Account user) {
+        return UserSessionDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .phone(user.getPhone())
+                .username(user.getUsername())
                 .build();
     }
 }
