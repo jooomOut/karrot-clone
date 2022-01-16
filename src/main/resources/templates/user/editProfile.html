@@ -136,12 +136,11 @@
         let formData = new FormData();
         let userId = [[${user.id}]];
 
-        const files = getValueById('profile_image').files;
+        const files = document.getElementById('profile_image').files;
         for (let i = 0 ; i < files.length ; i++){
             formData.append("image", files[i]);
         }
         formData.append('nickname', getValueById('nickname'));
-
 
         xhr.onload = function() {
             if (xhr.status === 200 || xhr.status === 201) {
@@ -151,7 +150,7 @@
                 console.error(xhr.responseText);
             }
         };
-        xhr.open('PUT', '/api/user/' + userId);
+        xhr.open('PATCH', '/api/users/' + userId);
         xhr.send(formData); // 폼 데이터 객체 전송
     }
 </script>
