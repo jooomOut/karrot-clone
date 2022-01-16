@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 
 @Slf4j
 @Service
@@ -56,8 +57,12 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("user not found with id" + userId));
         user.setNickname(nickname);
         userRepository.save(user);
-
-        //imageService.
+        //TODO: 이미지 처리하기
+        try {
+            imageService.upload(user, image);
+        } catch (IOException e){
+            log.info("이미지 저장 실패 - user id : " + userId);
+        }
     }
 
     public Account toEntity(RegisterUserDto userDto){

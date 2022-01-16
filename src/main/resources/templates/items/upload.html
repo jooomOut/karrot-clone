@@ -185,7 +185,7 @@
 
         const files = document.getElementsByName('images')[0].files;
         for (let i = 0 ; i < files.length ; i++){
-            formData.append("images", files[i]);
+            formData.append("uploadImages", files[i]);
         }
         formData.append('title', getValueByName('title'));
         formData.append('mainText', getValueByName('mainText'));

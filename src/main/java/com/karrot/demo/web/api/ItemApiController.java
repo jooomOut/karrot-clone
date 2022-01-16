@@ -30,7 +30,7 @@ public class ItemApiController {
      * @Response : 200(성공) or 400
      * */
     @PostMapping
-    public ResponseEntity uploadItem(@RequestPart(required = false) List<MultipartFile> images,
+    public ResponseEntity uploadItem(@RequestPart(required = false) List<MultipartFile> uploadImages,
                                      @ModelAttribute @Validated ItemDto itemDto,
                                      BindingResult errors){
         if (errors.hasErrors()){
@@ -40,7 +40,7 @@ public class ItemApiController {
 
         try {
             itemDto.setUploaderId(SecurityUtils.getLoginUserId());
-            itemService.uploadItem(images, itemDto);
+            itemService.uploadItem(uploadImages, itemDto);
         } catch (IllegalArgumentException e){
             log.debug("USER ID를 찾을 수 없음 : " + itemDto.getUploaderId());
             return ResponseEntity.badRequest().build();
