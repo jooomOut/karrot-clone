@@ -26,7 +26,7 @@
         }
         .item {
             display: flex;
-            border-top: solid grey;
+            border-bottom: solid grey;
             padding: 40px;
         }
         .title {
@@ -136,6 +136,8 @@
         .item-status {
             display: flex;
             justify-content: space-between;
+            border-bottom: solid grey;
+            padding-bottom: 30px;
         }
         .item-status >  span {
             width: 33%;
@@ -144,6 +146,9 @@
         }
         .active {
             color: black !important;
+        }
+        .invisible {
+            display: none;
         }
     </style>
 </head>
@@ -162,10 +167,66 @@
             <span id="sale" class="status non-active">판매중</span>
             <span id="sold" class="status non-active">거래완료</span>
         </div>
-        <div>
-            <div th:each="item : ${items}" class="item" th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''">
+        <div class="all-list list visible">
+            <div th:each="item : ${items}" class="item"
+                 th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''"
+            >
                 <span class="item_img">
-                    <img src="img/karrot.png"/>
+                    <img src="/img/karrot.png"/>
+                </span>
+                <div class="item_explain">
+                    <div class="item_text">
+                        <div th:text="${item.title}"></div>
+                        <div th:text="${item.place}">Place</div>
+                        <div>[[${item.price}]]원</div>
+                    </div>
+                    <div class="item_preference">
+                        <span>
+                            <img src="/img/chat.png" />
+                            n
+                        </span>
+                        <span>
+                            <img src="/img/heart.png" />
+                            n
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sale-list list invisible">
+            <div th:each="item : ${items}" class="item"
+                 th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''"
+                 th:if="${item.status.equals('SALE')}"
+            >
+                <span class="item_img">
+                    <img src="/img/karrot.png"/>
+                </span>
+                <div class="item_explain">
+                    <div class="item_text">
+                        <div th:text="${item.title}"></div>
+                        <div th:text="${item.place}">Place</div>
+                        <div>[[${item.price}]]원</div>
+                    </div>
+                    <div class="item_preference">
+                        <span>
+                            <img src="/img/chat.png" />
+                            n
+                        </span>
+                        <span>
+                            <img src="/img/heart.png" />
+                            n
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sold-list list invisible">
+            <div th:each="item : ${items}" class="item"
+                 th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''"
+                 th:if="${item.status.equals('SOLD')}"
+            >
+                <span class="item_img">
+                    <img src="/img/karrot.png"/>
                 </span>
                 <div class="item_explain">
                     <div class="item_text">
@@ -187,22 +248,21 @@
             </div>
         </div>
     </div>
+
     <nav class="local-nav">
         <div class="local-nav-links">
             <div class="local-nav-items">
                 <button onclick="location.href='/items'">
-                    <img src="img/home_filled.png" />
+                    <img src="/img/home_filled.png" />
                 </button>
             </div>
             <div class="local-nav-items">
                 <button onclick="location.href='/my-page'">
-                    <img src="img/person.png" />
+                    <img src="/img/person.png" />
                 </button>
             </div>
         </div>
     </nav>
-    <span class="upload_button" onclick="location.href = '/items/upload'">+</span>
-
 </div>
 </body>
 <script>
@@ -215,6 +275,13 @@
 
             document.getElementById(id).classList.remove("non-active");
             document.getElementById(id).classList.add("active");
+            // 리스트 display 변경
+            /*보이던 것 안보이게*/
+            document.getElementsByClassName("visible")[0].classList.add("invisible");
+            document.getElementsByClassName("visible")[0].classList.remove("visible");
+            /*선택한 것 보이게*/
+            document.getElementsByClassName(id + "-list")[0].classList.add("visible");
+            document.getElementsByClassName(id + "-list")[0].classList.remove("invisible");
         }
     }
 
