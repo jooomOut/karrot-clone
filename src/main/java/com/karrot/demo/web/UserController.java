@@ -25,14 +25,16 @@ public class UserController {
         return "user/register";
     }
 
-    @GetMapping("/mypage")
-    public String mypage(Model model) throws AuthenticationException {
+    @GetMapping("/my-page")
+    public String myPage(Model model) throws AuthenticationException {
         Long userId = SecurityUtils.getLoginUserId();
         if (userId == null){
             throw new AuthenticationException("로그인하지 않은 사용자는 접근할 수 없습니다.");
         }
         log.info("enter to mypage %l", userId);
 
-        return "user/register";
+        model.addAttribute("user", SecurityUtils.getLoginUser());
+
+        return "user/myPage";
     }
 }
