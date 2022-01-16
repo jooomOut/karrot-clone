@@ -37,4 +37,15 @@ public class UserController {
 
         return "user/myPage";
     }
+
+    @GetMapping("/my-page/edit")
+    public String editProfile(Model model) throws AuthenticationException {
+        Long userId = SecurityUtils.getLoginUserId();
+        if (userId == null){
+            throw new AuthenticationException("로그인하지 않은 사용자는 접근할 수 없습니다.");
+        }
+        model.addAttribute("user", SecurityUtils.getLoginUser());
+
+        return "user/editProfile";
+    }
 }
