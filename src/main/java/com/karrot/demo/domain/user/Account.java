@@ -1,5 +1,6 @@
 package com.karrot.demo.domain.user;
 
+import com.karrot.demo.domain.image.UserProfileImage;
 import com.karrot.demo.domain.item.Item;
 import lombok.*;
 
@@ -27,6 +28,9 @@ public class Account {
     private String nickname;
 
     private String role;
+
+    @OneToOne(mappedBy = "user")
+    private UserProfileImage image;
 
     @OneToMany(mappedBy = "uploader", cascade = CascadeType.ALL)
     private List<Item> items = new ArrayList<>();
