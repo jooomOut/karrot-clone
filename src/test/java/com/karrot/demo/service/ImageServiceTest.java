@@ -1,9 +1,8 @@
 package com.karrot.demo.service;
 
-import com.karrot.demo.domain.image.ImageRepository;
-import com.karrot.demo.domain.user.UserRepository;
-import com.karrot.demo.exception.DuplicateUserException;
-import com.karrot.demo.web.dto.user.RegisterUserDto;
+import com.karrot.demo.domain.image.ItemImageRepository;
+import com.karrot.demo.domain.item.Item;
+import com.karrot.demo.domain.user.Account;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,15 +11,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,7 +27,7 @@ class ImageServiceTest {
     private ImageService imageService;
 
     @Mock
-    private ImageRepository imageRepository;
+    private ItemImageRepository imageRepository;
 
 
 
@@ -48,7 +42,7 @@ class ImageServiceTest {
 
         when(imageRepository.save(any()))
                 .thenReturn(null);
-        imageService.upload(null, multipartFile);
+        imageService.upload((Item)null, multipartFile);
     }
 
 

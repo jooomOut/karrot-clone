@@ -1,8 +1,6 @@
 package com.karrot.demo.web.dto.item;
 
-import com.karrot.demo.domain.image.Image;
-import com.karrot.demo.domain.item.ItemCategory;
-import com.karrot.demo.domain.item.ItemStatus;
+import com.karrot.demo.domain.image.ItemImage;
 import com.karrot.demo.domain.user.Account;
 import com.sun.istack.NotNull;
 import lombok.Builder;
@@ -30,7 +28,7 @@ public class ItemDto {
     private String place;
     private String whenUploaded;
 
-    private List<Image> images;
+    private List<ItemImage> images;
 
     public void setWhenUploaded(LocalDateTime whenUploaded){
         LocalDateTime now = LocalDateTime.now();

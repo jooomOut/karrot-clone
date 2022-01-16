@@ -1,6 +1,6 @@
 package com.karrot.demo.domain.item;
 
-import com.karrot.demo.domain.image.Image;
+import com.karrot.demo.domain.image.ItemImage;
 import com.karrot.demo.domain.user.Account;
 import com.sun.istack.NotNull;
 import lombok.*;
@@ -35,6 +35,6 @@ public class Item {
     @NotNull private LocalDateTime whenUploaded;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<Image> images = new ArrayList<>();
+    private List<ItemImage> images = new ArrayList<>();
 
 }

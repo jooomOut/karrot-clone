@@ -1,26 +1,28 @@
 package com.karrot.demo.domain.image;
 
-import com.karrot.demo.domain.item.Item;
 import com.sun.istack.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Builder
-@AllArgsConstructor @NoArgsConstructor
-@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-public class Image {
+@Getter
+@Setter
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn
+public abstract class Image {
     @Id @GeneratedValue
     @Column(name = "id", nullable = false)
-    private Long id;
+    protected Long id;
 
-    @NotNull private String fileName;
-    @NotNull private String path;
+    @NotNull protected String fileName;
+    @NotNull protected String path;
 
-    @NotNull private Long size;
-
-    @ManyToOne
-    @NotNull private Item item;
+    @NotNull protected Long size;
 
 }

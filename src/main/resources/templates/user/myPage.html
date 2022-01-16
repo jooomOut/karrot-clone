@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <style>
+        .local-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 200px;
+            width: 100%;
+            border-top: 0.1px solid lightgrey;
+            background-color: white;
+        }
+        .local-nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            height: 100%;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+        .local-nav-items *{
+            font-size: 70px;
+        }
+        .local-nav-items > button,  .buttons> button{
+            width: 100px;
+            height: 100px;
+        }
+        .local-nav-items > button > img , .buttons> button > img{
+            width: 90px;
+            height: 90px;
+        }
+        .local-nav-sticky .local-nav {
+            position: fixed;
+            bottom: 0;
+            border-bottom: 0.001px solid #e5e8eb;
+        }
+        .container{
+            height: 85vh;
+            padding-top: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 200px;
+        }
+        div span {
+            font-size: 70px;
+        }
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: solid grey;
+            width: 100%;
+        }
+        .place {
+            padding: 30px;
+        }
+        .item_img * {
+            width: 300px;
+            height: 300px;
+        }
+        .img_container {
+            display: flex;
+            align-items: center;
+        }
+        .img_container > button {
+            padding: 20px;
+        }
+        .img_container > button > img {
+            width: 70px;
+            height: 70px;
+        }
+        button {
+            background-color: transparent;
+            background-repeat: no-repeat;
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            outline: none;
+        }
+        .rows {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .row {
+            width: 80%;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        .row > img {
+            width: 100px;
+            height: 100px;
+        }
+        .big-button {
+            width: 80vw;
+            height: 150px;
+            border: solid black;
+            border-radius: 20px;
+            font-size: 70px
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="top-nav">
+        <span class="place">나의 당근</span>
+        <span class="img_container">
+            <button>
+                <img src="img/search.png"/>
+            </button>
+            <button>
+                <img src="img/menu.png" />
+            </button>
+        </span>
+    </div>
+
+    <div class="rows">
+        <div class="row" style="margin-bottom: 50px;">
+            <img src="/img/person.png"/>
+            <span>[[${user.nickname}]]</span>
+        </div>
+        <button class="big-button" onclick="location.href = '/my-page/edit'">프로필 수정</button>
+    </div>
+
+    <div class="row">
+        <img src="/img/page.png"/>
+        <span>판매내역</span>
+    </div>
+    <div class="row">
+        <img src="/img/heart.png"/>
+        <span>관심목록</span>
+    </div>
+    <button style="font-size: 70px;" onclick="location.href = '/logout'">Log out</button>
+    <nav class="local-nav">
+        <div class="local-nav-links">
+            <div class="local-nav-items">
+                <button onclick="location.href='/items'">
+                    <img src="img/home_filled.png" />
+                </button>
+            </div>
+            <div class="local-nav-items">
+                <button onclick="location.href='/my-page'">
+                    <img src="img/person.png" />
+                </button>
+            </div>
+        </div>
+    </nav>
+
+</div>
+</body>
+<script>
+</script>
