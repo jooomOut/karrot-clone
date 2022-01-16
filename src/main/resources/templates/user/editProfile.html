@@ -144,10 +144,10 @@
 
         xhr.onload = function() {
             if (xhr.status === 200 || xhr.status === 201) {
-                console.log(xhr.responseText);
-
+                alert("변경이 완료됐습니다!")
+                window.reload();
             } else {
-                console.error(xhr.responseText);
+                alert("에러")
             }
         };
         xhr.open('PATCH', '/api/users/' + userId);
