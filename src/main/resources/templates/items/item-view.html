@@ -24,11 +24,6 @@
             width: 300px;
             height: 300px;
         }
-
-        .img {
-            /*width: 100vh;
-            height: 100%;*/
-        }
         button {
             background-color: transparent;
             background-repeat: no-repeat;
@@ -40,7 +35,12 @@
         .buttons {
             position: absolute;
             top: 50px;
+        }
+        .left-top {
             left: 50px;
+        }
+        .right-top {
+            right: 50px !important;
         }
         .uploader {
             display: flex;
@@ -160,11 +160,44 @@
             bottom: 0;
             border-bottom: 0.001px solid #e5e8eb;
         }
+        .status-control {
+            border: none;
+            outline: none;
+            font-size: 45px;
+        }
+        .setting-back{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+        .setting-box {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            background: wheat;
+            min-width: 350px;
 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            padding: 25px;
+        }
+        .setting {
+            display: flex;
+            align-items: center;
+            width: 250px;
+            height: 150px;
+        }
+        .invisible {
+            display: none;
+            z-index: -100;
+        }
     </style>
     <meta charset="utf-8">
 </head>
-<body>
+<body style="margin: 0; width: 100%">
 <div class="container">
     <div class="img_container">
         <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
@@ -172,21 +205,36 @@
         <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
         <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
         <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
-
     </div>
     <div class="top-nav">
-        <span class="buttons">
+        <span class="buttons left-top">
             <button>
                 <img src="/img/back.png" onclick="window.history.back();"/>
             </button>
-            <button >
+            <button>
                 <img src="/img/home.png" onclick="location.href='/items'"/>
+            </button>
+        </span>
+        <span class="buttons right-top">
+            <button style="right: 50px;">
+                <img src="/img/dots.png" onclick="openSetting();"/>
             </button>
         </span>
     </div>
     <div class="uploader">
         <img class="profile-image" src="/img/karrot.png"/>
         <span th:text="${item.uploader.nickname}"></span>
+    </div>
+    <div class="row" th:if="${item.uploader.id.equals(user.id)}">
+        <select id="status" class="status-control" th:field="*{statusList}" onchange="updateItem(this);"
+                                                                th:value="${item.status}">
+            <option th:each="status : ${statusList}"
+                    th:selected="${status.equals(item.status)}"
+                    th:value="${status}"
+                    th:text="${status}"
+                    name="status">
+            </option>
+        </select>
     </div>
 
     <div class="row">
@@ -220,6 +268,12 @@
         </div>
     </div>
 
+    <div class="setting-back invisible modal" onclick="closeSetting();">
+        <div class="setting-box invisible modal">
+            <span class="setting">게시글 수정</span>
+            <span class="setting">삭제</span>
+        </div>
+    </div>
     <nav class="local-nav">
         <div class="local-nav-links">
             <div class="local-nav-items">
@@ -264,4 +318,36 @@
             });
         });
     };
+
+    const updateItem = (e) => {
+        let xhr = new XMLHttpRequest();
+        let formData = new FormData();
+
+        formData.append('status', e.value);
+        console.log(e.value);
+
+        xhr.onload = function() {
+            if (xhr.status === 200 || xhr.status === 201) {
+                alert("변경이 완료됐습니다.")
+                location.reload();
+            } else {
+                alert(xhr.responseText);
+            }
+        };
+        xhr.open('PATCH', '/api/items/' + [[${item.id}]]);
+        xhr.send(formData); // 폼 데이터 객체 전송
+    }
+
+    const openSetting = () => {
+        let modals = document.getElementsByClassName('modal');
+        for (let i = 0 ; i < modals.length ; i++){
+            document.getElementsByClassName('modal')[i].classList.remove("invisible");
+        }
+    }
+    const closeSetting = () => {
+        let modals = document.getElementsByClassName('modal');
+        for (let i = 0 ; i < modals.length ; i++){
+            document.getElementsByClassName('modal')[i].classList.add("invisible");
+        }
+    }
 </script>

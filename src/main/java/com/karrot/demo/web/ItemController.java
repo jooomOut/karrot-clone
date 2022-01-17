@@ -1,6 +1,7 @@
 package com.karrot.demo.web;
 
 import com.karrot.demo.domain.item.ItemCategory;
+import com.karrot.demo.domain.item.ItemStatus;
 import com.karrot.demo.service.ItemService;
 import com.karrot.demo.util.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,8 @@ public class ItemController {
     public String getItemPage(Model model,
                               @PathVariable Long itemId){
         model.addAttribute("item", itemService.getItemDtoBy(itemId));
+        model.addAttribute("user", SecurityUtils.getLoginUser());
+        model.addAttribute("statusList", ItemStatus.values());
 
         return "/items/item-view";
     }
