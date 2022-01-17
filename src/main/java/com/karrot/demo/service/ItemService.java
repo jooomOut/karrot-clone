@@ -65,6 +65,7 @@ public class ItemService {
         fileService.upload(item, files);
 
     }
+
     public void updateItemStatus(Long itemId, String status) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(EntityNotFoundException::new);
@@ -79,6 +80,17 @@ public class ItemService {
         }
         itemRepository.save(item);
     }
+
+    public void deleteItem(Long itemId) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(EntityNotFoundException::new);
+        Long userId = SecurityUtils.getLoginUserId();
+        if (!item.getUploader().getId().equals(userId)) {
+            throw new AuthorizationServiceException(userId + " 는 해당 영역에 접근할 수 없습니다.");
+        }
+        itemRepository.delete(item);
+    }
+
     private Item toEntity(ItemDto itemDto, Account account){
         return Item.builder()
                 .title(itemDto.getTitle())
@@ -105,6 +117,4 @@ public class ItemService {
         dto.setWhenUploaded(item.getWhenUploaded());
         return dto;
     }
-
-
 }

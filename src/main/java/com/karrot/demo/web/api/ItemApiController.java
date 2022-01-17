@@ -62,4 +62,16 @@ public class ItemApiController {
         }
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity deleteItem(@PathVariable Long itemId){
+        try {
+            itemService.deleteItem(itemId);
+        } catch (AuthorizationServiceException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return ResponseEntity.ok().build();
+    }
 }

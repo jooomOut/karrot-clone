@@ -270,8 +270,12 @@
 
     <div class="setting-back invisible modal" onclick="closeSetting();">
         <div class="setting-box invisible modal">
-            <span class="setting">게시글 수정</span>
-            <span class="setting">삭제</span>
+            <span class="setting" onclick="moveToEdit();">
+                게시글 수정
+            </span>
+            <span class="setting" onclick="deleteItem();">
+                삭제
+            </span>
         </div>
     </div>
     <nav class="local-nav">
@@ -337,7 +341,24 @@
         xhr.open('PATCH', '/api/items/' + [[${item.id}]]);
         xhr.send(formData); // 폼 데이터 객체 전송
     }
+    const deleteItem = () => {
+        if (confirm("게시글을 정말 삭제하시겠어요?")){
+            let xhr = new XMLHttpRequest();
+            let formData = new FormData();
 
+            xhr.onload = function() {
+                if (xhr.status === 200 || xhr.status === 201) {
+                    alert("정상적으로 삭제되었습니다.")
+                    location.href = "/items"
+                }
+            };
+            xhr.open('DELETE', '/api/items/' + [[${item.id}]]);
+            xhr.send(formData); // 폼 데이터 객체 전송
+        }
+    }
+    const moveToEdit = () => {
+      location.href = "/items/" + [[${item.id}]] + "/edit"
+    }
     const openSetting = () => {
         let modals = document.getElementsByClassName('modal');
         for (let i = 0 ; i < modals.length ; i++){
