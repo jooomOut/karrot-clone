@@ -1,0 +1,220 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <style>
+        .container{
+            height: 97vh;
+            padding-top: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        div span {
+            font-size: 70px;
+        }
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .rows * {
+            font-size: 45px;
+        }
+        .row {
+            display: flex;
+            border-top: solid grey;
+            padding: 40px;
+        }
+        .place {
+            padding: 30px;
+        }
+        .item_img {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .img_upload_button,  .item_img * {
+            width: 250px;
+            height: 250px;
+            margin-right: 40px;
+            margin-bottom: 30px;
+        }
+        .top-container {
+            display: flex;
+            align-items: center;
+        }
+        .top-container > button {
+            padding: 20px;
+        }
+        .top-container > button > img {
+            width: 70px;
+            height: 70px;
+        }
+        button {
+            background-color: transparent;
+            background-repeat: no-repeat;
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            outline: none;
+        }
+        .bottom-nav > button {
+            width: 100%;
+            height: 100%;
+        }
+        .bottom-nav > button > img{
+            width: 150px;
+            height: 150px;
+        }
+        .submit{
+            color: orange;
+        }
+        input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+        }
+        textarea {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+        }
+        .category-control {
+            border: none;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div>
+        <div class="top-nav">
+            <span class="top-container">
+                <button>
+                    <img src="/img/back.png"/>
+                </button>
+                <span class="place">중고거래 글쓰기</span>
+            </span>
+            <button>
+                <span id="submit" onclick="updateArticle();">완료</span>
+            </button>
+        </div>
+
+        <div class="rows">
+            <div class="row">
+                <div class="item_img" id="image_container">
+                    <label for="images" class="img_upload_button">
+                        <input type="file" name="images" id="images" style="display: none"
+                                multiple/>
+                        <img src="/img/karrot.png"/>
+                    </label>
+                    <button th:each="image : ${item.images}" >
+                        <img class="image" th:src="'/img/items/' + ${image.fileName}"/>
+                    </button>
+                </div>
+
+            </div>
+            <div class="row">
+                <input name="title" placeholder="제목" th:value="${item.title}"/>
+            </div>
+            <div class="row">
+                <select class="category-control" th:field="*{categories}" th:value="${item.category}">
+                    <option th:each="category : ${categories}"
+                            th:value="${category}"
+                            th:text="${category}"
+                            name="category">
+
+                    </option>
+                </select>
+                <input name="category" placeholder="카테고리" style="display: none" th:value="${item.category}"/>
+            </div>
+            <div class="row">
+                <input type="number" name="price" placeholder="가격(원)" th:value="${item.price}"/>
+            </div>
+            <div class="row">
+                <textarea name="mainText" rows="15">[[${item.mainText}]]
+                </textarea>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+<script th:inline="javascript">
+    function init(){
+        const images = document.getElementById("images")
+        images.addEventListener("change", e => {
+            readMultipleImage(e.target)
+        })
+    }
+
+    const initImages = () => {
+        let files = [[${item.images}]];
+        alert(files)
+        console.log(files);
+    }
+
+    function readMultipleImage(input) {
+        const multipleContainer = document.getElementById("image_container")
+
+        // 인풋 태그에 파일들이 있는 경우
+        if(input.files) {
+            // 이미지 파일 검사 (생략)
+            console.log(input.files)
+            // 유사배열을 배열로 변환 (forEach문으로 처리하기 위해)
+            const fileArr = Array.from(input.files)
+
+            fileArr.forEach((file, index) => {
+                /*button > img 형태*/
+                const reader = new FileReader()
+                const $imgButton = document.createElement("button")
+                const $img = document.createElement("img")
+                $img.classList.add("image")
+
+                $imgButton.appendChild($img)
+
+                reader.onload = e => {
+                    $img.src = e.target.result
+                }
+                console.log(file.name)
+                reader.readAsDataURL(file)
+                multipleContainer.appendChild($imgButton)
+            })
+        }
+    }
+
+
+    function getValueByName(name){
+        return document.getElementsByName(name)[0].value
+    }
+
+    function updateArticle(){
+        let xhr = new XMLHttpRequest();
+        let formData = new FormData();
+
+        const files = document.getElementsByName('images')[0].files;
+        for (let i = 0 ; i < files.length ; i++){
+            formData.append("uploadImages", files[i]);
+        }
+        formData.append('id', [[${item.id}]])
+        formData.append('title', getValueByName('title'));
+        formData.append('mainText', getValueByName('mainText'));
+        formData.append('price', getValueByName('price'));
+        formData.append('category', getValueByName('category'));
+        formData.append('status', [[${item.status}]]);
+
+        xhr.onload = function() {
+            if (xhr.status === 200 || xhr.status === 201) {
+                console.log(xhr.responseText);
+                location.href = "/items/" + [[${item.id}]];
+            } else {
+                console.error(xhr.responseText);
+            }
+        };
+        xhr.open('PUT', '/api/items/' + [[${item.id}]]);
+        xhr.send(formData); // 폼 데이터 객체 전송
+    }
+    init();
+</script>

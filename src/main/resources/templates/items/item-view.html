@@ -215,7 +215,7 @@
                 <img src="/img/home.png" onclick="location.href='/items'"/>
             </button>
         </span>
-        <span class="buttons right-top">
+        <span class="buttons right-top" th:if="${item.uploader.id.equals(user.id)}">
             <button style="right: 50px;">
                 <img src="/img/dots.png" onclick="openSetting();"/>
             </button>
@@ -268,7 +268,8 @@
         </div>
     </div>
 
-    <div class="setting-back invisible modal" onclick="closeSetting();">
+    <div    th:if="${item.uploader.id.equals(user.id)}"
+            class="setting-back invisible modal" onclick="closeSetting();">
         <div class="setting-box invisible modal">
             <span class="setting" onclick="moveToEdit();">
                 게시글 수정
