@@ -145,7 +145,7 @@
         xhr.onload = function() {
             if (xhr.status === 200 || xhr.status === 201) {
                 alert("변경이 완료됐습니다!")
-                window.reload();
+                location.reload();
             } else {
                 alert("에러")
             }
