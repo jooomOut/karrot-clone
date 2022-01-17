@@ -6,12 +6,15 @@ import com.karrot.demo.domain.item.ItemRepository;
 import com.karrot.demo.domain.item.ItemStatus;
 import com.karrot.demo.domain.user.Account;
 import com.karrot.demo.domain.user.UserRepository;
+import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,7 +39,7 @@ public class ItemService {
     }
     public ItemDto getItemDtoBy(Long itemId, int uploaderItemSize){
         Item item = itemRepository.findById(itemId)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(EntityNotFoundException::new);
         item.getUploader().setItems(
                 item.getUploader().getItems().stream().limit(uploaderItemSize).collect(Collectors.toList())
         );
@@ -56,13 +59,26 @@ public class ItemService {
     @Transactional
     public void uploadItem(List<MultipartFile> files, ItemDto itemDto){
         Account uploader = userRepository.findById(itemDto.getUploaderId())
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(EntityNotFoundException::new);
 
         Item item = itemRepository.save(toEntity(itemDto, uploader));
         fileService.upload(item, files);
 
     }
-
+    public void updateItemStatus(Long itemId, String status) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(EntityNotFoundException::new);
+        Long userId = SecurityUtils.getLoginUserId();
+        if (!item.getUploader().getId().equals(userId)) {
+            throw new AuthorizationServiceException(userId + " 는 해당 영역에 접근할 수 없습니다.");
+        }
+        try {
+            item.setStatus(ItemStatus.valueOf(status));
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new IllegalArgumentException(status + "로 변경할 수 없습니다.");
+        }
+        itemRepository.save(item);
+    }
     private Item toEntity(ItemDto itemDto, Account account){
         return Item.builder()
                 .title(itemDto.getTitle())
@@ -89,4 +105,6 @@ public class ItemService {
         dto.setWhenUploaded(item.getWhenUploaded());
         return dto;
     }
+
+
 }
