@@ -151,7 +151,7 @@
             color: black !important;
         }
         .invisible {
-            display: none;
+            display: none !important;
         }
         .list {
             display: flex;
@@ -214,14 +214,21 @@
                     </div>
                 </div>
                 <div class="status-change-box">
-                    <span class="status-change" style="border-right: solid grey;">예약중으로 변경</span>
-                    <span class="status-change">거래완료로 변경</span>
+                    <span class="status-change" style="border-right: solid grey;"
+                            th:onclick="changeStatus([[${item.id}]], 'RESERVED');">
+                        예약중으로 변경
+                    </span>
+                    <span class="status-change"
+                          th:onclick="changeStatus([[${item.id}]], 'SOLD');">
+                        거래완료로 변경
+                    </span>
                 </div>
             </div>
         </div>
         <div class="sold-list list invisible">
             <div th:each="item : ${items}" th:if="${item.status.equals('SOLD')}">
-                <div class="item" th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''">
+                <div class="item" th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''"
+                    style="border-bottom: solid grey">
                     <span class="item_img">
                         <img th:if="${item.images.size() == 0}" src="/img/karrot.png"/>
                         <img th:if="${item.images.size() != 0}" th:src="'/img/items/' + ${item.images[0].fileName}"/>
@@ -245,7 +252,6 @@
                     </div>
                 </div>
             </div>
-            <div class="status-change">짠</div>
         </div>
     </div>
 
@@ -265,7 +271,7 @@
     </nav>
 </div>
 </body>
-<script>
+<script th:inline="javascript">
     function changeEvent(id) {
         if (document.getElementById(id).classList.contains("active")){ // 누른게 active인 경우
             window.scrollTo(0,0);
@@ -293,5 +299,24 @@
             })
         }
     };
+
+    const changeStatus = (itemId, status) => {
+        let xhr = new XMLHttpRequest();
+        let formData = new FormData();
+
+        formData.append('status', status);
+
+        xhr.onload = function() {
+            if (xhr.status === 200 || xhr.status === 201) {
+                alert("변경되었습니다.")
+                location.reload();
+            } else {
+                console.error(xhr.responseText);
+                alert("문제가 발생했습니다.")
+            }
+        };
+        xhr.open('PATCH', '/api/items/' + itemId);
+        xhr.send(formData); // 폼 데이터 객체 전송
+    }
     addEventToStatus();
 </script>

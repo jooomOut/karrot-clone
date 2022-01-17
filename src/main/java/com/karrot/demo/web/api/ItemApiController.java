@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +47,19 @@ public class ItemApiController {
             return ResponseEntity.badRequest().build();
         }
 
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{itemId}")
+    public ResponseEntity updateItem(@PathVariable Long itemId,
+                                     @RequestParam String status){
+        try {
+            itemService.updateItemStatus(itemId, status);
+        } catch (AuthorizationServiceException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
         return ResponseEntity.ok().build();
     }
 }

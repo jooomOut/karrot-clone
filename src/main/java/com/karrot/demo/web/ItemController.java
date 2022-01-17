@@ -61,7 +61,7 @@ public class ItemController {
             throw new AuthenticationException("로그인하지 않은 사용자는 접근할 수 없습니다.");
         }
         model.addAttribute("items", itemService.getItemsByUserId(userId));
-        return "/items/my-items";
+        return "items/my-items";
     }
 
 
