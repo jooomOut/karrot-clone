@@ -29,13 +29,13 @@ public class Account {
 
     private String role;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private UserProfileImage image;
 
-    @OneToMany(mappedBy = "uploader", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "uploader", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Item> items;
 
-    @OneToMany(mappedBy = "commenter")
+    @OneToMany(mappedBy = "commenter", fetch = FetchType.LAZY)
     private List<Comment> comments;
 
 }

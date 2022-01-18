@@ -5,10 +5,7 @@ import com.karrot.demo.domain.user.Account;
 import com.sun.istack.NotNull;
 import lombok.*;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
@@ -16,7 +13,7 @@ import javax.persistence.OneToOne;
 @DiscriminatorValue("user_profile")
 public class UserProfileImage extends Image{
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @NotNull private Account user;
 
     @Builder

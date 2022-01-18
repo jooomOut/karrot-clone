@@ -19,9 +19,9 @@ public class Comment {
 
     private String text;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull private Account commenter;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull private Item item;
 
     @NotNull private LocalDateTime createdAt;

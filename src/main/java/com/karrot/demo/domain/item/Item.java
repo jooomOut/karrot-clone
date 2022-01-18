@@ -22,23 +22,21 @@ public class Item {
 
     @NotNull private String title;
     @NotNull private String mainText;
-
     @NotNull private Long price;
     @NotNull private String place;
-
-    @ManyToOne
-    @NotNull private Account uploader;
-
-    @OneToMany(mappedBy = "item")
-    private List<Comment> comments;
-
     @Enumerated(EnumType.STRING)
     @NotNull private ItemCategory category;
     @Enumerated(EnumType.STRING)
     @NotNull private ItemStatus status = ItemStatus.SALE;
     @NotNull private LocalDateTime whenUploaded;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    @ManyToOne
+    @NotNull private Account uploader;
+
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     private List<ItemImage> images = new ArrayList<>();
 
 }
