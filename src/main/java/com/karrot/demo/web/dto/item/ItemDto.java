@@ -1,5 +1,6 @@
 package com.karrot.demo.web.dto.item;
 
+import com.karrot.demo.domain.comment.Comment;
 import com.karrot.demo.domain.image.ItemImage;
 import com.karrot.demo.domain.user.Account;
 import com.sun.istack.NotNull;
@@ -29,6 +30,7 @@ public class ItemDto {
     private String whenUploaded;
 
     private List<ItemImage> images;
+    private List<Comment> comments;
 
     public void setWhenUploaded(LocalDateTime whenUploaded){
         LocalDateTime now = LocalDateTime.now();

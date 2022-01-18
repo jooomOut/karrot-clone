@@ -27,6 +27,7 @@ public class Item {
     @Enumerated(EnumType.STRING)
     @NotNull private ItemCategory category;
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     @NotNull private ItemStatus status = ItemStatus.SALE;
     @NotNull private LocalDateTime whenUploaded;
 
