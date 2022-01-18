@@ -50,11 +50,42 @@ public class ItemApiController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{itemId}")
+    @PutMapping("/{itemId}")
     public ResponseEntity updateItem(@PathVariable Long itemId,
+                                    @RequestPart(required = false) List<MultipartFile> uploadImages,
+                                     @ModelAttribute @Validated ItemDto itemDto,
+                                     BindingResult errors){
+        if (errors.hasErrors()){
+            log.debug(">>> 중고거래 게시글 수정 에러 : " + errors.toString());
+            return ResponseEntity.badRequest().build();
+        }
+        try {
+            itemService.updateItem(itemId, uploadImages, itemDto);
+        } catch (IllegalArgumentException e){
+            log.debug("USER ID를 찾을 수 없음 : " + itemDto.getUploaderId());
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{itemId}")
+    public ResponseEntity updateItemStatus(@PathVariable Long itemId,
                                      @RequestParam String status){
         try {
             itemService.updateItemStatus(itemId, status);
+        } catch (AuthorizationServiceException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{itemId}")
+    public ResponseEntity deleteItem(@PathVariable Long itemId){
+        try {
+            itemService.deleteItem(itemId);
         } catch (AuthorizationServiceException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         } catch (IllegalArgumentException e) {

@@ -9,6 +9,7 @@ import com.karrot.demo.domain.user.UserRepository;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,14 @@ public class ItemService {
     private ItemRepository itemRepository;
     private UserRepository userRepository;
     private ImageService fileService;
+
     @Autowired
     public ItemService(ItemRepository itemRepository, UserRepository userRepository, ImageService fileService) {
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
         this.fileService = fileService;
     }
+
     public ItemDto getItemDtoBy(Long itemId){
         int defaultUploaderItemSize = 4;
         return getItemDtoBy(itemId, defaultUploaderItemSize);
@@ -63,8 +66,17 @@ public class ItemService {
 
         Item item = itemRepository.save(toEntity(itemDto, uploader));
         fileService.upload(item, files);
-
     }
+
+    public void updateItem(Long itemId, List<MultipartFile> uploadImages, ItemDto itemDto) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(EntityNotFoundException::new);
+        SecurityUtils.checkUser(item.getUploader().getId());
+        // TODO: 이미지 처리 구현하기
+        item = toEntityForEditing(item, itemDto, uploadImages);
+        itemRepository.save(item);
+    }
+
     public void updateItemStatus(Long itemId, String status) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(EntityNotFoundException::new);
@@ -79,6 +91,26 @@ public class ItemService {
         }
         itemRepository.save(item);
     }
+
+    public void deleteItem(Long itemId) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(EntityNotFoundException::new);
+        Long userId = SecurityUtils.getLoginUserId();
+        if (!item.getUploader().getId().equals(userId)) {
+            throw new AuthorizationServiceException(userId + " 는 해당 영역에 접근할 수 없습니다.");
+        }
+        itemRepository.delete(item);
+    }
+
+    private Item toEntityForEditing(Item item, ItemDto itemDto, List<MultipartFile> uploadImages) {
+        item.setTitle(itemDto.getTitle());
+        item.setPrice(itemDto.getPrice());
+        item.setMainText(itemDto.getMainText());
+        item.setCategory(ItemCategory.valueOf(itemDto.getCategory()));
+
+        return item;
+    }
+
     private Item toEntity(ItemDto itemDto, Account account){
         return Item.builder()
                 .title(itemDto.getTitle())
@@ -105,6 +137,4 @@ public class ItemService {
         dto.setWhenUploaded(item.getWhenUploaded());
         return dto;
     }
-
-
 }

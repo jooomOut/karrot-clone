@@ -1,8 +1,10 @@
 package com.karrot.demo.web;
 
 import com.karrot.demo.domain.item.ItemCategory;
+import com.karrot.demo.domain.item.ItemStatus;
 import com.karrot.demo.service.ItemService;
 import com.karrot.demo.util.SecurityUtils;
+import com.karrot.demo.web.dto.item.ItemDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,8 +38,23 @@ public class ItemController {
     public String getItemPage(Model model,
                               @PathVariable Long itemId){
         model.addAttribute("item", itemService.getItemDtoBy(itemId));
+        model.addAttribute("user", SecurityUtils.getLoginUser());
+        model.addAttribute("statusList", ItemStatus.values());
 
         return "/items/item-view";
+    }
+
+    @GetMapping("/{itemId}/edit")
+    public String getItemEditPage(Model model,
+                              @PathVariable Long itemId){
+        ItemDto item = itemService.getItemDtoBy(itemId);
+        SecurityUtils.checkUser(item.getUploader().getId());
+
+        model.addAttribute("item", item);
+        model.addAttribute("user", SecurityUtils.getLoginUser());
+        model.addAttribute("categories", ItemCategory.values());
+
+        return "/items/item-edit";
     }
 
     @GetMapping("/user/{userId}")
@@ -50,7 +67,6 @@ public class ItemController {
     @GetMapping("/upload")
     public String uploadItemPage(Model model){
         model.addAttribute("categories", ItemCategory.values());
-
         return "items/upload";
     }
 
