@@ -293,12 +293,14 @@
                 </button>
             </div>
             <div class="local-nav-items">
-                <button class="image-button">
+                <button class="image-button"
+                        th:onclick="'location.href=\'' + '/comments/items/' + @{${item.id}} + '\''">
                     댓글 보기
                 </button>
             </div>
             <div class="local-nav-items">
-                <button class="image-button">
+                <button class="image-button"
+                        th:onclick="'location.href=\'' + '/comments/writing/' + @{${item.id}} + '\''">
                     댓글 남기기
                 </button>
             </div>

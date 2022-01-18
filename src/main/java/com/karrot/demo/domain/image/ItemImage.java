@@ -13,7 +13,7 @@ import javax.persistence.*;
 @DiscriminatorValue("item")
 public class ItemImage extends Image{
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull private Item item;
 
     @Builder

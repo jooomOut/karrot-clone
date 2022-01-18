@@ -144,7 +144,7 @@
             <div th:each="item : ${items}" class="item" th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''">
                 <span class="item_img">
                     <img th:if="${item.images.size() == 0}" src="/img/karrot.png"/>
-                    <img th:if="${item.images.size() != 0}" th:src="'/img/items/' + ${item.images[0].fileName}"/>
+                    <img th:if="${item.images.size() != 0}" th:src="'/img/user_profile/' + ${item.images[0].fileName}"/>
                 </span>
                 <div class="item_explain">
                     <div class="item_text">
@@ -153,9 +153,9 @@
                         <div>[[${item.price}]]원</div>
                     </div>
                     <div class="item_preference">
-                        <span>
+                        <span th:if="${item.comments.size() != 0}">
                             <img src="/img/chat.png" />
-                            n
+                            [[${item.comments.size()}]]
                         </span>
                         <span>
                             <img src="/img/heart.png" />

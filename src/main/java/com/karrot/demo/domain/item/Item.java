@@ -1,5 +1,6 @@
 package com.karrot.demo.domain.item;
 
+import com.karrot.demo.domain.comment.Comment;
 import com.karrot.demo.domain.image.ItemImage;
 import com.karrot.demo.domain.user.Account;
 import com.sun.istack.NotNull;
@@ -21,20 +22,22 @@ public class Item {
 
     @NotNull private String title;
     @NotNull private String mainText;
-
     @NotNull private Long price;
     @NotNull private String place;
+    @Enumerated(EnumType.STRING)
+    @NotNull private ItemCategory category;
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    @NotNull private ItemStatus status = ItemStatus.SALE;
+    @NotNull private LocalDateTime whenUploaded;
 
     @ManyToOne
     @NotNull private Account uploader;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull private ItemCategory category;
-    @Enumerated(EnumType.STRING)
-    @NotNull private ItemStatus status = ItemStatus.SALE;
-    @NotNull private LocalDateTime whenUploaded;
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    private List<Comment> comments;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     private List<ItemImage> images = new ArrayList<>();
 
 }

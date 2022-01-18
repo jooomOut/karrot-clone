@@ -1,5 +1,6 @@
 package com.karrot.demo.service;
 
+import com.karrot.demo.domain.comment.CommentRepository;
 import com.karrot.demo.domain.item.Item;
 import com.karrot.demo.domain.item.ItemCategory;
 import com.karrot.demo.domain.item.ItemRepository;
@@ -27,25 +28,29 @@ public class ItemService {
 
     private ItemRepository itemRepository;
     private UserRepository userRepository;
+    private CommentRepository commentRepository;
     private ImageService fileService;
-
     @Autowired
-    public ItemService(ItemRepository itemRepository, UserRepository userRepository, ImageService fileService) {
+    public ItemService(ItemRepository itemRepository, UserRepository userRepository, CommentRepository commentRepository, ImageService fileService) {
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
+        this.commentRepository = commentRepository;
         this.fileService = fileService;
     }
 
     public ItemDto getItemDtoBy(Long itemId){
         int defaultUploaderItemSize = 4;
-        return getItemDtoBy(itemId, defaultUploaderItemSize);
+        int defaultCommentsSize = 20;
+
+        return getItemDtoBy(itemId, defaultUploaderItemSize, defaultCommentsSize);
     }
-    public ItemDto getItemDtoBy(Long itemId, int uploaderItemSize){
+    public ItemDto getItemDtoBy(Long itemId, int uploaderItemSize, int commentsSize){
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(EntityNotFoundException::new);
         item.getUploader().setItems(
                 item.getUploader().getItems().stream().limit(uploaderItemSize).collect(Collectors.toList())
         );
+        item.setComments(item.getComments().stream().limit(commentsSize).collect(Collectors.toList()));
         return toItemDto(item);
     }
 
@@ -64,7 +69,7 @@ public class ItemService {
         Account uploader = userRepository.findById(itemDto.getUploaderId())
                 .orElseThrow(EntityNotFoundException::new);
 
-        Item item = itemRepository.save(toEntity(itemDto, uploader));
+        Item item = itemRepository.save(toEntityForAdding(itemDto, uploader));
         fileService.upload(item, files);
     }
 
@@ -111,7 +116,7 @@ public class ItemService {
         return item;
     }
 
-    private Item toEntity(ItemDto itemDto, Account account){
+    private Item toEntityForAdding(ItemDto itemDto, Account account){
         return Item.builder()
                 .title(itemDto.getTitle())
                 .mainText(itemDto.getMainText())
@@ -133,6 +138,7 @@ public class ItemService {
                 .place(item.getPlace())
                 .status(item.getStatus().name())
                 .images(item.getImages())
+                .comments(item.getComments())
                 .build();
         dto.setWhenUploaded(item.getWhenUploaded());
         return dto;
