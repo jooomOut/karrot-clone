@@ -120,11 +120,12 @@
                 <input name="title" placeholder="제목" th:value="${item.title}"/>
             </div>
             <div class="row">
-                <select class="category-control" th:field="*{categories}" th:value="${item.category}">
+                <select class="category-control" th:field="*{categories}" th:value="${item.category}"
+                        onchange="updateCategory(this);">
                     <option th:each="category : ${categories}"
                             th:value="${category}"
                             th:text="${category}"
-                            name="category">
+                            >
 
                     </option>
                 </select>
@@ -215,6 +216,9 @@
         };
         xhr.open('PUT', '/api/items/' + [[${item.id}]]);
         xhr.send(formData); // 폼 데이터 객체 전송
+    }
+    const updateCategory = (e) => {
+        document.getElementsByName('category')[0].value = e.value;
     }
     init();
 </script>

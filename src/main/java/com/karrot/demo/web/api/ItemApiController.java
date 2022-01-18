@@ -50,8 +50,27 @@ public class ItemApiController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{itemId}")
+    @PutMapping("/{itemId}")
     public ResponseEntity updateItem(@PathVariable Long itemId,
+                                    @RequestPart(required = false) List<MultipartFile> uploadImages,
+                                     @ModelAttribute @Validated ItemDto itemDto,
+                                     BindingResult errors){
+        if (errors.hasErrors()){
+            log.debug(">>> 중고거래 게시글 수정 에러 : " + errors.toString());
+            return ResponseEntity.badRequest().build();
+        }
+        try {
+            itemService.updateItem(itemId, uploadImages, itemDto);
+        } catch (IllegalArgumentException e){
+            log.debug("USER ID를 찾을 수 없음 : " + itemDto.getUploaderId());
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{itemId}")
+    public ResponseEntity updateItemStatus(@PathVariable Long itemId,
                                      @RequestParam String status){
         try {
             itemService.updateItemStatus(itemId, status);
