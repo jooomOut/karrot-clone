@@ -1,4 +1,4 @@
-package com.karrot.demo.web.dto;
+package com.karrot.demo.web.dto.comment;
 
 import com.sun.istack.NotNull;
 import lombok.Builder;
