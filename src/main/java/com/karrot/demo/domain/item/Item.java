@@ -1,5 +1,6 @@
 package com.karrot.demo.domain.item;
 
+import com.karrot.demo.domain.comment.Comment;
 import com.karrot.demo.domain.image.ItemImage;
 import com.karrot.demo.domain.user.Account;
 import com.sun.istack.NotNull;
@@ -27,6 +28,9 @@ public class Item {
 
     @ManyToOne
     @NotNull private Account uploader;
+
+    @OneToMany(mappedBy = "item")
+    private List<Comment> comments;
 
     @Enumerated(EnumType.STRING)
     @NotNull private ItemCategory category;

@@ -1,11 +1,11 @@
 package com.karrot.demo.domain.user;
 
+import com.karrot.demo.domain.comment.Comment;
 import com.karrot.demo.domain.image.UserProfileImage;
 import com.karrot.demo.domain.item.Item;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -33,6 +33,9 @@ public class Account {
     private UserProfileImage image;
 
     @OneToMany(mappedBy = "uploader", cascade = CascadeType.ALL)
-    private List<Item> items = new ArrayList<>();
+    private List<Item> items;
+
+    @OneToMany(mappedBy = "commenter")
+    private List<Comment> comments;
 
 }

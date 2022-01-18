@@ -34,6 +34,8 @@ public class CommentController {
     @GetMapping("/writing/{itemId}")
     public String getPageForWriting(Model model,
                                     @PathVariable Long itemId){
+        model.addAttribute("itemId", itemId);
+        model.addAttribute("userId", SecurityUtils.getLoginUserId());
         return "/comments/writing";
     }
 }
