@@ -44,7 +44,7 @@ public class ItemDto {
             this.whenUploaded = HOURS.between(whenUploaded, now) + "시간 전";
         } else if (between < 60 * 60 * 24 * 30) { // 30일
             this.whenUploaded = DAYS.between(whenUploaded, now) + "일 전";
-        } else if (between < 60 * 60 * 24 * 30) { // 12 개월
+        } else if (between < 60 * 60 * 24 * 30 * 12) { // 12 개월
             this.whenUploaded = MONTHS.between(whenUploaded, now) + "개월 전";
         } else {
             this.whenUploaded = YEARS.between(whenUploaded, now) + "년 전";
