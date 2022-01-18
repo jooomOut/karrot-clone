@@ -37,6 +37,13 @@ public class CommentService {
         this.itemRepository = itemRepository;
     }
 
+
+    public String getCommentText(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElse(null);
+        return comment == null ? "" : comment.getText();
+    }
+
     public void addComment(AddCommentDto commentDto) {
         SecurityUtils.checkUser(commentDto.getCommenterId());
         Item item = itemRepository.findById(commentDto.getItemId())
@@ -56,4 +63,5 @@ public class CommentService {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
+
 }

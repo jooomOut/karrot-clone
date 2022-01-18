@@ -79,7 +79,8 @@
             <span class="title">댓글 남기기</span>
         </div>
         <textarea id="text" maxlength="100"
-                placeholder="댓글을 남겨주세요. &#13;&#10; 언제 어디서 물건을 받을 수 있는지 &#13;&#10;문의하시거나 제안해보세요. &#13;&#10; (100자이내)"></textarea>
+                placeholder="댓글을 남겨주세요. &#13;&#10; 언제 어디서 물건을 받을 수 있는지 &#13;&#10;문의하시거나 제안해보세요. &#13;&#10; (100자이내)">[[${commentText}]]</textarea>
+        <!--<textarea name="text" maxlength="100" th:if="${commentText != null && !commentText.equals('')}"></textarea>-->
     </div>
     <nav class="local-nav" onclick="submitComment();">
         작성완료

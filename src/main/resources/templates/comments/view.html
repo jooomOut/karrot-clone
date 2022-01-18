@@ -136,8 +136,8 @@
             <div class="item_explain">
                 <div class="item_text">
                     <div th:text="${item.title}"></div>
-                    <div th:text="${item.place}">장소</div>
-                    <div th:text="${item.price}">원</div>
+                    <div th:text="${item.place}"></div>
+                    <div th:text="${item.price}"></div>
                 </div>
                 <div class="item_preference">
                         <span>
@@ -152,20 +152,23 @@
             </div>
         </div>
 
-        <div class="item" style="padding-bottom: 20px; padding-top: 20px;">
+        <div th:each="comment : ${item.comments}"
+                  class="item" style="padding-bottom: 20px; padding-top: 20px;">
             <span class="profile_img">
-                <img src="/img/karrot.png"/>
+                <img th:if="${comment.commenter.image != null}" th:src="'/img/items/' + ${comment.commenter.image.fileName}"/>
+                <img th:if="${comment.commenter.image == null}"  src="/img/person.png"/>
             </span>
             <div class="item_explain">
                 <div class="item_text">
                     <div class="comment-info">
-                        <span>닉네임</span>
-                        <span>시간</span>
+                        <span th:text="${comment.commenter.nickname}"></span>
+                        <span th:text="${comment.createdAt}"></span>
                     </div>
-                    <div class="comment-box">내용무</div>
+                    <div th:text="${comment.text}" class="comment-box">내용무</div>
                 </div>
                 <div class="item_preference">
-                        <span>
+                        <span th:if="${user.id.equals(comment.commenter.id)}"
+                                th:onclick="|moveToEdit('${comment.id}')|">
                             edit
                         </span>
                 </div>
@@ -178,5 +181,9 @@
     </nav>
 </div>
 </body>
-<script>
+<script th:inline="javascript">
+    const moveToEdit = (commentId) => {
+        let itemId = [[${item.id}]]
+        location.href = "/comments/writing/" + itemId +"?commentId=" + commentId;
+    }
 </script>
