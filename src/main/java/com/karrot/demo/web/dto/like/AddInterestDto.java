@@ -4,7 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 
 @Getter
-public class AddLikeDto {
+public class AddInterestDto {
     private Long id;
     @NotNull private Long itemId;
     @NotNull private Long userId;

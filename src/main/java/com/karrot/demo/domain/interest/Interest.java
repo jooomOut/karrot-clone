@@ -1,4 +1,4 @@
-package com.karrot.demo.domain.like;
+package com.karrot.demo.domain.interest;
 
 import com.karrot.demo.domain.item.Item;
 import com.karrot.demo.domain.user.Account;
@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class Like {
+public class Interest {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)

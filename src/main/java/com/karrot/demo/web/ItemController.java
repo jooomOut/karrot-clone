@@ -3,8 +3,10 @@ package com.karrot.demo.web;
 import com.karrot.demo.domain.item.ItemCategory;
 import com.karrot.demo.domain.item.ItemStatus;
 import com.karrot.demo.service.ItemService;
+import com.karrot.demo.service.InterestService;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
+import com.karrot.demo.web.dto.user.UserSessionDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,9 +23,11 @@ import javax.naming.AuthenticationException;
 public class ItemController {
 
     private ItemService itemService;
+    private InterestService interestService;
     @Autowired
-    public ItemController(ItemService itemService) {
+    public ItemController(ItemService itemService, InterestService interestService) {
         this.itemService = itemService;
+        this.interestService = interestService;
     }
 
     @GetMapping
@@ -37,8 +41,10 @@ public class ItemController {
     @GetMapping("/{itemId}")
     public String getItemPage(Model model,
                               @PathVariable Long itemId){
+        UserSessionDto user = SecurityUtils.getLoginUser();
+        model.addAttribute("user", user);
         model.addAttribute("item", itemService.getItemDtoBy(itemId));
-        model.addAttribute("user", SecurityUtils.getLoginUser());
+        model.addAttribute("isLiked", interestService.checkInterestedBy(itemId, user.getId()));
         model.addAttribute("statusList", ItemStatus.values());
 
         return "/items/item-view";
