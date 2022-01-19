@@ -42,6 +42,6 @@ public class Item {
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
-    private List<ItemImage> images = new ArrayList<>();
+    private List<ItemImage> images;
 
 }

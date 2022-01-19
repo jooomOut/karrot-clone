@@ -55,10 +55,12 @@ public class ItemService {
     }
 
     public List<ItemDto> getItems(){
-        return itemRepository.findAll().stream()
+        List<ItemDto> dtos = itemRepository.findTop20ByOrderByIdDesc().stream()
                 .map(this::toItemDto)
                 .collect(Collectors.toList());
+        return dtos;
     }
+
     public List<ItemDto> getItemsByUserId(Long userId){
         return itemRepository.findAllByUploaderId(userId).stream()
                 .map(this::toItemDto)
@@ -139,6 +141,7 @@ public class ItemService {
                 .status(item.getStatus().name())
                 .images(item.getImages())
                 .comments(item.getComments())
+                .interests(item.getInterests())
                 .build();
         dto.setWhenUploaded(item.getWhenUploaded());
         return dto;

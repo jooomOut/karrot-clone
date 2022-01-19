@@ -157,9 +157,9 @@
                             <img src="/img/chat.png" />
                             [[${item.comments.size()}]]
                         </span>
-                        <span>
+                        <span th:if="${item.interests.size() != 0}">
                             <img src="/img/heart.png" />
-                            n
+                            [[${item.interests.size()}]]
                         </span>
                     </div>
                 </div>
