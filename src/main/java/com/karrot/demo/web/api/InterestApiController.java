@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -33,4 +30,9 @@ public class InterestApiController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{interestId}")
+    public ResponseEntity deleteInterest(@PathVariable Long interestId){
+        interestService.delete(interestId);
+        return ResponseEntity.ok().build();
+    }
 }

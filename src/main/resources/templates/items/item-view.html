@@ -282,10 +282,10 @@
     <nav class="local-nav">
         <div class="local-nav-links">
             <div class="local-nav-items">
-                <button th:if="${isInterested}" onclick="deleteInterest();">
+                <button th:if="${interest.isInterestedBy}" onclick="deleteInterest();">
                     <img src="/img/heart_red.png"/>
                 </button>
-                <button th:if="${isInterested == null || !isInterested}" onclick="addInterest();">
+                <button th:if="${!interest.isInterestedBy}" onclick="addInterest();">
                     <img src="/img/heart.png"/>
                 </button>
             </div>
@@ -384,7 +384,7 @@
 
         formData.append('itemId', [[${item.id}]]);
         formData.append('userId', [[${user.id}]]);
-        alert("itemid is " + [[${item.id}]])
+
         xhr.onload = function() {
             if (xhr.status === 200 || xhr.status === 201) {
                 location.reload();
@@ -397,6 +397,19 @@
     }
 
     const deleteInterest = () => {
+        let xhr = new XMLHttpRequest();
+        let formData = new FormData();
+        let interestId = [[${interest.id}]];
+        formData.append('interestId', interestId);
 
+        xhr.onload = function() {
+            if (xhr.status === 200 || xhr.status === 201) {
+                location.reload();
+            } else {
+                alert("다시 시도해주세요.");
+            }
+        };
+        xhr.open('DELETE', '/api/interests/'+ interestId);
+        xhr.send(formData); // 폼 데이터 객체 전송
     }
 </script>

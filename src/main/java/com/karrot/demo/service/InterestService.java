@@ -55,4 +55,10 @@ public class InterestService {
             throw new EntityNotFoundException("no user or item id");
         }
     }
+
+    public void delete(Long interestId) {
+        Interest interest = interestRepository.findById(interestId)
+                .orElseThrow(() -> new EntityNotFoundException("interest is not found with id : " +interestId));
+        interestRepository.delete(interest);
+    }
 }
