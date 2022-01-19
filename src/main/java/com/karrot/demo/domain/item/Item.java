@@ -2,6 +2,7 @@ package com.karrot.demo.domain.item;
 
 import com.karrot.demo.domain.comment.Comment;
 import com.karrot.demo.domain.image.ItemImage;
+import com.karrot.demo.domain.like.Like;
 import com.karrot.demo.domain.user.Account;
 import com.sun.istack.NotNull;
 import lombok.*;
@@ -33,6 +34,9 @@ public class Item {
 
     @ManyToOne
     @NotNull private Account uploader;
+
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    private List<Like> likes;
 
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
     private List<Comment> comments;
