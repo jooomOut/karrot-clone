@@ -1,46 +1,47 @@
 package com.karrot.demo.service;
 
-import com.karrot.demo.domain.comment.Comment;
-import com.karrot.demo.domain.comment.CommentRepository;
 import com.karrot.demo.domain.item.Item;
 import com.karrot.demo.domain.item.ItemRepository;
-import com.karrot.demo.domain.like.Like;
-import com.karrot.demo.domain.like.LikeRepository;
+import com.karrot.demo.domain.interest.Interest;
+import com.karrot.demo.domain.interest.InterestRepository;
 import com.karrot.demo.domain.user.Account;
 import com.karrot.demo.domain.user.UserRepository;
-import com.karrot.demo.util.SecurityUtils;
-import com.karrot.demo.web.dto.comment.AddCommentDto;
-import com.karrot.demo.web.dto.like.AddLikeDto;
+import com.karrot.demo.web.dto.like.AddInterestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
 
 @Slf4j
 @Service
-public class LikeService {
+public class InterestService {
 
-    private LikeRepository  likeRepository;
+    private InterestRepository interestRepository;
     private UserRepository userRepository;
     private ItemRepository itemRepository;
     @Autowired
-    public LikeService(LikeRepository likeRepository, UserRepository userRepository, ItemRepository itemRepository) {
-        this.likeRepository = likeRepository;
+    public InterestService(InterestRepository interestRepository, UserRepository userRepository, ItemRepository itemRepository) {
+        this.interestRepository = interestRepository;
         this.userRepository = userRepository;
         this.itemRepository = itemRepository;
     }
+    public boolean checkInterestedBy(Long itemId, Long userId){
+        if (itemId != null && userId != null){
+            return interestRepository.existsByItemIdAndUserId(itemId,userId);
+        }
+        return false;
+    }
 
-    public void addLike(AddLikeDto dto){
+    public void addInterest(AddInterestDto dto){
         Account user = userRepository.getById(dto.getUserId());
         Item item = itemRepository.getById(dto.getItemId());
-        Like like = Like.builder()
+        Interest interest = Interest.builder()
                 .user(user)
                 .item(item)
                 .build();
         try {
-            likeRepository.save(like);
+            interestRepository.save(interest);
         } catch (EntityNotFoundException e){
             throw new EntityNotFoundException("no user or item id");
         }

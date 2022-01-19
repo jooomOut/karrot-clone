@@ -44,7 +44,7 @@ public class ItemController {
         UserSessionDto user = SecurityUtils.getLoginUser();
         model.addAttribute("user", user);
         model.addAttribute("item", itemService.getItemDtoBy(itemId));
-        model.addAttribute("isLiked", interestService.checkInterestedBy(itemId, user.getId()));
+        model.addAttribute("isInterested", interestService.checkInterestedBy(itemId, user.getId()));
         model.addAttribute("statusList", ItemStatus.values());
 
         return "/items/item-view";
