@@ -151,7 +151,7 @@
             <div th:each="item : ${items}" class="item" th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''">
                 <span class="item_img">
                     <img th:if="${item.images.size() == 0}" src="/img/karrot.png"/>
-                    <img th:if="${item.images.size() != 0}" th:src="'/img/user_profile/' + ${item.images[0].fileName}"/>
+                    <img th:if="${item.images.size() != 0}" th:src="${item.images[0].path}"/>
                 </span>
                 <div class="item_explain">
                     <div class="item_text">

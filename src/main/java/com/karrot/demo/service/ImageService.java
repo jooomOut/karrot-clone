@@ -21,7 +21,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class ImageService {
-
+    private final String STATIC_PATH = "/static/img";
     private final String ITEM_PATH = "/items";
     private final String USER_PROFILE_PATH = "/user_profile";
 
@@ -66,7 +66,7 @@ public class ImageService {
 
     private File storeImageFile(MultipartFile image, String postfixPath) throws IOException {
         String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
-        String path = new ClassPathResource("/static/img").getFile().getAbsolutePath() + postfixPath;
+        String path = new ClassPathResource(STATIC_PATH).getFile().getAbsolutePath() + postfixPath;
 
         File targetFile = new File(path, fileName);
         if (!new File(path).exists()) {
@@ -81,18 +81,11 @@ public class ImageService {
         return targetFile;
     }
 
-    private ItemImage toEntity(File file){
-        return ItemImage.builder()
-                .fileName(file.getName())
-                .size(file.length()) // byte size
-                .path(file.getPath())
-                .build();
-    }
     private ItemImage toEntity(File file, Item item){
         return ItemImage.builder()
                 .fileName(file.getName())
                 .size(file.length()) // byte size
-                .path(file.getPath())
+                .path("/img" + ITEM_PATH + "/" + file.getName())
                 .item(item)
                 .build();
     }
@@ -100,7 +93,7 @@ public class ImageService {
         return UserProfileImage.builder()
                 .fileName(file.getName())
                 .size(file.length()) // byte size
-                .path(file.getPath())
+                .path("/img" + USER_PROFILE_PATH + "/" + file.getName())
                 .user(user)
                 .build();
     }
