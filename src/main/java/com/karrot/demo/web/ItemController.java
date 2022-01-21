@@ -86,7 +86,7 @@ public class ItemController {
         return "items/my-items";
     }
 
-    @GetMapping("my-interest")
+    @GetMapping("/my-interest")
     public String getInterestedItem(Model model) throws AuthenticationException {
         Long userId = SecurityUtils.getLoginUserId();
         if (userId == null){
@@ -94,6 +94,12 @@ public class ItemController {
         }
         model.addAttribute("items", itemService.getItemsByUserInterest(userId));
         return "items/my-interest";
+    }
+
+    @GetMapping("/categories")
+    public String getCategories(Model model){
+        model.addAttribute("categories", ItemCategory.values());
+        return "items/categories";
     }
 
 
