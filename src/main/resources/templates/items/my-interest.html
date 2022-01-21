@@ -122,13 +122,13 @@
                             </div>
                         </div>
                         <div class="item_preference">
-                            <span>
+                            <span th:if="${item.comments.size() != 0}">
                                 <img src="/img/chat.png" />
-                                n
+                                [[${item.comments.size()}]]
                             </span>
-                            <span>
+                            <span th:if="${item.interests.size() != 0}">
                                 <img src="/img/heart.png" />
-                                n
+                                [[${item.interests.size()}]]
                             </span>
                         </div>
                     </div>
