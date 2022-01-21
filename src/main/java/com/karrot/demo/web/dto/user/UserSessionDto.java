@@ -1,5 +1,6 @@
 package com.karrot.demo.web.dto.user;
 
+import com.karrot.demo.domain.image.UserProfileImage;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,4 +12,5 @@ public class UserSessionDto {
     String username;
     String phone;
     String nickname;
+    UserProfileImage image;
 }

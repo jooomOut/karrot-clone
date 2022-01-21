@@ -38,6 +38,7 @@ public class SecurityUtils {
                 .username(account.getUsername())
                 .phone(account.getPhone())
                 .nickname(account.getNickname())
+                .image(account.getImage())
                 .build();
     }
 }

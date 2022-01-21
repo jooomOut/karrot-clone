@@ -227,7 +227,7 @@
         </span>
     </div>
     <div class="uploader">
-        <img class="profile-image" src="/img/karrot.png"/>
+        <img class="profile-image" th:src="${user.image == null ? '/img/karrot.png' : user.image.path}"/>
         <span th:text="${item.uploader.nickname}"></span>
     </div>
     <div class="row" th:if="${item.uploader.id.equals(user.id)}">

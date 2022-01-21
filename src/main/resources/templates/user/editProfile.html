@@ -113,7 +113,8 @@
 
 
     <div class="circle-container circle" style="margin-bottom: 50px;">
-        <img class="profile-image" src="/img/person.png"/>
+        <img class="profile-image" id="profile_image_view"
+             th:src="${user.image == null ? '/img/camera.png' : user.image.path}"/>
         <div class="circle small-circle">
             <label for="profile_image">
                 <img class="small-image" src="/img/camera.png"/>
@@ -122,7 +123,6 @@
         </div>
     </div>
     <input class="big-input" id="nickname" th:value="${user.nickname}"/>
-
 
     <button class="bottom-nav" onclick="editProfile();">완료</button>
 </div>
@@ -153,4 +153,28 @@
         xhr.open('PATCH', '/api/users/' + userId);
         xhr.send(formData); // 폼 데이터 객체 전송
     }
+
+    function readImage(input) {
+        console.log("input is" + JSON.stringify(input))
+        // 인풋 태그에 파일들이 있는 경우
+        if(input.files) {
+            // 유사배열을 배열로 변환 (forEach문으로 처리하기 위해)
+            const file = Array.from(input.files)[0]
+
+            const reader = new FileReader()
+            reader.onload = e => {
+                console.log("e rsult =" + e.target.result)
+                document.getElementById('profile_image_view').scr
+                 = e.target.result
+            }
+
+            reader.readAsDataURL(file)
+        }
+    }
+
+    const profileImage = document.getElementById("profile_image")
+    profileImage.addEventListener("change", e => {
+        console.log("detect chanigng");
+        readImage(e.target)
+    })
 </script>

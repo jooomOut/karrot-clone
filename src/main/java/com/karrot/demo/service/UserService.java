@@ -82,6 +82,7 @@ public class UserService {
                 .nickname(user.getNickname())
                 .phone(user.getPhone())
                 .username(user.getUsername())
+                .image(user.getImage())
                 .build();
     }
 }
