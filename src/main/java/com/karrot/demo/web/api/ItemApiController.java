@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -32,7 +33,7 @@ public class ItemApiController {
      * */
     @PostMapping
     public ResponseEntity uploadItem(@RequestPart(required = false) List<MultipartFile> uploadImages,
-                                     @ModelAttribute @Validated ItemDto itemDto,
+                                     @ModelAttribute @Valid ItemDto itemDto,
                                      BindingResult errors){
         if (errors.hasErrors()){
             log.debug(">>> 중고거래 업로드 에러 : " + errors.toString());
