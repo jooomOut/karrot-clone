@@ -205,11 +205,12 @@
 <body style="margin: 0; width: 100%">
 <div class="container">
     <div class="img_container">
-        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
-        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
-        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
-        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
-        <div class="thumbnail"> <img class="img" src="/img/karrot.png"/> </div>
+        <div class="thumbnail" th:each="image : ${item.images}">
+            <img class="img" th:src="${image.path}"/>
+        </div>
+        <div class="thumbnail" th:if="${item.images == null}">
+            <img class="img" src="/img/karrot.png"/>
+        </div>
     </div>
     <div class="top-nav">
         <span class="buttons left-top">
@@ -266,7 +267,7 @@
         </div>
         <div class="related-item-container">
             <div th:each="item : ${item.uploader.items}" class="related-item" th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''">
-                <img src="/img/karrot.png"/>
+                <img th:src="${item.images == null || item.images.size() == 0 ? '/img/karrot.png' : item.images[0].path}"/>
                 <span th:text="${item.title}"></span>
                 <span th:text="${item.price}"></span>
             </div>
