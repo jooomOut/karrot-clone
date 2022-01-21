@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       http
           .authorizeRequests()
               .antMatchers("/login", "/signup").permitAll()
-              .antMatchers(HttpMethod.POST, "/users").permitAll() /*회원가입 요청 허용*/
+              .antMatchers(HttpMethod.POST, "/api/users").permitAll() /*회원가입 요청 허용*/
               .anyRequest().authenticated();
       http
           .formLogin()

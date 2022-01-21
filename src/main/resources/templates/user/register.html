@@ -51,7 +51,7 @@
     <div class="container">
         <div class="box">
             <div>이메일(ID)</div>
-            <input type="text" name="email" />
+            <input type="email" name="email" />
         </div>
         <div class="box">
             <div>비밀번호(PW)</div>
@@ -95,7 +95,7 @@
                 location.href = "/main";
             } else {
                 console.error(xhr.responseText);
-                alert("이미 가입된 이메일 혹은 전화번호입니다.")
+                alert(xhr.responseText)
             }
         };
         xhr.open('POST', '/api/users');

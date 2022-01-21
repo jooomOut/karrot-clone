@@ -10,11 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.security.Security;
 
 @Slf4j
@@ -32,7 +36,12 @@ public class UserApiController {
      * @Response : 200(성공) or 400
      * */
     @PostMapping
-    public ResponseEntity registerUser(@ModelAttribute RegisterUserDto userDto){
+    public ResponseEntity registerUser(@ModelAttribute @Valid RegisterUserDto userDto,
+                                        BindingResult errors){
+        if (errors.hasErrors()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(errors.getAllErrors().get(0).getDefaultMessage());
+        }
         log.info("someone try register");
         try{
             userService.registerUser(userDto);
