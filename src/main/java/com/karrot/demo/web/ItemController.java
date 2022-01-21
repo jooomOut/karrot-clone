@@ -43,9 +43,10 @@ public class ItemController {
     public String getItemsBySearch(Model model,
                                    @RequestParam(required = false) String keyword,
                                    @RequestParam(required = false) String category) throws AuthenticationException {
-
+        model.addAttribute("title",
+                keyword == null ? ItemCategory.valueOf(category).getKrName() : keyword);
         model.addAttribute("items", itemService.getItemsBy(keyword, category));
-        return "items/my-interest";
+        return "items/search-result";
     }
 
     @GetMapping("/{itemId}")
