@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.naming.AuthenticationException;
 
@@ -36,6 +37,15 @@ public class ItemController {
         model.addAttribute("items", itemService.getItems());
 
         return "/items/list";
+    }
+
+    @GetMapping("/search")
+    public String getItemsBySearch(Model model,
+                                   @RequestParam(required = false) String keyword,
+                                   @RequestParam(required = false) String category) throws AuthenticationException {
+
+        model.addAttribute("items", itemService.getItemsBy(keyword, category));
+        return "items/my-interest";
     }
 
     @GetMapping("/{itemId}")

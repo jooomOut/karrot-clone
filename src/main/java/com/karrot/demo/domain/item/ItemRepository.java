@@ -12,4 +12,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findTop20ByOrderByIdDesc();
     List<Item> findAllByPlace(String place);
     List<Item> findAllByUploaderId(Long uploaderId);
+    List<Item> findAllByTitleContains(String title);
+    List<Item> findAllByTitleContainsAndCategory(String title, ItemCategory category);
 }

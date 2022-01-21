@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            margin: 0 0 0 0;
+        }
+        .container{
+            min-height: 97vh;
+            padding-top: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 200px;
+        }
+        div span {
+            font-size: 50px;
+        }
+        .top-nav {
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            padding-left: 30px;
+            margin-bottom: 50px;
+
+            border-bottom: solid grey;
+        }
+        .item * {
+            font-size: 45px;
+        }
+        .item {
+            display: flex;
+            padding: 40px;
+            border-bottom: solid grey;
+        }
+        .title {
+            font-size: 70px;
+            padding: 30px;
+        }
+        .item_img * {
+            width: 300px;
+            height: 300px;
+        }
+
+        button {
+            background-color: transparent;
+            background-repeat: no-repeat;
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+            outline: none;
+        }
+        .item_explain {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-left: 30px;
+        }
+        .item_preference {
+            display: flex;
+            flex-direction: row-reverse;;
+        }
+        .item_preference > span {
+            display: flex;
+            align-items: center;
+        }
+        .item_preference > span > img {
+            width: 50px;
+            height: 50px;
+            margin: 0 20px 0 20px;
+        }
+
+        .small-button, .small-button > img  {
+            width: 100px;
+            height: 100px;
+            margin-right: 30px;
+        }
+
+        .list {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .sold {
+            padding: 10px;
+            background-color: black;
+            color: white;
+            padding-left: 20px;
+            border-radius: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div>
+        <div class="top-nav">
+            <button class="small-button">
+                <img src="/img/back.png" onclick="window.history.back();"/>
+            </button>
+            <span class="title">[[${title}]]</span>
+        </div>
+
+        <div class="sale-list list visible">
+            <div th:each="item : ${items}">
+                <div class="item" th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''">
+                    <span class="item_img">
+                        <img th:if="${item.images.size() == 0}" src="/img/karrot.png"/>
+                        <img th:if="${item.images.size() != 0}" th:src="'/img/items/' + ${item.images[0].fileName}"/>
+                    </span>
+                    <div class="item_explain">
+                        <div class="item_text">
+                            <div th:text="${item.title}"></div>
+                            <div th:text="${item.place}">Place</div>
+                            <div>
+                                <span class="sold" th:if="${!item.status.equals('SOLD')}">
+                                    거래완료
+                                </span>
+                                &nbsp;&nbsp;[[${item.price}]]원
+                            </div>
+                        </div>
+                        <div class="item_preference">
+                            <span>
+                                <img src="/img/chat.png" />
+                                n
+                            </span>
+                            <span>
+                                <img src="/img/heart.png" />
+                                n
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+
+</script>

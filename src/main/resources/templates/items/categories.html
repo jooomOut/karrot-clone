@@ -64,7 +64,8 @@
         </div>
         <div class="category-box">
             <span class="category" th:each="category : ${categories}"
-                th:text="${category.krName}">
+                th:text="${category.krName}"
+                  th:onclick="'location.href=\'' + '/items/search/?category=' + @{${category.name()}} + '\''">
                 <!--th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''">-->
             </span>
         </div>

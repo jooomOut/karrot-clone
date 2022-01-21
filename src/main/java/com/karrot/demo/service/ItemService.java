@@ -1,6 +1,5 @@
 package com.karrot.demo.service;
 
-import com.karrot.demo.domain.comment.CommentRepository;
 import com.karrot.demo.domain.interest.InterestRepository;
 import com.karrot.demo.domain.item.Item;
 import com.karrot.demo.domain.item.ItemCategory;
@@ -11,7 +10,6 @@ import com.karrot.demo.domain.user.UserRepository;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
@@ -56,10 +54,22 @@ public class ItemService {
     }
 
     public List<ItemDto> getItems(){
-        List<ItemDto> dtos = itemRepository.findTop20ByOrderByIdDesc().stream()
+        return itemRepository.findTop20ByOrderByIdDesc().stream()
                 .map(this::toItemDto)
                 .collect(Collectors.toList());
-        return dtos;
+    }
+
+    public List<ItemDto> getItemsBy(String keyword, String category){
+        List<Item> ret;
+        if (keyword == null) keyword = "";
+        if (category == null) {
+            ret = itemRepository.findAllByTitleContains(keyword);
+        } else {
+            ret = itemRepository.findAllByTitleContainsAndCategory(keyword, ItemCategory.valueOf(category));
+        }
+        return ret.stream()
+                .map(this::toItemDto)
+                .collect(Collectors.toList());
     }
 
     public List<ItemDto> getItemsByUserId(Long userId){
