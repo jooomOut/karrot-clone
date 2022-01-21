@@ -255,7 +255,9 @@
         <span th:text="${item.mainText}"></span>
     </div>
     <div class="row">
-        <span >관심 </span>
+        <span style="color:grey" th:if="${item.interests != null && item.interests.size() > 0}">
+            관심&nbsp[[${item.interests.size()}]]
+        </span>
     </div>
     <div class="uploader-items">
         <div class="row">

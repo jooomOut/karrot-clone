@@ -140,13 +140,13 @@
                     <div th:text="${item.price}"></div>
                 </div>
                 <div class="item_preference">
-                        <span>
+                        <span th:if="${item.comments.size() != 0}">
                             <img src="/img/chat.png" />
-                            n
+                            [[${item.comments.size()}]]
                         </span>
-                    <span>
+                        <span th:if="${item.interests.size() != 0}">
                             <img src="/img/heart.png" />
-                            n
+                            [[${item.interests.size()}]]
                         </span>
                 </div>
             </div>
@@ -155,8 +155,7 @@
         <div th:each="comment : ${item.comments}"
                   class="item" style="padding-bottom: 20px; padding-top: 20px;">
             <span class="profile_img">
-                <img th:if="${comment.commenter.image != null}" th:src="'/img/items/' + ${comment.commenter.image.fileName}"/>
-                <img th:if="${comment.commenter.image == null}"  src="/img/person.png"/>
+                <img th:src="${comment.commenter.image == null ? '/img/person.png' : comment.commenter.image.path}"/>
             </span>
             <div class="item_explain">
                 <div class="item_text">
@@ -164,7 +163,7 @@
                         <span th:text="${comment.commenter.nickname}"></span>
                         <span class="time" th:text="${comment.createdAt}"></span>
                     </div>
-                    <div th:text="${comment.text}" class="comment-box">내용무</div>
+                    <div th:text="${comment.text}" class="comment-box"></div>
                 </div>
                 <div class="item_preference">
                         <span th:if="${user.id.equals(comment.commenter.id)}"
