@@ -3,6 +3,7 @@ package com.karrot.demo.domain.user;
 import com.karrot.demo.domain.comment.Comment;
 import com.karrot.demo.domain.image.UserProfileImage;
 import com.karrot.demo.domain.item.Item;
+import com.karrot.demo.domain.interest.Interest;
 import lombok.*;
 
 import javax.persistence.*;
@@ -31,6 +32,9 @@ public class Account {
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private UserProfileImage image;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Interest> interests;
 
     @OneToMany(mappedBy = "uploader", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Item> items;

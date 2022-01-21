@@ -2,6 +2,7 @@ package com.karrot.demo.web.dto.item;
 
 import com.karrot.demo.domain.comment.Comment;
 import com.karrot.demo.domain.image.ItemImage;
+import com.karrot.demo.domain.interest.Interest;
 import com.karrot.demo.domain.user.Account;
 import com.sun.istack.NotNull;
 import lombok.Builder;
@@ -29,6 +30,8 @@ public class ItemDto {
     private String place;
     private String whenUploaded;
 
+
+    private List<Interest> interests;
     private List<ItemImage> images;
     private List<Comment> comments;
 

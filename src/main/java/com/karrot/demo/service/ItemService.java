@@ -1,6 +1,7 @@
 package com.karrot.demo.service;
 
 import com.karrot.demo.domain.comment.CommentRepository;
+import com.karrot.demo.domain.interest.InterestRepository;
 import com.karrot.demo.domain.item.Item;
 import com.karrot.demo.domain.item.ItemCategory;
 import com.karrot.demo.domain.item.ItemRepository;
@@ -28,13 +29,13 @@ public class ItemService {
 
     private ItemRepository itemRepository;
     private UserRepository userRepository;
-    private CommentRepository commentRepository;
+    private InterestRepository interestRepository;
     private ImageService fileService;
     @Autowired
-    public ItemService(ItemRepository itemRepository, UserRepository userRepository, CommentRepository commentRepository, ImageService fileService) {
+    public ItemService(ItemRepository itemRepository, UserRepository userRepository, InterestRepository interestRepository, ImageService fileService) {
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
-        this.commentRepository = commentRepository;
+        this.interestRepository = interestRepository;
         this.fileService = fileService;
     }
 
@@ -55,15 +56,24 @@ public class ItemService {
     }
 
     public List<ItemDto> getItems(){
-        return itemRepository.findAll().stream()
+        List<ItemDto> dtos = itemRepository.findTop20ByOrderByIdDesc().stream()
                 .map(this::toItemDto)
                 .collect(Collectors.toList());
+        return dtos;
     }
+
     public List<ItemDto> getItemsByUserId(Long userId){
         return itemRepository.findAllByUploaderId(userId).stream()
                 .map(this::toItemDto)
                 .collect(Collectors.toList());
     }
+
+    public List<ItemDto> getItemsByUserInterest(Long userId) {
+        return interestRepository.findAllByUserId(userId).stream()
+                .map(interest -> toItemDto(interest.getItem()))
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public void uploadItem(List<MultipartFile> files, ItemDto itemDto){
         Account uploader = userRepository.findById(itemDto.getUploaderId())
@@ -139,6 +149,7 @@ public class ItemService {
                 .status(item.getStatus().name())
                 .images(item.getImages())
                 .comments(item.getComments())
+                .interests(item.getInterests())
                 .build();
         dto.setWhenUploaded(item.getWhenUploaded());
         return dto;
