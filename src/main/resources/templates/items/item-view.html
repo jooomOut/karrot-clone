@@ -231,7 +231,7 @@
             <option th:each="status : ${statusList}"
                     th:selected="${status.equals(item.status)}"
                     th:value="${status}"
-                    th:text="${status}"
+                    th:text="${status.krName}"
                     name="status">
             </option>
         </select>
