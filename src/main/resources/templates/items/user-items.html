@@ -150,6 +150,13 @@
         .invisible {
             display: none;
         }
+        .sold {
+            padding: 10px;
+            background-color: black;
+            color: white;
+            padding-left: 20px;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
@@ -178,7 +185,12 @@
                     <div class="item_text">
                         <div th:text="${item.title}"></div>
                         <div th:text="${item.place}">Place</div>
-                        <div>[[${item.price}]]원</div>
+                        <div>
+                            <span class="sold" th:if="${item.status.equals('SOLD')}">
+                                거래완료
+                            </span>
+                            [[${item.price}]]원
+                        </div>
                     </div>
                     <div class="item_preference">
                         <span>
@@ -232,7 +244,12 @@
                     <div class="item_text">
                         <div th:text="${item.title}"></div>
                         <div th:text="${item.place}">Place</div>
-                        <div>[[${item.price}]]원</div>
+                        <div>
+                            <span class="sold" th:if="${item.status.equals('SOLD')}">
+                                거래완료
+                            </span>
+                            [[${item.price}]]원
+                        </div>
                     </div>
                     <div class="item_preference">
                         <span>
