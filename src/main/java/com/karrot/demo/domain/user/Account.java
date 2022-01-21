@@ -33,12 +33,15 @@ public class Account {
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private UserProfileImage image;
 
+    @OrderBy("id desc")
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Interest> interests;
 
+    @OrderBy("id desc")
     @OneToMany(mappedBy = "uploader", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Item> items;
 
+    @OrderBy("id desc")
     @OneToMany(mappedBy = "commenter", fetch = FetchType.LAZY)
     private List<Comment> comments;
 
