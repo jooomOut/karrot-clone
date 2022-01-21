@@ -124,7 +124,7 @@
                         onchange="updateCategory(this);">
                     <option th:each="category : ${categories}"
                             th:value="${category}"
-                            th:text="${category}"
+                            th:text="${category.krName}"
                             >
 
                     </option>
