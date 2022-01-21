@@ -143,7 +143,7 @@ public class ItemService {
                 .title(item.getTitle())
                 .mainText(item.getMainText())
                 .price(item.getPrice())
-                .category(item.getCategory().name())
+                .category(item.getCategory().getKrName())
                 .uploader(item.getUploader())
                 .place(item.getPlace())
                 .status(item.getStatus().name())
