@@ -25,10 +25,6 @@
         .place {
             padding: 30px;
         }
-        .item_img * {
-            width: 300px;
-            height: 300px;
-        }
         .img_container {
             display: flex;
             align-items: center;
@@ -95,6 +91,43 @@
             color: white;
             background-color: orange;
         }
+        .setting-back{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+        .setting-box {
+            position: absolute;
+            bottom: 0px;
+            background: white;
+            width: 100%;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            z-index: 5;
+            border: solid lightgray;
+            border-radius: 5px;
+        }
+        .setting {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 150px;
+            font-size: 50px;
+        }
+        .setting > img {
+            width: 80px;
+            height: 80px;
+            margin-right: 20px;
+        }
+        .invisible {
+            display: none;
+            z-index: -100;
+        }
     </style>
 </head>
 <body>
@@ -111,15 +144,27 @@
         </span>
     </div>
 
+    <div class="setting-back invisible modal" onclick="closeSetting();">
+        <div class="setting-box invisible modal">
+            <label class="setting" for="profile_image">
+                <img src="/img/album.png"/>
+                앨범에서 선택
+            </label>
+            <span class="setting" onclick="deleteProfileImage();">
+                <img src="/img/trashcan.png"/>
+                프로필 사진 삭제
+            </span>
+        </div>
+    </div>
 
     <div class="circle-container circle" style="margin-bottom: 50px;">
         <img class="profile-image" id="profile_image_view"
              th:src="${user.image == null ? '/img/camera.png' : user.image.path}"/>
         <div class="circle small-circle">
-            <label for="profile_image">
+            <div onclick="openSetting();">
                 <img class="small-image" src="/img/camera.png"/>
-            </label>
-                <input type="file" id="profile_image" style="display: none"/>
+            </div>
+                <input type="file" id="profile_image" onchange="editProfile();" style="display: none"/>
         </div>
     </div>
     <input class="big-input" id="nickname" th:value="${user.nickname}"/>
@@ -154,27 +199,39 @@
         xhr.send(formData); // 폼 데이터 객체 전송
     }
 
-    function readImage(input) {
-        console.log("input is" + JSON.stringify(input))
-        // 인풋 태그에 파일들이 있는 경우
-        if(input.files) {
-            // 유사배열을 배열로 변환 (forEach문으로 처리하기 위해)
-            const file = Array.from(input.files)[0]
-
-            const reader = new FileReader()
-            reader.onload = e => {
-                console.log("e rsult =" + e.target.result)
-                document.getElementById('profile_image_view').scr
-                 = e.target.result
+    const deleteProfileImage = () => {
+        let image = [[${user.image}]];
+        if (confirm("프로필 사진을 정말 삭제하시겠어요?") ){
+            if (image == null || image.id == null){
+                alert("정상적으로 삭제되었습니다.");
+                window.location.reload();
             }
+            let xhr = new XMLHttpRequest();
+            let formData = new FormData();
 
-            reader.readAsDataURL(file)
+            formData.append('type', 'user_profile');
+
+            xhr.onload = function() {
+                if (xhr.status === 200 || xhr.status === 201) {
+                    alert("정상적으로 삭제되었습니다.")
+                    window.location.reload();
+                }
+            };
+            xhr.open('DELETE', '/api/images/' + [[${user.image.id}]]);
+            xhr.send(formData); // 폼 데이터 객체 전송
         }
     }
 
-    const profileImage = document.getElementById("profile_image")
-    profileImage.addEventListener("change", e => {
-        console.log("detect chanigng");
-        readImage(e.target)
-    })
+    const openSetting = () => {
+        let modals = document.getElementsByClassName('modal');
+        for (let i = 0 ; i < modals.length ; i++){
+            document.getElementsByClassName('modal')[i].classList.remove("invisible");
+        }
+    }
+    const closeSetting = () => {
+        let modals = document.getElementsByClassName('modal');
+        for (let i = 0 ; i < modals.length ; i++){
+            document.getElementsByClassName('modal')[i].classList.add("invisible");
+        }
+    }
 </script>
