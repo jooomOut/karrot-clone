@@ -26,6 +26,16 @@ public class ItemApiController {
 
     @Autowired
     private ItemService itemService;
+
+    /*
+    * lastId 보다 작은 id 값을 가진 게시물들을 가져온다.
+    * */
+    @GetMapping
+    public ResponseEntity<List<ItemDto>> getItemList(@RequestParam Long lastId,
+                                      @RequestParam(required = false, defaultValue = "5") int size){
+        List<ItemDto> itemDtos = itemService.getItems(lastId, size);
+        return ResponseEntity.ok().body(itemDtos);
+    }
     /**
      * 중고거래 업로드
      * @Param : List<MultipartFile>, ItemDto

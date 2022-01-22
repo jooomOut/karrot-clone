@@ -147,8 +147,9 @@
                 </button>
             </span>
         </div>
-        <div>
-            <div th:each="item : ${items}" class="item" th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''">
+        <div id="item-container">
+            <div th:each="item : ${items}" th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''"
+                 th:id="${item.id}" class="item">
                 <span class="item_img">
                     <img th:if="${item.images.size() == 0}" src="/img/karrot.png"/>
                     <img th:if="${item.images.size() != 0}" th:src="${item.images[0].path}"/>
@@ -197,7 +198,99 @@
 </div>
 </body>
 <script>
-    function reload(){
-        window.location.reload();
+    const getLastId = () => {
+        let list = document.getElementById('item-container').children;
+        if (list.length == 0) {
+            return null;
+        }
+        return list[list.length-1].id;
     }
+    const getList = () => {
+        url = "/api/items?lastId="+ getLastId();
+        fetch(url, {
+            method: 'GET'
+        })
+        .then((res) => res.json())
+        .then((res) => {drawList(res)})
+        .then(() => {isFetching = false})
+        .catch((e) => console.error(e));
+    }
+    const drawList = (list) => {
+        if (list == null || list.length == 0){
+            return;
+        }
+
+        list.forEach(item => {
+            $item = document.createElement('div');
+            $item.id = item.id;
+            $item.classList.add("item");
+            $item.addEventListener('click', () => {
+                location.href = `/items/${item.id}`
+            })
+
+            $item_img = document.createElement('span');
+            $item_img.classList.add("item_img");
+            $img = document.createElement('img');
+            $img.src = item.images.length == 0 ? '/img/karrot.png' : item.images[0].path;
+            $item_img.appendChild($img);
+            $item.appendChild($item_img);
+
+            $item_explain = document.createElement('div');
+            $item_explain.classList.add('item_explain');
+
+            $item_text = document.createElement('div');
+            $item_text.classList.add('item_text');
+            $title = document.createElement('div');
+            $title.textContent = item.mainText;
+            $item_place = document.createElement('div');
+            $item_place.textContent = item.place;
+
+            $div = document.createElement('div');
+            if (item.status === 'SOLD'){
+                $sold = document.createElement('span');
+                $sold.classList.add('sold');
+                $sold.textContent = '거래완료';
+                $div.appendChild($sold);
+            }
+            $div.textContent = item.price + ' 원';
+
+            $item_text.appendChild($title);
+            $item_text.appendChild($item_place)
+            $item_text.appendChild($div);
+            $item_explain.appendChild($item_text);
+
+            $item_preference = document.createElement('div');
+            $item_preference.classList.add('item_preference');
+
+            if (item.comments.length != 0){
+                $comments = document.createElement('span');
+                $comment_img = document.createElement('img');
+                $comment_img.src = '/img/chat.png';
+                $comments.appendChild($comment_img);
+                $comments.textContent = item.comments.length;
+                $item_preference.appendChild($comments);
+            }
+
+            if (item.interests.length !== 0){
+                $interests = document.createElement('span');
+                $interests_img = document.createElement('img');
+                $interests_img.src = '/img/heart.png';
+                $interests.appendChild($interests_img);
+                $interests.textContent = item.interests.length;
+                $item_preference.appendChild($interests);
+            }
+            $item_explain.appendChild($item_preference);
+
+            $item.appendChild($item_explain);
+
+            document.getElementById('item-container').appendChild($item);
+        })
+    }
+    var isFetching = false;
+    window.onscroll = function(e) {
+        if((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !isFetching) {
+            isFetching = true;
+            getList();
+        }
+    };
 </script>

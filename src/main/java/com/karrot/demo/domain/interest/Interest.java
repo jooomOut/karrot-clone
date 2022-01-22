@@ -25,7 +25,7 @@ public class Interest {
     private Long id;
 
     @JoinColumn(name="itemId")
-    @ManyToOne
+    @ManyToOne 
     private Item item;
     @JoinColumn(name="userId")
     @ManyToOne

@@ -11,6 +11,7 @@ import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,9 +53,14 @@ public class ItemService {
         item.setComments(item.getComments().stream().limit(commentsSize).collect(Collectors.toList()));
         return toItemDto(item);
     }
-
     public List<ItemDto> getItems(){
-        return itemRepository.findTop20ByOrderByIdDesc().stream()
+        Long defaultItemId = Long.MAX_VALUE;
+        int defaultSize = 5;
+        return getItems(defaultItemId, defaultSize);
+    }
+    public List<ItemDto> getItems(Long itemId, int size){
+        PageRequest pageRequest = PageRequest.of(0, size);
+        return itemRepository.findByIdLessThanOrderByIdDesc(itemId, pageRequest).stream()
                 .map(this::toItemDto)
                 .collect(Collectors.toList());
     }
