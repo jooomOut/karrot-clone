@@ -22,7 +22,7 @@ public class ItemDto {
     @NotNull private String mainText;
     @NotNull private Long price;
     @NotNull private String category;
-    @NotNull private String status;
+    private String status;
 
     private Long uploaderId;
     private Account uploader;
