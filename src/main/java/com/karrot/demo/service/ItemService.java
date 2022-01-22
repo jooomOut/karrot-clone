@@ -79,13 +79,13 @@ public class ItemService {
     }
 
     public List<ItemDto> getItemsByUserId(Long userId){
-        return itemRepository.findAllByUploaderId(userId).stream()
+        return itemRepository.findAllByUploaderIdOrderByIdDesc(userId).stream()
                 .map(this::toItemDto)
                 .collect(Collectors.toList());
     }
 
     public List<ItemDto> getItemsByUserInterest(Long userId) {
-        return interestRepository.findAllByUserId(userId).stream()
+        return interestRepository.findAllByUserIdOrderByIdDesc(userId).stream()
                 .map(interest -> toItemDto(interest.getItem()))
                 .collect(Collectors.toList());
     }
