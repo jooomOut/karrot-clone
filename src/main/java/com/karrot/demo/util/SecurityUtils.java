@@ -2,6 +2,7 @@ package com.karrot.demo.util;
 
 import com.karrot.demo.domain.user.Account;
 import com.karrot.demo.security.service.AccountAdapter;
+import com.karrot.demo.web.dto.image.ImageDto;
 import com.karrot.demo.web.dto.user.UserSessionDto;
 import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,7 +39,11 @@ public class SecurityUtils {
                 .username(account.getUsername())
                 .phone(account.getPhone())
                 .nickname(account.getNickname())
-                .image(account.getImage())
+                .image(account.getImage() == null ? null :
+                            ImageDto.builder()
+                                .id(account.getImage().getId())
+                                .path(account.getImage().getPath())
+                        .build())
                 .build();
     }
 }
