@@ -159,7 +159,7 @@
 
     <div class="circle-container circle" style="margin-bottom: 50px;">
         <img class="profile-image" id="profile_image_view"
-             th:src="${user.image == null ? '/img/camera.png' : user.image.path}"/>
+             th:src="${user.image == null ? '/img/person.png' : user.image.path}"/>
         <div class="circle small-circle">
             <div onclick="openSetting();">
                 <img class="small-image" src="/img/camera.png"/>
@@ -206,6 +206,7 @@
                 alert("정상적으로 삭제되었습니다.");
                 window.location.reload();
             }
+            let imageId = image.id;
             let xhr = new XMLHttpRequest();
             let formData = new FormData();
 
@@ -217,7 +218,7 @@
                     window.location.reload();
                 }
             };
-            xhr.open('DELETE', '/api/images/' + [[${user.image.id}]]);
+            xhr.open('DELETE', '/api/images/' + imageId);
             xhr.send(formData); // 폼 데이터 객체 전송
         }
     }
