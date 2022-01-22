@@ -48,12 +48,19 @@ public class CommentService {
         comment.setItem(item);
         commentRepository.save(comment);
     }
+    public void updateComment(Long commentId, String text) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("comment is not found : with id - "+ commentId));
 
+        comment.setText(text);
+        commentRepository.save(comment);
+    }
     private Comment toEntityFromAdding(AddCommentDto commentDto) {
         return Comment.builder()
                 .text(commentDto.getText())
                 .createdAt(LocalDateTime.now())
                 .build();
     }
+
 
 }

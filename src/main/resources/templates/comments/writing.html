@@ -92,17 +92,33 @@
         let xhr = new XMLHttpRequest();
         let formData = new FormData();
 
-        formData.append("itemId", [[${itemId}]]);
-        formData.append("text", document.getElementById('text').value);
-        formData.append("commenterId", [[${userId}]]);
+        if ([[${commentText}]] == null){
+            formData.append("itemId", [[${itemId}]]);
+            formData.append("text", document.getElementById('text').value);
+            formData.append("commenterId", [[${userId}]]);
 
-        xhr.onload = function() {
-            if (xhr.status === 200 || xhr.status === 201) {
-                window.history.back();
-            }
-        };
-        /*댓글추가 백엔드짜기*/
-        xhr.open('POST', '/api/comments');
-        xhr.send(formData); // 폼 데이터 객체 전송
+            xhr.onload = function() {
+                if (xhr.status === 200 || xhr.status === 201) {
+                    window.history.back();
+                }
+            };
+            /*댓글추가 백엔드짜기*/
+            xhr.open('POST', '/api/comments');
+            xhr.send(formData); // 폼 데이터 객체 전송
+        } else {
+            let commentId = [[${commentId}]]
+            formData.append('commentId', commentId);
+            formData.append("text", document.getElementById('text').value);
+
+            xhr.onload = function() {
+                if (xhr.status === 200 || xhr.status === 201) {
+                    window.history.back();
+                }
+            };
+            /*댓글추가 백엔드짜기*/
+            xhr.open('PUT', '/api/comments/' + commentId);
+            xhr.send(formData); // 폼 데이터 객체 전송
+        }
+
     }
 </script>

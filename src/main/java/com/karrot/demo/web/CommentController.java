@@ -42,6 +42,7 @@ public class CommentController {
         model.addAttribute("itemId", itemId);
         model.addAttribute("userId", SecurityUtils.getLoginUserId());
         if (commentId != null){
+            model.addAttribute("commentId", commentId);
             model.addAttribute("commentText", commentService.getCommentText(commentId));
         }
 
