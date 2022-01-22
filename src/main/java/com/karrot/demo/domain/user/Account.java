@@ -1,5 +1,6 @@
 package com.karrot.demo.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.karrot.demo.domain.comment.Comment;
 import com.karrot.demo.domain.image.UserProfileImage;
 import com.karrot.demo.domain.item.Item;
@@ -22,6 +23,7 @@ public class Account {
     @Column(name="email", unique = true)
     private String email;
 
+    @JsonIgnore
     private String password;
     private String username;
 
@@ -33,15 +35,15 @@ public class Account {
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private UserProfileImage image;
 
-    @OrderBy("id desc")
+    @OrderBy("id desc") @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Interest> interests;
 
-    @OrderBy("id desc")
+    @OrderBy("id desc") @JsonIgnore
     @OneToMany(mappedBy = "uploader", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Item> items;
 
-    @OrderBy("id desc")
+    @OrderBy("id desc") @JsonIgnore
     @OneToMany(mappedBy = "commenter", fetch = FetchType.LAZY)
     private List<Comment> comments;
 

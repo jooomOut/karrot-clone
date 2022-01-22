@@ -1,5 +1,6 @@
 package com.karrot.demo.domain.image;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.karrot.demo.domain.item.Item;
 import com.sun.istack.NotNull;
 import lombok.*;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @DiscriminatorValue("item")
 public class ItemImage extends Image{
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @NotNull private Item item;
 
