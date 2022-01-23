@@ -203,10 +203,10 @@
 
         xhr.onload = function() {
             if (xhr.status === 200 || xhr.status === 201) {
-                console.log(xhr.responseText);
+                alert("정상적으로 업로드되었습니다.");
                 location.href = "/items";
             } else {
-                console.error(xhr.responseText);
+                alert(xhr.responseText);
             }
         };
         xhr.open('POST', '/api/items');

@@ -47,7 +47,8 @@ public class ItemApiController {
                                      BindingResult errors){
         if (errors.hasErrors()){
             log.debug(">>> 중고거래 업로드 에러 : " + errors.toString());
-            return ResponseEntity.badRequest().build();
+            String errorStr = errors.getErrorCount() > 0 ? errors.getAllErrors().get(0).getDefaultMessage() : "알 수 없는 오류";
+            return ResponseEntity.badRequest().body(errorStr);
         }
         try {
             itemService.uploadItem(uploadImages, itemDto);
@@ -62,11 +63,12 @@ public class ItemApiController {
     @PutMapping("/{itemId}")
     public ResponseEntity updateItem(@PathVariable Long itemId,
                                     @RequestPart(required = false) List<MultipartFile> uploadImages,
-                                     @ModelAttribute @Validated ItemUploadDto itemDto,
+                                     @ModelAttribute @Valid ItemUploadDto itemDto,
                                      BindingResult errors){
         if (errors.hasErrors()){
             log.debug(">>> 중고거래 게시글 수정 에러 : " + errors.toString());
-            return ResponseEntity.badRequest().build();
+            String errorStr = errors.getErrorCount() > 0 ? errors.getAllErrors().get(0).getDefaultMessage() : "알 수 없는 오류";
+            return ResponseEntity.badRequest().body(errorStr);
         }
         try {
             itemService.updateItem(itemId, uploadImages, itemDto);
