@@ -26,7 +26,8 @@ public class CommentApiController {
                                      BindingResult errors){
         if (errors.hasErrors()){
             log.debug(">>> 댓글 작성 에러 : " + errors.toString());
-            return ResponseEntity.badRequest().build();
+            String errorStr = errors.getErrorCount() > 0 ? errors.getAllErrors().get(0).getDefaultMessage() : "알 수 없는 오류";
+            return ResponseEntity.badRequest().body(errorStr);
         }
         try {
             commentService.addComment(commentDto);
@@ -38,10 +39,15 @@ public class CommentApiController {
     }
     @PutMapping("/{commentId}")
     public ResponseEntity updateComment(@PathVariable Long commentId,
-                                        @RequestParam String text){
-
+                                        @ModelAttribute @Valid AddCommentDto commentDto,
+                                        BindingResult errors){
+        if (errors.hasErrors()){
+            log.debug(">>> 댓글 작성 에러 : " + errors.toString());
+            String errorStr = errors.getErrorCount() > 0 ? errors.getAllErrors().get(0).getDefaultMessage() : "알 수 없는 오류";
+            return ResponseEntity.badRequest().body(errorStr);
+        }
         try {
-            commentService.updateComment(commentId, text);
+            commentService.updateComment(commentId, commentDto.getText());
         } catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().build();
         }
