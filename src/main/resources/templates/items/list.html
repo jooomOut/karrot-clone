@@ -277,16 +277,16 @@
                 $comment_img = document.createElement('img');
                 $comment_img.src = '/img/chat.png';
                 $comments.appendChild($comment_img);
-                $comments.textContent = item.commentCount;
+                $comments.innerHTML += item.commentCount;
                 $item_preference.appendChild($comments);
             }
 
-            if (item.interestCount.length !== 0){
+            if (item.interestCount !== 0){
                 $interests = document.createElement('span');
                 $interests_img = document.createElement('img');
                 $interests_img.src = '/img/heart.png';
                 $interests.appendChild($interests_img);
-                $interests.textContent = item.interestCount
+                $interests.innerHTML += item.interestCount
                 $item_preference.appendChild($interests);
             }
             $item_explain.appendChild($item_preference);
