@@ -38,6 +38,9 @@
             height: 250px;
             margin-right: 40px;
             margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-content: center;
         }
         .top-container {
             display: flex;
@@ -107,7 +110,7 @@
                 <div class="item_img" id="image_container">
                     <label for="images" class="img_upload_button">
                         <input type="file" name="images" id="images" style="display: none" multiple/>
-                        <img src="/img/plus.png"/>
+                        <img style="width: 150px; height: 150px" src="/img/plus.png"/>
                     </label>
 
                 </div>
@@ -151,11 +154,16 @@
             console.log(input.files)
             // 유사배열을 배열로 변환 (forEach문으로 처리하기 위해)
             const fileArr = Array.from(input.files)
+            
+            document.getElementsByName("preView").forEach((view) => {
+                view.remove();
+            })
 
             fileArr.forEach((file, index) => {
                 /*button > img 형태*/
                 const reader = new FileReader()
                 const $imgButton = document.createElement("button")
+                $imgButton.name="preView"
                 const $img = document.createElement("img")
                 $img.classList.add("image")
 
@@ -185,7 +193,7 @@
 
         const files = document.getElementsByName('images')[0].files;
         for (let i = 0 ; i < files.length ; i++){
-            formData.append("uploadImages[]", files[i]);
+            formData.append("uploadImages", files[i]);
         }
         formData.append('title', getValueByName('title'));
         formData.append('mainText', getValueByName('mainText'));
