@@ -34,7 +34,7 @@ public class ItemController {
     @GetMapping
     public String getItemsPage(Model model){
 
-        model.addAttribute("items", itemService.getItems());
+        model.addAttribute("items", itemService.getItemsPreview());
 
         return "items/list";
     }

@@ -9,6 +9,7 @@ import com.karrot.demo.domain.user.Account;
 import com.karrot.demo.domain.user.UserRepository;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
+import com.karrot.demo.web.dto.item.ItemPreviewDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -53,15 +54,15 @@ public class ItemService {
         item.setComments(item.getComments().stream().limit(commentsSize).collect(Collectors.toList()));
         return toItemDto(item);
     }
-    public List<ItemDto> getItems(){
+    public List<ItemPreviewDto> getItemsPreview(){
         Long defaultItemId = Long.MAX_VALUE;
         int defaultSize = 5;
-        return getItems(defaultItemId, defaultSize);
+        return getItemsPreview(defaultItemId, defaultSize);
     }
-    public List<ItemDto> getItems(Long itemId, int size){
+    public List<ItemPreviewDto> getItemsPreview(Long itemId, int size){
         PageRequest pageRequest = PageRequest.of(0, size);
         return itemRepository.findByIdLessThanOrderByIdDesc(itemId, pageRequest).stream()
-                .map(this::toItemDto)
+                .map(this::toPreviewDto)
                 .collect(Collectors.toList());
     }
 
@@ -169,5 +170,21 @@ public class ItemService {
                 .build();
         dto.setWhenUploaded(item.getWhenUploaded());
         return dto;
+    }
+
+    private ItemPreviewDto toPreviewDto(Item item){
+        return ItemPreviewDto.builder()
+                .id(item.getId())
+                .title(item.getTitle())
+                .mainText(item.getMainText())
+                .price(item.getPrice())
+                .place(item.getPlace())
+                .createdAt(item.getWhenUploaded())
+                .status(item.getStatus())
+                .interestCount(item.getInterests().size())
+                .commentCount(item.getComments().size())
+                .thumbnailPath(item.getImages().size() != 0 ? item.getImages().get(0).getPath()
+                                                            : null)
+                .build();
     }
 }

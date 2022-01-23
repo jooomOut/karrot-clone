@@ -35,13 +35,14 @@ public class Item {
     @ManyToOne
     @NotNull private Account uploader;
 
+    @Builder.Default
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Interest> interests;
-
+    private List<Interest> interests = new ArrayList<>();
+    @Builder.Default
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Comment> comments;
-
+    private List<Comment> comments = new ArrayList<>();
+    @Builder.Default
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<ItemImage> images;
+    private List<ItemImage> images = new ArrayList<>();
 
 }

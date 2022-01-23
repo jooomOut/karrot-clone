@@ -5,6 +5,7 @@ import com.karrot.demo.service.ItemService;
 import com.karrot.demo.service.UserService;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
+import com.karrot.demo.web.dto.item.ItemPreviewDto;
 import com.karrot.demo.web.dto.user.RegisterUserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,9 @@ public class ItemApiController {
     * lastId 보다 작은 id 값을 가진 게시물들을 가져온다.
     * */
     @GetMapping
-    public ResponseEntity<List<ItemDto>> getItemList(@RequestParam Long lastId,
-                                      @RequestParam(required = false, defaultValue = "5") int size){
-        List<ItemDto> itemDtos = itemService.getItems(lastId, size);
+    public ResponseEntity<List<ItemPreviewDto>> getItemList(@RequestParam Long lastId,
+                                                            @RequestParam(required = false, defaultValue = "5") int size){
+        List<ItemPreviewDto> itemDtos = itemService.getItemsPreview(lastId, size);
         return ResponseEntity.ok().body(itemDtos);
     }
     /**
