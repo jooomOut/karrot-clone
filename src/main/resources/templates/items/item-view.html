@@ -292,7 +292,7 @@
             <div th:each="item : ${item.uploader.items}" class="related-item" th:onclick="'location.href=\'' + '/items/' + @{${item.id}} + '\''">
                 <img th:src="${item.images == null || item.images.size() == 0 ? '/img/karrot.png' : item.images[0].path}"/>
                 <span th:text="${item.title}"></span>
-                <span th:text="${item.price}"></span>
+                <span>[[${item.price}]]원</span>
             </div>
         </div>
     </div>
