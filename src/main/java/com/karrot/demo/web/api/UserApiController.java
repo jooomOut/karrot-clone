@@ -48,7 +48,7 @@ public class UserApiController {
         } catch(DuplicateUserException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-
+        log.info("new user created");
         return ResponseEntity.ok().build();
     }
 

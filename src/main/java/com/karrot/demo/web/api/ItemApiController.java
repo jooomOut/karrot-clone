@@ -46,14 +46,12 @@ public class ItemApiController {
                                      @ModelAttribute @Valid ItemUploadDto itemDto,
                                      BindingResult errors){
         if (errors.hasErrors()){
-            log.debug(">>> 중고거래 업로드 에러 : " + errors.toString());
             String errorStr = errors.getErrorCount() > 0 ? errors.getAllErrors().get(0).getDefaultMessage() : "알 수 없는 오류";
             return ResponseEntity.badRequest().body(errorStr);
         }
         try {
             itemService.uploadItem(uploadImages, itemDto);
         } catch (EntityNotFoundException e){
-            log.debug("유저 정보를 찾을 수 없음 ");
             return ResponseEntity.badRequest().build();
         }
 
@@ -66,17 +64,15 @@ public class ItemApiController {
                                      @ModelAttribute @Valid ItemUploadDto itemDto,
                                      BindingResult errors){
         if (errors.hasErrors()){
-            log.debug(">>> 중고거래 게시글 수정 에러 : " + errors.toString());
             String errorStr = errors.getErrorCount() > 0 ? errors.getAllErrors().get(0).getDefaultMessage() : "알 수 없는 오류";
             return ResponseEntity.badRequest().body(errorStr);
         }
         try {
             itemService.updateItem(itemId, uploadImages, itemDto);
         } catch (EntityNotFoundException e){
-            log.debug("게시물을 찾을 수 없음 : " + itemId);
             return ResponseEntity.badRequest().build();
         }
-
+        log.info("item is uploaded");
         return ResponseEntity.ok().build();
     }
 
@@ -102,6 +98,7 @@ public class ItemApiController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+        log.info("item is deleted - "+ itemId);
         return ResponseEntity.ok().build();
     }
 }

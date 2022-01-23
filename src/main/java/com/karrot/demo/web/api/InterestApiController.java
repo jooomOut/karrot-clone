@@ -23,10 +23,10 @@ public class InterestApiController {
     public ResponseEntity addInterest(@ModelAttribute @Validated AddInterestDto interestDto,
                                      BindingResult errors){
         if (errors.hasErrors()){
-            log.debug(">>> 관심 목록 추가 에러 : " + errors.toString());
             return ResponseEntity.badRequest().build();
         }
         interestService.addInterest(interestDto);
+        log.info("item is added to interested list : id - " + interestDto.getItemId());
         return ResponseEntity.ok().build();
     }
 

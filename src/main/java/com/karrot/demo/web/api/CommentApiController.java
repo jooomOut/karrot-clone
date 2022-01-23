@@ -25,7 +25,6 @@ public class CommentApiController {
     public ResponseEntity addComment(@ModelAttribute @Valid AddCommentDto commentDto,
                                      BindingResult errors){
         if (errors.hasErrors()){
-            log.debug(">>> 댓글 작성 에러 : " + errors.toString());
             String errorStr = errors.getErrorCount() > 0 ? errors.getAllErrors().get(0).getDefaultMessage() : "알 수 없는 오류";
             return ResponseEntity.badRequest().body(errorStr);
         }
@@ -34,7 +33,7 @@ public class CommentApiController {
         } catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().build();
         }
-
+        log.info("add comment");
         return ResponseEntity.ok().build();
     }
     @PutMapping("/{commentId}")
@@ -51,7 +50,7 @@ public class CommentApiController {
         } catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().build();
         }
-
+        log.info("edit comment");
         return ResponseEntity.ok().build();
     }
 

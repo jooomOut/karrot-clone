@@ -20,6 +20,7 @@ public class ImageApiController {
     @DeleteMapping("/{imageId}")
     public ResponseEntity deleteImage(@PathVariable Long imageId,
                                       @RequestParam String type) {
+        log.info("delete image - id : " + imageId);
         imageService.deleteImage(imageId, type);
         return ResponseEntity.ok().build();
     }
