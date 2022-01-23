@@ -33,7 +33,7 @@ public class CommentController {
         model.addAttribute("item", itemService.getItemDtoBy(itemId));
         model.addAttribute("user", SecurityUtils.getLoginUser());
 
-        return "/comments/view";
+        return "comments/view";
     }
     @GetMapping("/writing/{itemId}")
     public String getPageForWriting(Model model,
@@ -46,6 +46,6 @@ public class CommentController {
             model.addAttribute("commentText", commentService.getCommentText(commentId));
         }
 
-        return "/comments/writing";
+        return "comments/writing";
     }
 }

@@ -36,7 +36,7 @@ public class ItemController {
 
         model.addAttribute("items", itemService.getItems());
 
-        return "/items/list";
+        return "items/list";
     }
 
     @GetMapping("/search")
@@ -58,7 +58,7 @@ public class ItemController {
         model.addAttribute("interest", interestService.checkInterestedBy(itemId, user.getId()));
         model.addAttribute("statusList", ItemStatus.values());
 
-        return "/items/item-view";
+        return "items/item-view";
     }
 
     @GetMapping("/{itemId}/edit")
@@ -71,14 +71,14 @@ public class ItemController {
         model.addAttribute("user", SecurityUtils.getLoginUser());
         model.addAttribute("categories", ItemCategory.values());
 
-        return "/items/item-edit";
+        return "items/item-edit";
     }
 
     @GetMapping("/user/{userId}")
     public String getItemsOfUser(Model model,
                                  @PathVariable Long userId){
         model.addAttribute("items", itemService.getItemsByUserId(userId));
-        return "/items/user-items";
+        return "items/user-items";
     }
 
     @GetMapping("/upload")
