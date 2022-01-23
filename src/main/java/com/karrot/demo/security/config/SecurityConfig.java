@@ -25,6 +25,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private UserLoginFailHandler userLoginFailHandler;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -52,8 +54,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
               .usernameParameter("email")
               .passwordParameter("password")
               .loginProcessingUrl("/users/login")
-              .defaultSuccessUrl("/items")
+              //.defaultSuccessUrl("/items")
+              .failureHandler(userLoginFailHandler)
               .permitAll()
+
           .and()
               .logout()
               .logoutSuccessUrl("/")
