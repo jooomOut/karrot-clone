@@ -9,6 +9,7 @@ import com.karrot.demo.domain.user.Account;
 import com.karrot.demo.domain.user.UserRepository;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
+import com.karrot.demo.web.dto.item.ItemEditDto;
 import com.karrot.demo.web.dto.item.ItemPreviewDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +101,7 @@ public class ItemService {
         fileService.upload(item, files);
     }
 
-    public void updateItem(Long itemId, List<MultipartFile> uploadImages, ItemDto itemDto) {
+    public void updateItem(Long itemId, List<MultipartFile> uploadImages, ItemEditDto itemDto) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(EntityNotFoundException::new);
         SecurityUtils.checkUser(item.getUploader().getId());
@@ -134,7 +135,7 @@ public class ItemService {
         itemRepository.delete(item);
     }
 
-    private Item toEntityForEditing(Item item, ItemDto itemDto, List<MultipartFile> uploadImages) {
+    private Item toEntityForEditing(Item item, ItemEditDto itemDto, List<MultipartFile> uploadImages) {
         item.setTitle(itemDto.getTitle());
         item.setPrice(itemDto.getPrice());
         item.setMainText(itemDto.getMainText());

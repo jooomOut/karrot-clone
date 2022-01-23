@@ -5,6 +5,7 @@ import com.karrot.demo.service.ItemService;
 import com.karrot.demo.service.UserService;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
+import com.karrot.demo.web.dto.item.ItemEditDto;
 import com.karrot.demo.web.dto.item.ItemPreviewDto;
 import com.karrot.demo.web.dto.user.RegisterUserDto;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -65,7 +67,7 @@ public class ItemApiController {
     @PutMapping("/{itemId}")
     public ResponseEntity updateItem(@PathVariable Long itemId,
                                     @RequestPart(required = false) List<MultipartFile> uploadImages,
-                                     @ModelAttribute @Validated ItemDto itemDto,
+                                     @ModelAttribute @Validated ItemEditDto itemDto,
                                      BindingResult errors){
         if (errors.hasErrors()){
             log.debug(">>> 중고거래 게시글 수정 에러 : " + errors.toString());
@@ -73,8 +75,8 @@ public class ItemApiController {
         }
         try {
             itemService.updateItem(itemId, uploadImages, itemDto);
-        } catch (IllegalArgumentException e){
-            log.debug("USER ID를 찾을 수 없음 : " + itemDto.getUploaderId());
+        } catch (EntityNotFoundException e){
+            log.debug("게시물을 찾을 수 없음 : " + itemId);
             return ResponseEntity.badRequest().build();
         }
 
