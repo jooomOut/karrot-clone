@@ -150,8 +150,6 @@
 
         // 인풋 태그에 파일들이 있는 경우
         if(input.files) {
-            // 이미지 파일 검사 (생략)
-            console.log(input.files)
             // 유사배열을 배열로 변환 (forEach문으로 처리하기 위해)
             const fileArr = Array.from(input.files)
             
@@ -172,7 +170,6 @@
                 reader.onload = e => {
                     $img.src = e.target.result
                 }
-                console.log(file.name)
                 reader.readAsDataURL(file)
                 multipleContainer.appendChild($imgButton)
             })

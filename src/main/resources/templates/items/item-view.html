@@ -363,7 +363,6 @@
         let formData = new FormData();
 
         formData.append('status', e.value);
-        console.log(e.value);
 
         xhr.onload = function() {
             if (xhr.status === 200 || xhr.status === 201) {
