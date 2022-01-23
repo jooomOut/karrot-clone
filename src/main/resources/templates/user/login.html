@@ -68,10 +68,10 @@
 
         xhr.onload = function() {
             if (xhr.status === 200 || xhr.status === 201) {
-                alert("로그인에 성공했습니다..")
+                alert("로그인에 성공했습니다!")
                 location.href = "/items";
             } else {
-                alert("아이디 혹은 비밀번호가 올바르지 않습니다..")
+                alert("아이디 혹은 비밀번호가 올바르지 않습니다.")
             }
         };
         xhr.open('POST', '/users/login');

@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface InterestRepository extends JpaRepository<Interest, Long> {
     boolean existsByItemIdAndUserId(Long itemId, Long userId);
     Optional<Interest> findByItemIdAndUserId(Long itemId, Long userId);
-    List<Interest> findAllByUserId(Long userId);
+    List<Interest> findAllByUserIdOrderByIdDesc(Long userId);
 }
