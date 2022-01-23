@@ -250,7 +250,7 @@
                                                                 th:value="${item.status}">
             <option th:each="status : ${statusList}"
                     th:selected="${status.name().equals(item.status)}"
-                    th:value="${status}"
+                    th:value="${status.name()}"
                     th:text="${status.krName}"
                     name="status">
             </option>
@@ -270,7 +270,7 @@
         <span>[[${item.price}]]원</span>
     </div>
     <div class="row">
-        <span th:text="${item.category}"></span>
+        <span th:text="${item.category.krName}"></span>
         <span th:text="${item.whenUploaded}"></span>
     </div>
     <div class="row">

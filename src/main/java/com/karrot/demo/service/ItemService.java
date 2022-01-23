@@ -9,7 +9,7 @@ import com.karrot.demo.domain.user.Account;
 import com.karrot.demo.domain.user.UserRepository;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
-import com.karrot.demo.web.dto.item.ItemEditDto;
+import com.karrot.demo.web.dto.item.ItemUploadDto;
 import com.karrot.demo.web.dto.item.ItemPreviewDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,15 +93,15 @@ public class ItemService {
     }
 
     @Transactional
-    public void uploadItem(List<MultipartFile> files, ItemDto itemDto){
-        Account uploader = userRepository.findById(itemDto.getUploaderId())
+    public void uploadItem(List<MultipartFile> files, ItemUploadDto itemDto){
+        Account uploader = userRepository.findById(SecurityUtils.getLoginUserId())
                 .orElseThrow(EntityNotFoundException::new);
 
         Item item = itemRepository.save(toEntityForAdding(itemDto, uploader));
         fileService.upload(item, files);
     }
 
-    public void updateItem(Long itemId, List<MultipartFile> uploadImages, ItemEditDto itemDto) {
+    public void updateItem(Long itemId, List<MultipartFile> uploadImages, ItemUploadDto itemDto) {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(EntityNotFoundException::new);
         SecurityUtils.checkUser(item.getUploader().getId());
@@ -135,7 +135,7 @@ public class ItemService {
         itemRepository.delete(item);
     }
 
-    private Item toEntityForEditing(Item item, ItemEditDto itemDto, List<MultipartFile> uploadImages) {
+    private Item toEntityForEditing(Item item, ItemUploadDto itemDto, List<MultipartFile> uploadImages) {
         item.setTitle(itemDto.getTitle());
         item.setPrice(itemDto.getPrice());
         item.setMainText(itemDto.getMainText());
@@ -144,7 +144,7 @@ public class ItemService {
         return item;
     }
 
-    private Item toEntityForAdding(ItemDto itemDto, Account account){
+    private Item toEntityForAdding(ItemUploadDto itemDto, Account account){
         return Item.builder()
                 .title(itemDto.getTitle())
                 .mainText(itemDto.getMainText())
@@ -161,7 +161,7 @@ public class ItemService {
                 .title(item.getTitle())
                 .mainText(item.getMainText())
                 .price(item.getPrice())
-                .category(item.getCategory().getKrName())
+                .category(item.getCategory())
                 .uploader(item.getUploader())
                 .place(item.getPlace())
                 .status(item.getStatus().name())

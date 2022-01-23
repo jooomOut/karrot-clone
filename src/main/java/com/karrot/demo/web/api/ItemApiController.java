@@ -1,13 +1,10 @@
 package com.karrot.demo.web.api;
 
-import com.karrot.demo.exception.DuplicateUserException;
 import com.karrot.demo.service.ItemService;
-import com.karrot.demo.service.UserService;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
-import com.karrot.demo.web.dto.item.ItemEditDto;
+import com.karrot.demo.web.dto.item.ItemUploadDto;
 import com.karrot.demo.web.dto.item.ItemPreviewDto;
-import com.karrot.demo.web.dto.user.RegisterUserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,18 +43,16 @@ public class ItemApiController {
      * */
     @PostMapping
     public ResponseEntity uploadItem(@RequestPart(required = false) List<MultipartFile> uploadImages,
-                                     @ModelAttribute @Valid ItemDto itemDto,
+                                     @ModelAttribute @Valid ItemUploadDto itemDto,
                                      BindingResult errors){
         if (errors.hasErrors()){
             log.debug(">>> 중고거래 업로드 에러 : " + errors.toString());
             return ResponseEntity.badRequest().build();
         }
-
         try {
-            itemDto.setUploaderId(SecurityUtils.getLoginUserId());
             itemService.uploadItem(uploadImages, itemDto);
-        } catch (IllegalArgumentException e){
-            log.debug("USER ID를 찾을 수 없음 : " + itemDto.getUploaderId());
+        } catch (EntityNotFoundException e){
+            log.debug("유저 정보를 찾을 수 없음 ");
             return ResponseEntity.badRequest().build();
         }
 
@@ -67,7 +62,7 @@ public class ItemApiController {
     @PutMapping("/{itemId}")
     public ResponseEntity updateItem(@PathVariable Long itemId,
                                     @RequestPart(required = false) List<MultipartFile> uploadImages,
-                                     @ModelAttribute @Validated ItemEditDto itemDto,
+                                     @ModelAttribute @Validated ItemUploadDto itemDto,
                                      BindingResult errors){
         if (errors.hasErrors()){
             log.debug(">>> 중고거래 게시글 수정 에러 : " + errors.toString());

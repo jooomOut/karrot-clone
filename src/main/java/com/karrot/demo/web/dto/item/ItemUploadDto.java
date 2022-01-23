@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter @Builder
-public class ItemEditDto {
+public class ItemUploadDto {
 
     @NotNull private String title;
     @NotNull private String mainText;

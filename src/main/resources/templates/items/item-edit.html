@@ -92,7 +92,7 @@
     <div>
         <div class="top-nav">
             <span class="top-container">
-                <button>
+                <button onclick="window.history.back();">
                     <img src="/img/back.png"/>
                 </button>
                 <span class="place">중고거래 글쓰기</span>
@@ -120,16 +120,16 @@
                 <input name="title" placeholder="제목" th:value="${item.title}"/>
             </div>
             <div class="row">
-                <select class="category-control" th:field="*{categories}" th:value="${item.category}"
+                <select class="category-control" th:field="*{categories}" th:value="${item.category.name()}"
                         onchange="updateCategory(this);">
                     <option th:each="category : ${categories}"
-                            th:value="${category}"
+                            th:value="${category.name()}"
                             th:text="${category.krName}"
                             >
 
                     </option>
                 </select>
-                <input name="category" placeholder="카테고리" style="display: none" th:value="${item.category}"/>
+                <input name="category" placeholder="카테고리" style="display: none" th:value="${item.category.name()}"/>
             </div>
             <div class="row">
                 <input type="number" name="price" placeholder="가격(원)" th:value="${item.price}"/>
@@ -148,7 +148,7 @@
         const images = document.getElementById("images")
         images.addEventListener("change", e => {
             readMultipleImage(e.target)
-        })
+        });
     }
 
     const initImages = () => {
