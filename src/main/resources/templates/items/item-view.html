@@ -249,7 +249,7 @@
         <select id="status" class="status-control" th:field="*{statusList}" onchange="updateItem(this);"
                                                                 th:value="${item.status}">
             <option th:each="status : ${statusList}"
-                    th:selected="${status.equals(item.status)}"
+                    th:selected="${status.name().equals(item.status)}"
                     th:value="${status}"
                     th:text="${status.krName}"
                     name="status">
@@ -265,7 +265,8 @@
             <span class="sold" th:if="${item.status.equals('SOLD')}">
                 거래완료
             </span>
-            [[${item.title}]]</span>
+            [[${item.title}]]
+        </span>
         <span>[[${item.price}]]원</span>
     </div>
     <div class="row">
