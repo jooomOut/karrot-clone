@@ -246,8 +246,7 @@
         <span th:text="${item.uploader.nickname}"></span>
     </div>
     <div class="row" th:if="${item.uploader.id.equals(user.id)}">
-        <select id="status" class="status-control" th:field="*{statusList}" onchange="updateItem(this);"
-                                                                th:value="${item.status}">
+        <select id="status" class="status-control" th:field="${item.status}" onchange="updateItem(this);">
             <option th:each="status : ${statusList}"
                     th:selected="${status.name().equals(item.status)}"
                     th:value="${status.name()}"

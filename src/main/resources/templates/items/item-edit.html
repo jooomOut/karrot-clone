@@ -120,7 +120,7 @@
                 <input name="title" placeholder="제목" th:value="${item.title}"/>
             </div>
             <div class="row">
-                <select class="category-control" th:field="*{categories}" th:value="${item.category.name()}"
+                <select class="category-control" th:field="${item.category}" th:value="${item.category.name()}"
                         onchange="updateCategory(this);">
                     <option th:each="category : ${categories}"
                             th:value="${category.name()}"
