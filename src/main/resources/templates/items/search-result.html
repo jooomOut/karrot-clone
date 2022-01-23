@@ -90,6 +90,13 @@
             padding-left: 20px;
             border-radius: 10px;
         }
+        .reserved {
+            padding: 10px;
+            background-color: lightseagreen;
+            color: white;
+            padding-left: 20px;
+            border-radius: 10px;
+        }
 
     </style>
 </head>
@@ -115,7 +122,10 @@
                             <div th:text="${item.title}"></div>
                             <div th:text="${item.place}">Place</div>
                             <div>
-                                <span class="sold" th:if="${!item.status.equals('SOLD')}">
+                                <span class="reserved" th:if="${item.status.equals('RESERVED')}">
+                                    예약중
+                                </span>
+                                <span class="sold" th:if="${item.status.equals('SOLD')}">
                                     거래완료
                                 </span>
                                 &nbsp;&nbsp;[[${item.price}]]원
