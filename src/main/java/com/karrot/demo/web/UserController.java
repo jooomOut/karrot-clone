@@ -24,12 +24,18 @@ public class UserController {
     @GetMapping("/login")
     public String login(){
         log.info("move to login");
+        if(SecurityUtils.getLoginUser() != null){
+            return "redirect:/items";
+        }
         return "user/login";
     }
 
     @GetMapping("/signup")
     public String register(){
         log.info("move to register");
+        if(SecurityUtils.getLoginUser() != null){
+            return "redirect:/items";
+        }
         return "user/register";
     }
 
