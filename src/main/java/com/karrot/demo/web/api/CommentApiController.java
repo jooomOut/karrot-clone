@@ -1,5 +1,6 @@
 package com.karrot.demo.web.api;
 
+import com.karrot.demo.exception.comment.CommentNotFoundException;
 import com.karrot.demo.service.CommentService;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.comment.AddCommentDto;
@@ -47,8 +48,8 @@ public class CommentApiController {
         }
         try {
             commentService.updateComment(commentId, commentDto.getText());
-        } catch (IllegalArgumentException e){
-            return ResponseEntity.badRequest().build();
+        } catch (CommentNotFoundException e){
+            return ResponseEntity.badRequest().body(e.getMsg());
         }
         log.info("edit comment");
         return ResponseEntity.ok().build();
