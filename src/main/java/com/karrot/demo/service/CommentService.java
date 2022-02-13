@@ -6,7 +6,6 @@ import com.karrot.demo.domain.item.Item;
 import com.karrot.demo.domain.item.ItemRepository;
 import com.karrot.demo.domain.user.Account;
 import com.karrot.demo.domain.user.UserRepository;
-import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.comment.AddCommentDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +36,8 @@ public class CommentService {
     }
 
     public void addComment(AddCommentDto commentDto) {
-        SecurityUtils.checkUser(commentDto.getCommenterId());
-        Item item = itemRepository.findById(commentDto.getItemId())
-                .orElseThrow(() -> new EntityNotFoundException("item is not found : with id - "+ commentDto.getItemId()));
-        Account user = userRepository.findById(commentDto.getCommenterId())
-                .orElseThrow(() -> new EntityNotFoundException("user is not found : with id - "+ commentDto.getCommenterId()));
+        Item item = itemRepository.getById(commentDto.getItemId());
+        Account user = userRepository.getById(commentDto.getCommenterId());
 
         Comment comment = toEntityFromAdding(commentDto);
         comment.setCommenter(user);
@@ -55,6 +51,7 @@ public class CommentService {
         comment.setText(text);
         commentRepository.save(comment);
     }
+
     private Comment toEntityFromAdding(AddCommentDto commentDto) {
         return Comment.builder()
                 .text(commentDto.getText())
