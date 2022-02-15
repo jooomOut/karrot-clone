@@ -7,6 +7,7 @@ import com.karrot.demo.domain.item.ItemRepository;
 import com.karrot.demo.domain.item.ItemStatus;
 import com.karrot.demo.domain.user.Account;
 import com.karrot.demo.domain.user.UserRepository;
+import com.karrot.demo.exception.item.ItemNotFoundException;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
 import com.karrot.demo.web.dto.item.ItemUploadDto;
@@ -101,21 +102,15 @@ public class ItemService {
     }
 
     public void updateItem(Long itemId, List<MultipartFile> uploadImages, ItemUploadDto itemDto) {
-        Item item = itemRepository.findById(itemId)
-                .orElseThrow(EntityNotFoundException::new);
-        SecurityUtils.checkUser(item.getUploader().getId());
+        Item item = findOwnItemBy(itemId);
         // TODO: 이미지 처리 구현하기
         item = toEntityForEditing(item, itemDto, uploadImages);
         itemRepository.save(item);
     }
 
     public void updateItemStatus(Long itemId, String status) {
-        Item item = itemRepository.findById(itemId)
-                .orElseThrow(EntityNotFoundException::new);
-        Long userId = SecurityUtils.getLoginUserId();
-        if (!item.getUploader().getId().equals(userId)) {
-            throw new AuthorizationServiceException(userId + " 는 해당 영역에 접근할 수 없습니다.");
-        }
+        Item item = findOwnItemBy(itemId);
+
         try {
             item.setStatus(ItemStatus.valueOf(status));
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -125,15 +120,20 @@ public class ItemService {
     }
 
     public void deleteItem(Long itemId) {
-        Item item = itemRepository.findById(itemId)
-                .orElseThrow(EntityNotFoundException::new);
-        Long userId = SecurityUtils.getLoginUserId();
-        if (!item.getUploader().getId().equals(userId)) {
-            throw new AuthorizationServiceException(userId + " 는 해당 영역에 접근할 수 없습니다.");
-        }
+        Item item = findOwnItemBy(itemId);
         itemRepository.delete(item);
     }
 
+    private Item findOwnItemBy(Long itemId){
+        Item item = findItemBy(itemId);
+        SecurityUtils.checkUser(item.getUploader().getId());
+        return item;
+    }
+
+    private Item findItemBy(Long itemId){
+        return itemRepository.findById(itemId)
+                .orElseThrow(ItemNotFoundException::new);
+    }
     private Item toEntityForEditing(Item item, ItemUploadDto itemDto, List<MultipartFile> uploadImages) {
         item.setTitle(itemDto.getTitle());
         item.setPrice(itemDto.getPrice());
