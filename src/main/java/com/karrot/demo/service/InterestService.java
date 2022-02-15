@@ -28,24 +28,23 @@ public class InterestService {
         this.userRepository = userRepository;
         this.itemRepository = itemRepository;
     }
+    /*
+    * 해당 user가 item을 관심 목록에 추가했는지 확인
+    * */
     public CheckInterestDto checkInterestedBy(Long itemId, Long userId){
-        CheckInterestDto retDto = new CheckInterestDto();
-        if (itemId == null || userId == null){
-            return retDto;
-        }
-        Optional<Interest> interest = interestRepository.findByItemIdAndUserId(itemId, userId);
-        if (interest.isEmpty()){
-            return retDto;
-        }
-        retDto.setInterestedBy(true);
-        retDto.setId(interest.get().getId());
-        return retDto;
+        Interest interest = findInterestBy(itemId, userId);
+        return makeCheckInterestBy(interest);
+    }
+
+    private Interest findInterestBy(Long itemId, Long userId){
+        return interestRepository.findByItemIdAndUserId(itemId, userId)
+                        .orElse(null);
     }
 
     public void addInterest(AddInterestDto dto){
         Account user = userRepository.getById(dto.getUserId());
         Item item = itemRepository.getById(dto.getItemId());
-        Interest interest = makeInterest(user, item);
+        Interest interest = makeInterestBy(user, item);
 
         interestRepository.save(interest); // throw DataIntegrityViolation
     }
@@ -55,10 +54,16 @@ public class InterestService {
                 .orElseThrow(() -> new EntityNotFoundException("interest is not found with id : " +interestId));
         interestRepository.delete(interest);
     }
-    private Interest makeInterest(Account user, Item item){
+    private Interest makeInterestBy(Account user, Item item){
         return Interest.builder()
                 .user(user)
                 .item(item)
+                .build();
+    }
+    private CheckInterestDto makeCheckInterestBy(Interest interest) {
+        return CheckInterestDto.builder()
+                .id(interest.getId())
+                .isInterestedBy(interest.getId() != null)
                 .build();
     }
 }
