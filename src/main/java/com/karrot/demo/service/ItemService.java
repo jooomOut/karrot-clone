@@ -7,6 +7,7 @@ import com.karrot.demo.domain.item.ItemRepository;
 import com.karrot.demo.domain.item.ItemStatus;
 import com.karrot.demo.domain.user.Account;
 import com.karrot.demo.domain.user.UserRepository;
+import com.karrot.demo.exception.item.InvalidItemStatusException;
 import com.karrot.demo.exception.item.ItemNotFoundException;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
@@ -28,6 +29,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class ItemService {
+    private static final int DEFAULT_PAGE_SIZE = 20;
+    private static final int DEFAULT_UPLOADER_RELATED_SIZE = 4;
+    private static final int DEFAULT_COMMENT_SIZE = 20;
+    private static final Long DEFAULT_PAGE_ITEM_ID = Long.MAX_VALUE;
 
     private ItemRepository itemRepository;
     private UserRepository userRepository;
@@ -42,27 +47,25 @@ public class ItemService {
     }
 
     public ItemDto getItemDtoBy(Long itemId){
-        int defaultUploaderItemSize = 4;
-        int defaultCommentsSize = 20;
-
-        return getItemDtoBy(itemId, defaultUploaderItemSize, defaultCommentsSize);
+        return getItemDtoBy(itemId, DEFAULT_UPLOADER_RELATED_SIZE, DEFAULT_COMMENT_SIZE);
     }
     public ItemDto getItemDtoBy(Long itemId, int uploaderItemSize, int commentsSize){
-        Item item = itemRepository.findById(itemId)
-                .orElseThrow(EntityNotFoundException::new);
+        Item item = findItemBy(itemId);
         item.getUploader().setItems(
                 item.getUploader().getItems().stream().limit(uploaderItemSize).collect(Collectors.toList())
         );
         item.setComments(item.getComments().stream().limit(commentsSize).collect(Collectors.toList()));
         return toItemDto(item);
     }
+
     public List<ItemPreviewDto> getItemsPreview(){
-        Long defaultItemId = Long.MAX_VALUE;
-        int defaultSize = 5;
-        return getItemsPreview(defaultItemId, defaultSize);
+        return getItemsPreview(DEFAULT_PAGE_ITEM_ID, DEFAULT_PAGE_SIZE);
     }
+
     public List<ItemPreviewDto> getItemsPreview(Long itemId, int size){
+        /* 항상 0페이지를 가져온다.*/
         PageRequest pageRequest = PageRequest.of(0, size);
+        /* itemId부터 size개만큼 가져옴.*/
         return itemRepository.findByIdLessThanOrderByIdDesc(itemId, pageRequest).stream()
                 .map(this::toPreviewDto)
                 .collect(Collectors.toList());
@@ -110,11 +113,10 @@ public class ItemService {
 
     public void updateItemStatus(Long itemId, String status) {
         Item item = findOwnItemBy(itemId);
-
         try {
             item.setStatus(ItemStatus.valueOf(status));
         } catch (IllegalArgumentException | NullPointerException e) {
-            throw new IllegalArgumentException(status + "로 변경할 수 없습니다.");
+            throw new InvalidItemStatusException();
         }
         itemRepository.save(item);
     }
