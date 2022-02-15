@@ -45,20 +45,20 @@ public class InterestService {
     public void addInterest(AddInterestDto dto){
         Account user = userRepository.getById(dto.getUserId());
         Item item = itemRepository.getById(dto.getItemId());
-        Interest interest = Interest.builder()
-                .user(user)
-                .item(item)
-                .build();
-        try {
-            interestRepository.save(interest);
-        } catch (EntityNotFoundException e){
-            throw new EntityNotFoundException("no user or item id");
-        }
+        Interest interest = makeInterest(user, item);
+
+        interestRepository.save(interest); // throw DataIntegrityViolation
     }
 
     public void delete(Long interestId) {
         Interest interest = interestRepository.findById(interestId)
                 .orElseThrow(() -> new EntityNotFoundException("interest is not found with id : " +interestId));
         interestRepository.delete(interest);
+    }
+    private Interest makeInterest(Account user, Item item){
+        return Interest.builder()
+                .user(user)
+                .item(item)
+                .build();
     }
 }
