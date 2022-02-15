@@ -94,8 +94,7 @@ public class ItemService {
 
     @Transactional
     public void uploadItem(List<MultipartFile> files, ItemUploadDto itemDto){
-        Account uploader = userRepository.findById(SecurityUtils.getLoginUserId())
-                .orElseThrow(EntityNotFoundException::new);
+        Account uploader = userRepository.getById(SecurityUtils.getLoginUserId());
 
         Item item = itemRepository.save(toEntityForAdding(itemDto, uploader));
         fileService.upload(item, files);
