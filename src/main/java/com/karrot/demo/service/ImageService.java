@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -35,6 +36,7 @@ public class ImageService {
         this.userProfileImageRepository = userProfileImageRepository;
     }
 
+    @Transactional
     public void upload(Item item, List<MultipartFile> files) {
         if (files != null){
             for (MultipartFile file : files){
@@ -56,6 +58,7 @@ public class ImageService {
         itemImageRepository.save(itemImage);
     }
 
+    @Transactional
     public void upload(Account account, MultipartFile image) throws IOException {
         if (image == null) return;
         if (account.getImage() != null) {
@@ -83,6 +86,8 @@ public class ImageService {
         }
         return targetFile;
     }
+
+    @Transactional
     public void deleteImage(Long imageId, String type){
         switch (type) {
             case "user_profile" : deleteUserProfileImage(imageId); break;
