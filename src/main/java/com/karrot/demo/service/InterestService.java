@@ -36,11 +36,6 @@ public class InterestService {
         return makeCheckInterestBy(interest);
     }
 
-    private Interest findInterestBy(Long itemId, Long userId){
-        return interestRepository.findByItemIdAndUserId(itemId, userId)
-                        .orElse(null);
-    }
-
     public void addInterest(AddInterestDto dto){
         Account user = userRepository.getById(dto.getUserId());
         Item item = itemRepository.getById(dto.getItemId());
@@ -54,6 +49,16 @@ public class InterestService {
                 .orElseThrow(() -> new EntityNotFoundException("interest is not found with id : " +interestId));
         interestRepository.delete(interest);
     }
+
+    /*
+    * TODO: null 리턴이 좋은 방법은 아닌 것 같음
+    *  InterestNotFoundException으로 변경하자.
+    * */
+    private Interest findInterestBy(Long itemId, Long userId){
+        return interestRepository.findByItemIdAndUserId(itemId, userId)
+                .orElseThrow(null);
+    }
+
     private Interest makeInterestBy(Account user, Item item){
         return Interest.builder()
                 .user(user)
