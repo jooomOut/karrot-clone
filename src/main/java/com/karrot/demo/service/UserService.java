@@ -3,6 +3,8 @@ package com.karrot.demo.service;
 import com.karrot.demo.domain.user.Account;
 import com.karrot.demo.domain.user.UserRepository;
 import com.karrot.demo.exception.user.DuplicateUserException;
+import com.karrot.demo.exception.user.InvalidNicknameException;
+import com.karrot.demo.exception.user.UserNotFoundException;
 import com.karrot.demo.web.dto.image.ImageDto;
 import com.karrot.demo.web.dto.user.RegisterUserDto;
 import com.karrot.demo.web.dto.user.UserSessionDto;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.io.IOException;
 
 @Slf4j
@@ -33,7 +36,7 @@ public class UserService {
 
     public UserSessionDto findUserBy(Long userId){
         Account user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("user not found with id" + userId));
+                .orElseThrow(UserNotFoundException::new);
         return toDto(user);
     }
 
@@ -50,12 +53,12 @@ public class UserService {
         }
     }
 
+    @Transactional
     public void updateProfile(Long userId, MultipartFile image, String nickname){
-        if (nickname == null || nickname.equals("")){
-            throw new IllegalArgumentException("닉네임은 빈 값일 수 없습니다.");
+        if (nickname == null || nickname.equals("") || nickname.length() > 15){
+            throw new InvalidNicknameException();
         }
-        Account user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("user not found with id" + userId));
+        Account user = findById(userId);
         user.setNickname(nickname);
         userRepository.save(user);
         //TODO: 이미지 처리하기
@@ -66,6 +69,9 @@ public class UserService {
         }
     }
 
+    private Account findById(Long userId){
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    }
     public Account toEntity(RegisterUserDto userDto){
         return Account.builder().
                 email(userDto.getEmail())

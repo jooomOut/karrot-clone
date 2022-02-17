@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 @Slf4j
 @RestController
@@ -48,7 +49,7 @@ public class UserApiController {
     @PatchMapping("/{userId}")
     public ResponseEntity updateUserProfile(@PathVariable Long userId,
                                             @RequestPart(required = false) MultipartFile image,
-                                            @RequestParam String nickname) {
+                                            @RequestParam @NotBlank String nickname) {
         SecurityUtils.checkUser(userId);
 
         userService.updateProfile(userId, image, nickname);
