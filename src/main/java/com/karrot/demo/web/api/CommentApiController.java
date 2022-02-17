@@ -1,6 +1,8 @@
 package com.karrot.demo.web.api;
 
+import com.karrot.demo.exception.comment.CommentNotFoundException;
 import com.karrot.demo.service.CommentService;
+import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.comment.AddCommentDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 @Slf4j
@@ -28,12 +31,10 @@ public class CommentApiController {
             String errorStr = errors.getErrorCount() > 0 ? errors.getAllErrors().get(0).getDefaultMessage() : "알 수 없는 오류";
             return ResponseEntity.badRequest().body(errorStr);
         }
-        try {
-            commentService.addComment(commentDto);
-        } catch (IllegalArgumentException e){
-            return ResponseEntity.badRequest().build();
-        }
-        log.info("add comment");
+
+        SecurityUtils.checkUser(commentDto.getCommenterId());
+        commentService.addComment(commentDto);
+
         return ResponseEntity.ok().build();
     }
     @PutMapping("/{commentId}")
@@ -47,8 +48,8 @@ public class CommentApiController {
         }
         try {
             commentService.updateComment(commentId, commentDto.getText());
-        } catch (IllegalArgumentException e){
-            return ResponseEntity.badRequest().build();
+        } catch (CommentNotFoundException e){
+            return ResponseEntity.badRequest().body(e.getMsg());
         }
         log.info("edit comment");
         return ResponseEntity.ok().build();

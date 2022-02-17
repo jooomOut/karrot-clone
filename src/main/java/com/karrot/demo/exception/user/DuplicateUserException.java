@@ -1,4 +1,4 @@
-package com.karrot.demo.exception;
+package com.karrot.demo.exception.user;
 
 import org.springframework.dao.DuplicateKeyException;
 

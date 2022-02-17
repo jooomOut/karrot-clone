@@ -28,37 +28,47 @@ public class InterestService {
         this.userRepository = userRepository;
         this.itemRepository = itemRepository;
     }
+    /*
+    * 해당 user가 item을 관심 목록에 추가했는지 확인
+    * */
     public CheckInterestDto checkInterestedBy(Long itemId, Long userId){
-        CheckInterestDto retDto = new CheckInterestDto();
-        if (itemId == null || userId == null){
-            return retDto;
-        }
-        Optional<Interest> interest = interestRepository.findByItemIdAndUserId(itemId, userId);
-        if (interest.isEmpty()){
-            return retDto;
-        }
-        retDto.setInterestedBy(true);
-        retDto.setId(interest.get().getId());
-        return retDto;
+        Interest interest = findInterestBy(itemId, userId);
+        return makeCheckInterestBy(interest);
     }
 
     public void addInterest(AddInterestDto dto){
         Account user = userRepository.getById(dto.getUserId());
         Item item = itemRepository.getById(dto.getItemId());
-        Interest interest = Interest.builder()
-                .user(user)
-                .item(item)
-                .build();
-        try {
-            interestRepository.save(interest);
-        } catch (EntityNotFoundException e){
-            throw new EntityNotFoundException("no user or item id");
-        }
+        Interest interest = makeInterestBy(user, item);
+
+        interestRepository.save(interest); // throw DataIntegrityViolation
     }
 
     public void delete(Long interestId) {
         Interest interest = interestRepository.findById(interestId)
                 .orElseThrow(() -> new EntityNotFoundException("interest is not found with id : " +interestId));
         interestRepository.delete(interest);
+    }
+
+    /*
+    * TODO: null 리턴이 좋은 방법은 아닌 것 같음
+    *  InterestNotFoundException으로 변경하자.
+    * */
+    private Interest findInterestBy(Long itemId, Long userId){
+        return interestRepository.findByItemIdAndUserId(itemId, userId)
+                .orElseThrow(null);
+    }
+
+    private Interest makeInterestBy(Account user, Item item){
+        return Interest.builder()
+                .user(user)
+                .item(item)
+                .build();
+    }
+    private CheckInterestDto makeCheckInterestBy(Interest interest) {
+        return CheckInterestDto.builder()
+                .id(interest.getId())
+                .isInterestedBy(interest.getId() != null)
+                .build();
     }
 }

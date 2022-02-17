@@ -1,7 +1,7 @@
 package com.karrot.demo.service;
 
 import com.karrot.demo.domain.user.UserRepository;
-import com.karrot.demo.exception.DuplicateUserException;
+import com.karrot.demo.exception.user.DuplicateUserException;
 import com.karrot.demo.web.dto.user.RegisterUserDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

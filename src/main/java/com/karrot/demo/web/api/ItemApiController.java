@@ -39,7 +39,7 @@ public class ItemApiController {
     /**
      * 중고거래 업로드
      * @Param : List<MultipartFile>, ItemDto
-     * @Response : 200(성공) or 400
+     * @Response : 200(성공) or 400 (DataIntegrityViilationException
      * */
     @PostMapping
     public ResponseEntity uploadItem(@RequestPart(required = false) List<MultipartFile> uploadImages,
@@ -49,12 +49,8 @@ public class ItemApiController {
             String errorStr = errors.getErrorCount() > 0 ? errors.getAllErrors().get(0).getDefaultMessage() : "알 수 없는 오류";
             return ResponseEntity.badRequest().body(errorStr);
         }
-        try {
-            itemService.uploadItem(uploadImages, itemDto);
-        } catch (EntityNotFoundException e){
-            return ResponseEntity.badRequest().build();
-        }
 
+        itemService.uploadItem(uploadImages, itemDto);
         return ResponseEntity.ok().build();
     }
 

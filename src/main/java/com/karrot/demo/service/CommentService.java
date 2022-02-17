@@ -6,7 +6,7 @@ import com.karrot.demo.domain.item.Item;
 import com.karrot.demo.domain.item.ItemRepository;
 import com.karrot.demo.domain.user.Account;
 import com.karrot.demo.domain.user.UserRepository;
-import com.karrot.demo.util.SecurityUtils;
+import com.karrot.demo.exception.comment.CommentNotFoundException;
 import com.karrot.demo.web.dto.comment.AddCommentDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +37,8 @@ public class CommentService {
     }
 
     public void addComment(AddCommentDto commentDto) {
-        SecurityUtils.checkUser(commentDto.getCommenterId());
-        Item item = itemRepository.findById(commentDto.getItemId())
-                .orElseThrow(() -> new EntityNotFoundException("item is not found : with id - "+ commentDto.getItemId()));
-        Account user = userRepository.findById(commentDto.getCommenterId())
-                .orElseThrow(() -> new EntityNotFoundException("user is not found : with id - "+ commentDto.getCommenterId()));
+        Item item = itemRepository.getById(commentDto.getItemId());
+        Account user = userRepository.getById(commentDto.getCommenterId());
 
         Comment comment = toEntityFromAdding(commentDto);
         comment.setCommenter(user);
@@ -49,11 +46,18 @@ public class CommentService {
         commentRepository.save(comment);
     }
     public void updateComment(Long commentId, String text) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new EntityNotFoundException("comment is not found : with id - "+ commentId));
+        Comment comment = findById(commentId);
 
         comment.setText(text);
         commentRepository.save(comment);
+    }
+    private Comment findById(Long id){
+        return commentRepository.findById(id)
+                .orElseThrow(() -> {
+                    CommentNotFoundException e = new CommentNotFoundException();
+                    log.info(e.getMsg() + " : " + id);
+                    return e;
+                });
     }
     private Comment toEntityFromAdding(AddCommentDto commentDto) {
         return Comment.builder()

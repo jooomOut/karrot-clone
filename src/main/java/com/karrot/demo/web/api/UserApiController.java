@@ -1,25 +1,19 @@
 package com.karrot.demo.web.api;
 
-import com.karrot.demo.exception.DuplicateUserException;
+import com.karrot.demo.exception.user.DuplicateUserException;
 import com.karrot.demo.service.UserService;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.user.RegisterUserDto;
-import com.karrot.demo.web.dto.user.UserSessionDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.security.Security;
+import javax.validation.constraints.NotBlank;
 
 @Slf4j
 @RestController
@@ -55,7 +49,7 @@ public class UserApiController {
     @PatchMapping("/{userId}")
     public ResponseEntity updateUserProfile(@PathVariable Long userId,
                                             @RequestPart(required = false) MultipartFile image,
-                                            @RequestParam String nickname) {
+                                            @RequestParam @NotBlank String nickname) {
         SecurityUtils.checkUser(userId);
 
         userService.updateProfile(userId, image, nickname);
