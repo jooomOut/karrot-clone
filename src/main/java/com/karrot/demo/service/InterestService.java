@@ -6,6 +6,7 @@ import com.karrot.demo.domain.interest.Interest;
 import com.karrot.demo.domain.interest.InterestRepository;
 import com.karrot.demo.domain.user.Account;
 import com.karrot.demo.domain.user.UserRepository;
+import com.karrot.demo.exception.interest.InterestNotFoundException;
 import com.karrot.demo.web.dto.like.AddInterestDto;
 import com.karrot.demo.web.dto.like.CheckInterestDto;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +57,7 @@ public class InterestService {
     * */
     private Interest findInterestBy(Long itemId, Long userId){
         return interestRepository.findByItemIdAndUserId(itemId, userId)
-                .orElseThrow(null);
+                .orElse(null);
     }
 
     private Interest makeInterestBy(Account user, Item item){
@@ -67,8 +68,8 @@ public class InterestService {
     }
     private CheckInterestDto makeCheckInterestBy(Interest interest) {
         return CheckInterestDto.builder()
-                .id(interest.getId())
-                .isInterestedBy(interest.getId() != null)
+                .id(interest != null ? interest.getId() : null)
+                .isInterestedBy(interest != null && interest.getId() != null)
                 .build();
     }
 }

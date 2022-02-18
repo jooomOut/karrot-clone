@@ -1,20 +1,12 @@
 package com.karrot.demo.exception.user;
 
-import javax.persistence.EntityNotFoundException;
+import com.karrot.demo.exception.ErrorCode;
+import com.karrot.demo.exception.common.BusinessException;
+import com.karrot.demo.exception.common.CustomEntityNotFoundException;
 
-public class UserNotFoundException extends EntityNotFoundException {
-    private static final String MSG = "사용자를 찾을 수 없습니다.";
+public class UserNotFoundException extends CustomEntityNotFoundException {
 
     public UserNotFoundException() {
-        super(MSG);
-    }
-    public UserNotFoundException(String message) {
-        super(message);
-    }
-    public UserNotFoundException(Long id) {
-        super(MSG + " : " + id);
-    }
-    public String getMsg() {
-        return MSG;
+        super(ErrorCode.USER_NOT_FOUND);
     }
 }

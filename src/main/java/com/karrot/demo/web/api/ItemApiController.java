@@ -45,10 +45,6 @@ public class ItemApiController {
     public ResponseEntity uploadItem(@RequestPart(required = false) List<MultipartFile> uploadImages,
                                      @ModelAttribute @Valid ItemUploadDto itemDto,
                                      BindingResult errors){
-        if (errors.hasErrors()){
-            String errorStr = errors.getErrorCount() > 0 ? errors.getAllErrors().get(0).getDefaultMessage() : "알 수 없는 오류";
-            return ResponseEntity.badRequest().body(errorStr);
-        }
 
         itemService.uploadItem(uploadImages, itemDto);
         return ResponseEntity.ok().build();
@@ -57,17 +53,10 @@ public class ItemApiController {
     @PutMapping("/{itemId}")
     public ResponseEntity updateItem(@PathVariable Long itemId,
                                     @RequestPart(required = false) List<MultipartFile> uploadImages,
-                                     @ModelAttribute @Valid ItemUploadDto itemDto,
-                                     BindingResult errors){
-        if (errors.hasErrors()){
-            String errorStr = errors.getErrorCount() > 0 ? errors.getAllErrors().get(0).getDefaultMessage() : "알 수 없는 오류";
-            return ResponseEntity.badRequest().body(errorStr);
-        }
-        try {
-            itemService.updateItem(itemId, uploadImages, itemDto);
-        } catch (EntityNotFoundException e){
-            return ResponseEntity.badRequest().build();
-        }
+                                     @ModelAttribute @Valid ItemUploadDto itemDto){
+
+        itemService.updateItem(itemId, uploadImages, itemDto);
+
         log.info("item is uploaded");
         return ResponseEntity.ok().build();
     }
@@ -75,25 +64,14 @@ public class ItemApiController {
     @PatchMapping("/{itemId}")
     public ResponseEntity updateItemStatus(@PathVariable Long itemId,
                                      @RequestParam String status){
-        try {
-            itemService.updateItemStatus(itemId, status);
-        } catch (AuthorizationServiceException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+
+        itemService.updateItemStatus(itemId, status);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{itemId}")
     public ResponseEntity deleteItem(@PathVariable Long itemId){
-        try {
-            itemService.deleteItem(itemId);
-        } catch (AuthorizationServiceException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        itemService.deleteItem(itemId);
         log.info("item is deleted - "+ itemId);
         return ResponseEntity.ok().build();
     }

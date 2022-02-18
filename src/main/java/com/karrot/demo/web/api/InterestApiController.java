@@ -22,9 +22,7 @@ public class InterestApiController {
     @PostMapping()
     public ResponseEntity addInterest(@ModelAttribute @Validated AddInterestDto interestDto,
                                      BindingResult errors){
-        if (errors.hasErrors()){
-            return ResponseEntity.badRequest().build();
-        }
+        
         interestService.addInterest(interestDto);
         log.info("item is added to interested list : id - " + interestDto.getItemId());
         return ResponseEntity.ok().build();

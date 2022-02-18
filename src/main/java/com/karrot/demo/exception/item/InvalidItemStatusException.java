@@ -1,8 +1,10 @@
 package com.karrot.demo.exception.item;
 
-public class InvalidItemStatusException extends IllegalArgumentException{
-    private static final String MSG = "잘못된 값입니다.";
+import com.karrot.demo.exception.ErrorCode;
+import com.karrot.demo.exception.common.BusinessException;
+
+public class InvalidItemStatusException extends BusinessException {
     public InvalidItemStatusException() {
-        super(MSG);
+        super(ErrorCode.INVALID_ITEM_STATUS);
     }
 }
