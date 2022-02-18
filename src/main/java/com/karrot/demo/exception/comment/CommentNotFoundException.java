@@ -1,19 +1,17 @@
 package com.karrot.demo.exception.comment;
 
+import com.karrot.demo.exception.ErrorCode;
+import com.karrot.demo.exception.common.BusinessException;
+
 import javax.persistence.EntityNotFoundException;
 
-public class CommentNotFoundException extends EntityNotFoundException {
-    private static final String MSG = "해당 댓글을 찾을 수 없습니다.";
+public class CommentNotFoundException extends BusinessException {
 
     public CommentNotFoundException() {
-        super(MSG);
+        super(ErrorCode.COMMENT_NOT_FOUND);
     }
 
     public CommentNotFoundException(String message) {
-        super(message);
-    }
-
-    public String getMsg(){
-        return MSG;
+        super(ErrorCode.COMMENT_NOT_FOUND, message);
     }
 }

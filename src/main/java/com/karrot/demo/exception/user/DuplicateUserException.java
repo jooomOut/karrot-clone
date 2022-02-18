@@ -1,19 +1,10 @@
 package com.karrot.demo.exception.user;
 
-import org.springframework.dao.DuplicateKeyException;
+import com.karrot.demo.exception.ErrorCode;
+import com.karrot.demo.exception.common.BusinessException;
 
-public class DuplicateUserException extends DuplicateKeyException {
-    private static final String DEFAULT_MSG = "이미 사용중인 이메일 혹은 전화번호입니다.";
-
+public class DuplicateUserException extends BusinessException {
     public DuplicateUserException() {
-        super(DEFAULT_MSG);
-    }
-
-    public DuplicateUserException(String msg) {
-        super(msg);
-    }
-
-    public DuplicateUserException(String email, String phone) {
-        super(DEFAULT_MSG + " [" +email + ", " + phone + "]");
+        super(ErrorCode.DUPLICATE_USER);
     }
 }

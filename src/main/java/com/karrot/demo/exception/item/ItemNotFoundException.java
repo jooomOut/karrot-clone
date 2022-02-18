@@ -1,19 +1,10 @@
 package com.karrot.demo.exception.item;
 
-import javax.persistence.EntityNotFoundException;
+import com.karrot.demo.exception.ErrorCode;
+import com.karrot.demo.exception.common.BusinessException;
 
-public class ItemNotFoundException extends EntityNotFoundException {
-    private static final String MSG = "게시물을 찾을 수 없습니다.";
-
+public class ItemNotFoundException extends BusinessException {
     public ItemNotFoundException() {
-        super(MSG);
-    }
-
-    public ItemNotFoundException(String message) {
-        super(message);
-    }
-
-    public String getMsg(){
-        return MSG;
+        super(ErrorCode.ITEM_NOT_FOUND);
     }
 }
