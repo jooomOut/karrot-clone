@@ -20,8 +20,6 @@ import javax.validation.constraints.NotBlank;
 @RequestMapping("/api/users")
 public class UserApiController {
 
-    private static final String SESSION_KEY = "loginUser";
-
     @Autowired
     private UserService userService;
     /**
@@ -30,19 +28,9 @@ public class UserApiController {
      * @Response : 200(성공) or 400
      * */
     @PostMapping
-    public ResponseEntity registerUser(@ModelAttribute @Valid RegisterUserDto userDto,
-                                        BindingResult errors){
-        if (errors.hasErrors()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(errors.getAllErrors().get(0).getDefaultMessage());
-        }
-        log.info("someone try register");
-        try{
-            userService.registerUser(userDto);
-        } catch(DuplicateUserException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-        log.info("new user created");
+    public ResponseEntity registerUser(@ModelAttribute @Valid RegisterUserDto userDto){
+
+        userService.registerUser(userDto);
         return ResponseEntity.ok().build();
     }
 
