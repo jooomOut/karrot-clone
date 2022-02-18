@@ -1,6 +1,5 @@
 package com.karrot.demo.web.api;
 
-import com.karrot.demo.exception.comment.CommentNotFoundException;
 import com.karrot.demo.service.CommentService;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.comment.AddCommentDto;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 @Slf4j
@@ -25,33 +23,18 @@ public class CommentApiController {
     }
 
     @PostMapping()
-    public ResponseEntity addComment(@ModelAttribute @Valid AddCommentDto commentDto,
-                                     BindingResult errors){
-        if (errors.hasErrors()){
-            String errorStr = errors.getErrorCount() > 0 ? errors.getAllErrors().get(0).getDefaultMessage() : "알 수 없는 오류";
-            return ResponseEntity.badRequest().body(errorStr);
-        }
+    public ResponseEntity addComment(@ModelAttribute @Valid AddCommentDto commentDto){
 
         SecurityUtils.checkUser(commentDto.getCommenterId());
         commentService.addComment(commentDto);
-
         return ResponseEntity.ok().build();
     }
     @PutMapping("/{commentId}")
     public ResponseEntity updateComment(@PathVariable Long commentId,
                                         @ModelAttribute @Valid AddCommentDto commentDto,
                                         BindingResult errors){
-        if (errors.hasErrors()){
-            log.debug(">>> 댓글 작성 에러 : " + errors.toString());
-            String errorStr = errors.getErrorCount() > 0 ? errors.getAllErrors().get(0).getDefaultMessage() : "알 수 없는 오류";
-            return ResponseEntity.badRequest().body(errorStr);
-        }
-        try {
-            commentService.updateComment(commentId, commentDto.getText());
-        } catch (CommentNotFoundException e){
-            return ResponseEntity.badRequest().body(e.getMsg());
-        }
-        log.info("edit comment");
+
+        commentService.updateComment(commentId, commentDto.getText());
         return ResponseEntity.ok().build();
     }
 

@@ -29,7 +29,6 @@ public class CommentService {
         this.itemRepository = itemRepository;
     }
 
-
     public String getCommentText(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElse(null);
@@ -53,11 +52,7 @@ public class CommentService {
     }
     private Comment findById(Long id){
         return commentRepository.findById(id)
-                .orElseThrow(() -> {
-                    CommentNotFoundException e = new CommentNotFoundException();
-                    log.info(e.getMsg() + " : " + id);
-                    return e;
-                });
+                .orElseThrow(CommentNotFoundException::new);
     }
     private Comment toEntityFromAdding(AddCommentDto commentDto) {
         return Comment.builder()
