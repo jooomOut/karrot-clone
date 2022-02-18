@@ -1,11 +1,9 @@
 package com.karrot.demo.exception.comment;
 
 import com.karrot.demo.exception.ErrorCode;
-import com.karrot.demo.exception.common.BusinessException;
+import com.karrot.demo.exception.common.CustomEntityNotFoundException;
 
-import javax.persistence.EntityNotFoundException;
-
-public class CommentNotFoundException extends BusinessException {
+public class CommentNotFoundException extends CustomEntityNotFoundException {
 
     public CommentNotFoundException() {
         super(ErrorCode.COMMENT_NOT_FOUND);
