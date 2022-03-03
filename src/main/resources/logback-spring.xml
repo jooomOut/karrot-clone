@@ -78,7 +78,7 @@
         <appender-ref ref="WARN_LOG" />
     </logger>
 
-    <logger name="com.karrot.demo.interceptor" additivity="false">
+    <logger name="com.karrot.demo.filter.ApiLoggingFilter" additivity="false">
         <level value = "INFO" />
         <appender-ref ref="API_LOG" />
     </logger>
