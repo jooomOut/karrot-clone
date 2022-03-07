@@ -9,6 +9,7 @@ import org.springframework.web.filter.CommonsRequestLoggingFilter;
 @Configuration
 public class FilterConfig {
     private static final String LOG_REQUEST_PREFIX = "REQUEST_MSG : ";
+
     @Bean
     public FilterRegistrationBean<ApiLoggingFilter> apiLoggingFilterFilterRegistrationBean() {
         FilterRegistrationBean<ApiLoggingFilter> filterRegistrationBean = new FilterRegistrationBean<>();
