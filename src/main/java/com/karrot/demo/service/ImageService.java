@@ -36,7 +36,7 @@ public class ImageService {
         this.userProfileImageRepository = userProfileImageRepository;
     }
 
-    @Transactional
+    @Transactional(rollbackOn = IOException.class)
     public void upload(Item item, List<MultipartFile> files) {
         if (files != null){
             for (MultipartFile file : files){
