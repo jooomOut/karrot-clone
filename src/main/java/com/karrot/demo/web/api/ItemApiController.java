@@ -31,8 +31,9 @@ public class ItemApiController {
     * lastId 보다 작은 id 값을 가진 게시물들을 가져온다.
     * */
     @GetMapping
-    public ResponseEntity<List<ItemPreviewDto>> getItemList(@RequestParam Long lastId,
+    public ResponseEntity<List<ItemPreviewDto>> getItemList(@RequestParam(required = false) Long lastId,
                                                             @RequestParam(required = false, defaultValue = "5") int size){
+        lastId = lastId == null ? Long.MAX_VALUE : lastId;
         List<ItemPreviewDto> itemDtos = itemService.getItemsPreview(lastId, size);
         return ResponseEntity.ok().body(itemDtos);
     }
@@ -43,8 +44,7 @@ public class ItemApiController {
      * */
     @PostMapping
     public ResponseEntity uploadItem(@RequestPart(required = false) List<MultipartFile> uploadImages,
-                                     @ModelAttribute @Valid ItemUploadDto itemDto,
-                                     BindingResult errors){
+                                     @ModelAttribute @Valid ItemUploadDto itemDto){
 
         itemService.uploadItem(uploadImages, itemDto);
         return ResponseEntity.ok().build();
