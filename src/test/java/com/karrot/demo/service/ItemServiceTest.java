@@ -13,8 +13,7 @@ class ItemServiceTest {
     @Test
     @DisplayName("Item 상태 업데이트 - enum 에러")
     void itemUpdate_ENUM_ERROR(){
-        assertThrows(DataIntegrityViolationException.class, () -> ItemStatus.valueOf("AAA"));
+        assertThrows(IllegalArgumentException.class, () -> ItemStatus.valueOf("AAA"));
     }
-
 
 }
