@@ -32,7 +32,7 @@ public class SecurityUtils {
     }
     private static UserSessionDto toDto(Object principal){
         AccountAdapter adapter = (AccountAdapter) principal;
-        Account account = adapter.getAccount();
+        /*Account account = adapter.getAccount();
         return UserSessionDto.builder()
                 .id(account.getId())
                 .email(account.getEmail())
@@ -44,6 +44,7 @@ public class SecurityUtils {
                                 .id(account.getImage().getId())
                                 .path(account.getImage().getPath())
                         .build())
-                .build();
+                .build();*/
+        return adapter.getUser();
     }
 }
