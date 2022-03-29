@@ -3,6 +3,8 @@ package com.karrot.demo.integrity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.karrot.demo.web.dto.comment.AddCommentDto;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -24,12 +29,20 @@ public class CommentApiTest {
     MockMvc mockMvc;
     @Autowired
     ObjectMapper objectMapper;
-
+    @Autowired
+    private WebApplicationContext wac;
+    @BeforeEach
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+                .addFilters(new CharacterEncodingFilter("UTF-8", true))  // 필터 추가
+                .alwaysDo(print())
+                .build();
+    }
 
     @Test
-    @DisplayName("댓글 추가 - valid")
+    @DisplayName("댓글 추가 - invalid")
     @WithMockUser
-    void addComment() throws Exception {
+    void addComment_Fail() throws Exception {
 
         AddCommentDto dto = AddCommentDto.builder()
                 .text("")
@@ -40,7 +53,7 @@ public class CommentApiTest {
                 .content(objectMapper.writeValueAsString(dto))
         )
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isBadRequest())
         ;
     }
 }

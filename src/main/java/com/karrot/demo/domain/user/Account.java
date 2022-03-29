@@ -3,8 +3,8 @@ package com.karrot.demo.domain.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.karrot.demo.domain.comment.Comment;
 import com.karrot.demo.domain.image.UserProfileImage;
-import com.karrot.demo.domain.item.Item;
 import com.karrot.demo.domain.interest.Interest;
+import com.karrot.demo.domain.item.Item;
 import lombok.*;
 
 import javax.persistence.*;
