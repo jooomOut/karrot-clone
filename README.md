@@ -9,3 +9,7 @@
 
 ## DB 구조 (22.03)
 ![db_model](https://user-images.githubusercontent.com/34786282/170645827-ba3a40a5-dfeb-4735-be44-945398ccedb9.png)
+  
+  ---
+### 결과
+[17일 챌린지 Spring 초기 당근마켓 구축 Top 10%](https://www.numble.it/bestnumbler#0f749341d78843bca97f259898d6df2b)
