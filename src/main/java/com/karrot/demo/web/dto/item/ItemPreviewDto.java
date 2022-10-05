@@ -1,5 +1,9 @@
 package com.karrot.demo.web.dto.item;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.karrot.demo.domain.item.ItemStatus;
 import com.sun.istack.NotNull;
 import lombok.Builder;
@@ -16,6 +20,9 @@ public class ItemPreviewDto {
     private String mainText;
     private Long price;
     private String place;
+
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createdAt;
     private ItemStatus status;
     @Builder.Default
