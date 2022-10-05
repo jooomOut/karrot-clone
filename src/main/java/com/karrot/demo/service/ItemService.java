@@ -9,18 +9,23 @@ import com.karrot.demo.domain.user.Account;
 import com.karrot.demo.domain.user.UserRepository;
 import com.karrot.demo.exception.item.InvalidItemStatusException;
 import com.karrot.demo.exception.item.ItemNotFoundException;
+import com.karrot.demo.redis.CacheValueType;
 import com.karrot.demo.util.SecurityUtils;
 import com.karrot.demo.web.dto.item.ItemDto;
 import com.karrot.demo.web.dto.item.ItemUploadDto;
 import com.karrot.demo.web.dto.item.ItemPreviewDto;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -62,6 +67,8 @@ public class ItemService {
         return getItemsPreview(DEFAULT_PAGE_ITEM_ID, DEFAULT_PAGE_SIZE);
     }
 
+    //@Cacheable(value = CacheValueType.ITEM, key = "#lastId.toString()", unless = "#lastId == Long.MAX_VALUE")
+    @Cacheable(value = CacheValueType.ITEM, key = "#itemId", cacheManager = "redisCacheManager")
     public List<ItemPreviewDto> getItemsPreview(Long itemId, int size){
         /* 항상 0페이지를 가져온다.*/
         PageRequest pageRequest = PageRequest.of(0, size);
@@ -121,6 +128,7 @@ public class ItemService {
         itemRepository.save(item);
     }
 
+    @CacheEvict(value = CacheValueType.ITEM, key = "#itemId")
     public void deleteItem(Long itemId) {
         Item item = findOwnItemBy(itemId);
         itemRepository.delete(item);
