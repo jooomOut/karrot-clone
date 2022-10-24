@@ -18,4 +18,10 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllByTitleContains(String title);
     List<Item> findAllByTitleContainsAndCategory(String title, ItemCategory category);
     Page<Item> findByIdLessThanOrderByIdDesc(Long itemId, Pageable pageable);
+    List<Item> findAll();
+    @Query(
+            "SELECT i "+
+            "FROM Item i " +
+            "JOIN FETCH i.interests ")
+    List<Item> findAllItemsByFetch();
 }

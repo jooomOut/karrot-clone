@@ -35,6 +35,8 @@ dependencies {
     // for redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.session:spring-session-data-redis'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310' // for java8 datetime error
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 }
 
 test {
