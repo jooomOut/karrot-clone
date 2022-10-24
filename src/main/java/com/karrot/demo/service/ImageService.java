@@ -1,11 +1,10 @@
 package com.karrot.demo.service;
 
-import com.karrot.demo.domain.image.ItemImage;
-import com.karrot.demo.domain.image.ItemImageRepository;
-import com.karrot.demo.domain.image.UserProfileImage;
-import com.karrot.demo.domain.image.UserProfileImageRepository;
+import com.karrot.demo.domain.image.*;
 import com.karrot.demo.domain.item.Item;
 import com.karrot.demo.domain.user.Account;
+import com.karrot.demo.strategy.image.ImageContext;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -22,19 +21,15 @@ import java.util.UUID;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ImageService {
     private final String STATIC_PATH = "/static/img";
     private final String ITEM_PATH = "/items";
     private final String USER_PROFILE_PATH = "/user_profile";
 
-    private ItemImageRepository itemImageRepository;
-    private UserProfileImageRepository userProfileImageRepository;
-
-    @Autowired
-    public ImageService(ItemImageRepository itemImageRepository, UserProfileImageRepository userProfileImageRepository) {
-        this.itemImageRepository = itemImageRepository;
-        this.userProfileImageRepository = userProfileImageRepository;
-    }
+    private final ItemImageRepository itemImageRepository;
+    private final UserProfileImageRepository userProfileImageRepository;
+    private final ImageContext imageContext;
 
     @Transactional(rollbackOn = IOException.class)
     public void upload(Item item, List<MultipartFile> files) {
@@ -87,40 +82,16 @@ public class ImageService {
         return targetFile;
     }
 
-    @Transactional
-    public void deleteImage(Long imageId, String type){
-        switch (type) {
+    /*switch (type) {
             case "user_profile" : deleteUserProfileImage(imageId); break;
             case "item" : deleteItemImage(imageId); break;
-        }
+        }*/
+    @Transactional
+    public void deleteImage(Long imageId, ImageType type){
+        imageContext.deleteImage(imageId,type);
     }
 
-    private void deleteItemImage(Long imageId) {
-        Optional<ItemImage> optionalItemImage = itemImageRepository.findById(imageId);
-        if (optionalItemImage.isPresent()){
-            ItemImage itemImage = optionalItemImage.get();
-            deleteFile("/static" + itemImage.getPath());
-            itemImageRepository.delete(itemImage);
-        }
-    }
 
-    public void deleteUserProfileImage(Long imageId){
-        Optional<UserProfileImage> profileImage = userProfileImageRepository.findById(imageId);
-        if (profileImage.isPresent()){
-            UserProfileImage image = profileImage.get();
-
-            userProfileImageRepository.delete(image);
-        }
-    }
-
-    private void deleteFile(String path){
-        File file = new File(path);
-        if (file.exists() && file.isFile()){
-            if (file.delete()){
-                log.info("파일 삭제 완료 - " + path);
-            }
-        }
-    }
     private ItemImage toEntity(File file, Item item){
         return ItemImage.builder()
                 .fileName(file.getName())
