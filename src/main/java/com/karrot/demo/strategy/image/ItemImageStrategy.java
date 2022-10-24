@@ -3,11 +3,13 @@ package com.karrot.demo.strategy.image;
 import com.karrot.demo.domain.image.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.Optional;
 
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class ItemImageStrategy implements ImageStrategy {
     private final ItemImageRepository itemImageRepository;
